@@ -1,0 +1,136 @@
+1.中小學冷氣監控系統
+https://fetems.chc.edu.tw/web/login
+帳號 彰化縣openID
+密碼 彰化縣openID
+
+
+2.政府綠色採購網路申報密碼
+https://greenliving.epa.gov.tw/GreenLife/Anonymous/LoginById.aspx
+帳號 3.76.47.98.74-0 //	3.76.47.98.74-1
+密碼 7353457-dchES
+     	
+
+3.內政部優先採購網路資訊平台
+https://ptps.sfaa.gov.tw/
+帳號 376479874Y
+密碼  DC@7353457   (2024.05.31) (密碼有改) 
+
+
+4.財產管理資訊系統
+https://prms2.chcg.gov.tw/index.jsp
+s7353457  (使用麗君帳號即可)
+qazwsx7353457
+
+
+5.台北惜物網
+前台：https://shwoo.gov.taipei/shwoo/login/login00/index
+後台：https://shwoo.gov.taipei/shwoo_admin/home/home00/login
+30294
+DC7353457@
+
+6.全國國中小校舍管理系統
+https://sbmis.k12ea.gov.tw/
+id:074775
+pw:dch7353457ES
+
+
+7.國有公用及公司組織線上傳輸系統
+https://pts.fnp.gov.tw/APNPA/
+自然人憑證登入，輸入自然人憑證的密碼!!!別忘記
+機關憑證15382901 ???
+
+申請帳號 
+機關名稱輸入 彰化縣 會出現大成國小，點選
+申請身分
+系統管理者  、財產管理者   自然人憑證驗證  後  機關憑證驗證，
+等很久才會跑出下
+(機關代碼376479874Y000) 
+
+8.全國運動場館資訊網
+https://iplay-um.sa.gov.tw/Account/Login
+E074775
+Dches7353457
+
+
+9.政府機關及學校節約能源填報網站
+http://egov.ftis.org.tw/
+
+10.中央空調系統盤點作業
+http://eewh.tw/govac/login.php
+帳號 376479874Y
+密碼 376479874Y
+
+
+11.學校館所能資源申報系統  (出不來)
+http://www.safelab.edu.tw/65power/index.asp
+
+12.教育部校園用水情形調查
+https://dwsurvey.cph.ntu.edu.tw/DwSurvey/
+id:074775
+pw:074775
+
+
+13.環保署綠色生活網：：節能減碳全民行動網 (出不來)
+http://ecolife.epa.gov.tw/Cooler/default.aspx
+id:dacheng303
+pw:dacheng7353457
+
+
+14.防救災資訊系統 (出不來)
+https://portal.ndppc.nat.gov.tw/portal/chinese/page/user?usercmd=login
+id:dchesgen02
+pw:dch7353457ES
+安全詢問：7353457
+
+www.hps.tw/98/
+7353457
+
+
+15.政府機關及學校節約用水資訊網
+https://www.ewater.org.tw/
+帳號 376479874Y
+密碼  dch7353457ES                                         
+
+
+16.彰化惜寶網  (不安全、少用)
+https://i-exchange.chc.edu.tw/
+074775
+E074775E074775
+
+
+17.愛水節水檢漏服務資訊網 (出不來)
+http://water.ftis.org.tw/content/masterpage/index.aspx
+專責人員:N102013
+
+
+18.校園樹木資訊平台
+https://edutreemap.moe.edu.tw/trees/#/
+彰化縣openID
+彰化縣openID
+
+
+19.沅碁光電(安集科技)-104年度彰化縣所屬學校屋頂設置太陽光電發電系統案太陽光電監控展示網頁
+http://www.sepv.com.tw/solarV4/id_login.aspx
+帳號7353457
+密碼7359206
+
+
+自來水公司會員
+dc7353457es
+
+
+ADR自動需量反應平台
+1005591300628
+egERXX2p
+
+地震速報訊息APP
+https://eew-web.cwb.gov.tw/EW/Login.aspx
+SE50016
+a12345
+
+
+3.公有既有建築物能效調查填報平台
+https://eberse.tabc.org.tw/#/login
+帳號 376479874Y
+密碼 DC7353457@  (密碼有改，改成自己的了!!!)
+
