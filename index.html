@@ -1,18 +1,662 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/images/webico2.png">
-    <title>SchPass</title>
-    <link rel="stylesheet" href="styles.css">
+    
+    <title>彰化縣彰化市大成國小事務組</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft JhengHei", sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        a:hover {
+            color: #228B22;
+            text-shadow: 0 0 3px #228B22;
+            /* 模擬字體加粗的效果 */
+        }
+
+        body {
+            background-color: #f5f5f5;
+            height: 100vh;
+        }
+
+        .header {
+            background-color: #90EE90;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .back-btn {
+            background-color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        /* 原本的 nav 樣式 */
+        .nav-menu {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background-color: #f0f8f0;
+            border-bottom: 1px solid #ddd;
+
+            transition: max-height 0.4s ease-out;
+            overflow: hidden;
+        }
+
+        /* 隱藏 nav 菜單，顯示漢堡選單按鈕 */
+        .nav-menu.collapsed {
+            display: none;
+        }
+
+        /* 漢堡選單按鈕樣式 */
+        .hamburger {
+            display: none;
+            font-size: 30px;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #ded7f4
+        }
+
+        .bar {
+            width: 35px;
+            height: 4px;
+            background-color: #333;
+            margin: 6px 0;
+            transition: opacity 0.2s ease-in-out, transform 0.4s ease-in-out;
+            /* 添加過渡動畫 */
+        }
+
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 15px;
+            border: 1px solid #90EE90;
+            border-radius: 5px;
+            background-color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background-color: #90EE90;
+        }
+
+        .main-content {
+            display: flex;
+            margin: 20px;
+            min-height: calc(100vh - 150px);
+            max-width: 100%;
+        }
+
+        .left-sidebar {
+            width: 200px;
+            background-color: #e0f0e0;
+            padding: 15px;
+            border-radius: 5px;
+            flex-basis: 20%;
+            /* 中間元素佔 30% */
+        }
+
+        .left-sidebar a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            padding: 8px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .center-content {
+            flex: 1;
+            margin: 0 20px;
+            position: relative;
+            flex-basis: 60%;
+            /* 中間元素佔 30% */
+        }
+
+        .mid-right-place {
+            flex-basis: 45%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .dropdown,
+        .input-box,
+        .search-btn {
+            flex: 1 1 auto;
+            /* 允許元素收縮和擴展 */
+            min-width: 100px;
+            /* 設置元素的最小寬度以避免過度收縮 */
+            height: 2rem;
+            border-radius: 5px;
+            /* 設置圓角 */
+            padding: 5px 10px;
+            /* 內邊距，讓選單項目有些間距 */
+            border: 1px solid #ccc;
+            /* 邊框顏色 */
+
+        }
+
+        .search-btn {
+            padding: 8px 15px;
+            background-color: #b0d8f0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /*============================================*/
+        /* 記事框的樣式 */
+        .note-box {
+            display: flex;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px auto;
+            /* width: 100%; */
+            /* max-width: 600px; */
+            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* label 和 input 是一組 */
+        .note-box .form-group {
+            flex-basis: 45%;
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .note-box label {
+            font-size: 14px;
+            color: #333;
+            margin-right: 10px;
+        }
+
+        .note-box textarea,
+        .note-box input {
+            min-width: 100px;
+            height: 2rem;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            box-sizing: border-box;
+            flex: 1 1 auto;
+
+        }
+
+        .note-box button {
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .note-box button:hover {
+            background-color: #45a049;
+        }
+
+        /* 記事列表的樣式 */
+        .note-list {
+            padding: 10px;
+            overflow: auto;
+            margin-top: 20px;
+            width: 100%;
+            max-height: 200px;
+            margin: 20px auto;
+            border: 2px double #6ab96a;
+            background-color: #f0f8f0;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 50px;
+        }
+
+
+        .note-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .note-list li {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            justify-content: space-between;
+        }
+
+        .note-list li .checkbox {
+            margin-right: 15px;
+        }
+
+        .note-list li .note-content {
+            flex: 1;
+            color: #333;
+        }
+
+        .note-list li .delete-btn {
+            background-color: #FF5733;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .note-list li .delete-btn:hover {
+            background-color: #e04e2b;
+        }
+
+        /* 刪除選中記事按鈕樣式 */
+        #deleteSelectedBtn {
+            background-color: #FF5733;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            display: none;
+            margin-top: 20px;
+        }
+
+        #deleteSelectedBtn:hover {
+            background-color: #e04e2b;
+        }
+
+        /*============================================*/
+        .search-result {
+            border: 1px solid #ccc;
+            min-height: 50%;
+            padding: 15px;
+            border-radius: 5px;
+            flex-basis: 55%;
+        }
+
+        .right-sidebar {
+            width: 200px;
+            background-color: #e0f0e0;
+            padding: 15px;
+            border-radius: 5px;
+            flex-basis: 20%;
+            /* 中間元素佔 30% */
+        }
+
+        .right-sidebar a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            padding: 8px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+
+        /* 在小螢幕下，隱藏 nav 並顯示漢堡選單 */
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                /* 垂直排列 */
+                padding: 0;
+                max-height: 0;
+                margin: 5px 10px;
+                /* 初始隱藏 */
+            }
+
+            .nav-menu.active {
+                max-height: 300px;
+                /* 展開時的最大高度 */
+            }
+
+            .bar {
+                margin: 3.25px;
+            }
+
+            .nav-menu a {
+                margin: 3px 0;
+            }
+
+            .hamburger {
+                display: grid;
+                justify-content: end;
+                /* 顯示漢堡選單按鈕 */
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>帳號密碼管理系統</h1>
-        <div id="content"></div>
+    <header class="header">
+        <h1>彰化縣彰化市大成國小事務組</h1>
+        <a href="#" class="back-btn">回首頁</a>
+    </header>
+
+    <!-- 漢堡選單 -->
+    <div class="hamburger" id="hamburger" onclick="toggleNav()">
+        <div class="bar bar1"></div>
+        <div class="bar bar2"></div>
+        <div class="bar bar3"></div>
     </div>
-    <div id="notification" class="notification"></div>
-    <script src="script.js"></script>
-</body>
-</html>
+
+    <nav class="nav-menu">
+        <a href="https://fetems.chc.edu.tw/web/login" target="_blank">冷氣監控系統</a>
+        <a href="https://gdms.chcg.gov.tw/" target="_blank">公文整合系統</a>
+        <a href="https://www.newboe.chc.edu.tw/" target="_blank">教育處新雲端</a>
+        <a href="https://prms2.chcg.gov.tw/index.jsp" target="_blank">財產管理</a>
+        <a href="https://sbmis.k12ea.gov.tw/index.aspx" target="_blank">校舍管理</a>
+        <a href="https://pts.fnp.gov.tw/APNPA/" target="_blank">國財署</a>
+    </nav>
+
+
+
+
+    <main class="main-content">
+        <aside class="left-sidebar">
+            <a href="https://shwoo.gov.taipei/shwoo_admin/home/home00/login" target="_blank">台北惜物網</a>
+            <a href="https://greenliving.moenv.gov.tw/GreenLife/Anonymous/LoginById.aspx" target="_blank">綠色採購</a>
+            <a href="https://ptps.sfaa.gov.tw/portal/" target="_blank">優先採購</a>
+            <a href="https://www.141242.com.tw/pages/contact" target="_blank">象鴿生活</a>
+            <a href="#" target="_blank">我的雲端硬碟</a>
+        </aside>
+
+        <section class="center-content">
+            <div class="search-container">
+                <select class="dropdown">
+                    <option>下拉選單</option>
+                </select>
+                <input type="text" class="input-box" placeholder="輸入框">
+                <select class="dropdown">
+                    <option>附加條件下拉選單</option>
+                </select>
+                <button class="search-btn">搜尋</button>
+            </div>
+
+            <div class="mid-right-place">
+                <div class="search-container">
+                    <select class="dropdown">
+                        <option>水電下拉選單</option>
+                    </select>
+                    <button class="search-btn">搜尋</button>
+                </div>
+
+                <div class="search-result">
+                    搜尋顯示區
+                </div>
+            </div>
+
+            <div class="note-box">
+                <div style="    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 10px;
+    white-space: normal;">
+                    <div class="form-group">
+                        <label for="noteInput">請輸入您的記事：</label>
+                        <input id="noteInput" placeholder="輸入記事內容...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="timeInput">選擇提醒時間：</label>
+                        <input type="datetime-local" id="timeInput">
+                    </div>
+
+                </div>
+                <button id="saveBtn">儲存記事</button>
+
+                <p id="message"></p>
+            </div>
+
+            <div class="note-list">
+                <ul id="noteList"></ul>
+            </div>
+
+            <button id="deleteSelectedBtn">刪除選中記事</button>
+
+
+        </section>
+
+        <aside class="right-sidebar">
+            <a href="#" target="_blank">購物憑證</a>
+            <a href="#" target="_blank">轉出憑證</a>
+            <a href="#" target="_blank">水電瓦斯統計</a>
+            <a href="#" target="_blank">節約能源會議記錄</a>
+            <a href="#" target="_blank">報告事項</a>
+            <a href="#" target="_blank">財物標準分類</a>
+        </aside>
+
+    </main>
+
+
+
+    <script>
+        // 切換 nav 展開或收合
+        function toggleNav() {
+            const navMenu = document.querySelector('.nav-menu');
+            const bars = document.querySelectorAll('.bar');
+            navMenu.classList.toggle('active'); // 切換 active 類別來展開或收合菜單
+
+            // 切換漢堡按鈕的三條線變化
+            if (navMenu.classList.contains('active')) {
+                bars[0].style.transform = "rotate(45deg) translateY(15px)";
+                bars[1].style.opacity = "0";
+                bars[2].style.transform = "rotate(-45deg) translateY(-15px)";
+            } else {
+                bars[0].style.transform = "rotate(0) translateY(0)";
+                bars[1].style.opacity = "1";
+                bars[2].style.transform = "rotate(0) translateY(0)";
+            }
+        }
+
+
+        // 儲存記事至 localStorage
+        function saveNote() {
+            const noteContent = document.getElementById("noteInput").value;
+            const timeInput = document.getElementById("timeInput").value;
+
+            if (!noteContent || !timeInput) {
+                alert("請輸入記事和設定提醒時間！");
+                return;
+            }
+
+            const noteData = {
+                content: noteContent,
+                time: new Date(timeInput).getTime(), // 轉換為時間戳
+                reminded: false, // 是否已經提醒過
+            };
+
+            // 讀取現有的記事列表
+            let notes = JSON.parse(localStorage.getItem("notes")) || [];
+            notes.push(noteData); // 加入新記事
+
+            // 儲存回 localStorage
+            localStorage.setItem("notes", JSON.stringify(notes));
+
+            // 更新記事列表顯示
+            displayNotes();
+            clearInputs();
+        }
+
+        // 顯示記事列表並排序
+        function displayNotes() {
+            const notes = JSON.parse(localStorage.getItem("notes")) || [];
+            const sortedNotes = notes.sort((a, b) => a.time - b.time); // 根據時間排序
+
+            const noteListPlace = document.getElementsByClassName("note-list")[0];
+            const noteListElement = document.getElementById("noteList");
+
+            noteListElement.innerHTML = ""; // 清空列表
+
+            if (sortedNotes.length === 0) {
+                noteListPlace.style.display = 'none'; // 沒有記事時隱藏列表
+            } else {
+                noteListPlace.style.display = 'block'; // 有記事時顯示列表
+            }
+
+            sortedNotes.forEach((note, index) => {
+                const noteElement = document.createElement("li");
+
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.classList.add("checkbox");
+                checkbox.addEventListener("change", () => updateDeleteBtnVisibility());
+
+                const noteContent = document.createElement("span");
+                noteContent.classList.add("note-content");
+                noteContent.textContent = `${note.content} - 提醒時間: ${new Date(note.time).toLocaleDateString()} ${new Date(note.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+
+
+
+                // 為文字和勾選框增加事件，讓點擊文字部分也觸發勾選框
+                noteContent.addEventListener("click", () => {
+                    checkbox.checked = !checkbox.checked;
+                    updateDeleteBtnVisibility();
+                });
+
+                // 顯示編號
+                const numberSpan = document.createElement("span");
+                numberSpan.classList.add("note-number");
+                numberSpan.textContent = `#${index + 1} `;
+
+                // 設定背景顏色
+                const timeDiff = note.time - Date.now();
+                let backgroundColor = "#c1c1c1"; // 預設深灰色
+
+                if (timeDiff <= 600000 && timeDiff > 0) { // 10分鐘內
+                    backgroundColor = "#fd9d9d"; // 接近時間，紅色
+                } else if (timeDiff > 600000) { // 超過10分鐘
+                    backgroundColor = "#a6e0a6"; // 還有很久，綠色
+                }
+
+                noteElement.style.backgroundColor = backgroundColor;
+
+                noteElement.appendChild(numberSpan);
+                noteElement.appendChild(checkbox);
+                noteElement.appendChild(noteContent);
+
+                noteListElement.appendChild(noteElement);
+            });
+
+            // 顯示刪除按鈕
+            updateDeleteBtnVisibility();
+        }
+
+        // 提醒功能
+        function checkReminders() {
+            const notes = JSON.parse(localStorage.getItem("notes")) || [];
+            const now = Date.now();
+
+            notes.forEach(note => {
+                const timeDiff = note.time - now;
+
+                // 確保提醒未重複觸發，且只在時間到時觸發
+                if (!note.reminded && timeDiff <= 0) { // 時間到，且還沒提醒過
+                    alert(`提醒: ${note.content}`); // 顯示提醒
+                    note.reminded = true; // 記錄為已提醒
+
+                    // 儲存回 localStorage
+                    localStorage.setItem("notes", JSON.stringify(notes));
+                } else if (!note.reminded && timeDiff <= 600000 && timeDiff > 0) { // 提前10分鐘提醒
+                    alert(`提醒: ${note.content}`); // 顯示提醒
+                    note.reminded = true; // 記錄為已提醒
+
+                    // 儲存回 localStorage
+                    localStorage.setItem("notes", JSON.stringify(notes));
+                }
+            });
+
+            // 更新背景顏色
+            displayNotes(); // 重新渲染記事列表並更新背景顏色
+        }
+
+        // 定期檢查提醒
+        setInterval(checkReminders, 30000); // 每分鐘檢查一次
+
+
+        // 顯示或隱藏刪除按鈕
+        function updateDeleteBtnVisibility() {
+            const deleteBtn = document.getElementById("deleteSelectedBtn");
+            const checkboxes = document.querySelectorAll(".checkbox");
+
+            // 檢查是否有任何勾選框被勾選
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+            if (anyChecked) {
+                deleteBtn.style.display = 'inline-block'; // 顯示刪除按鈕
+            } else {
+                deleteBtn.style.display = 'none'; // 隱藏刪除按鈕
+            }
+        }
+
+        // 清空輸入框
+        function clearInputs() {
+            document.getElementById("noteInput").value = "";
+            document.getElementById("timeInput").value = "";
+        }
+
+        // 初始時顯示記事列表
+        window.onload = function() {
+            displayNotes();
+        };
+
+        // 刪除所有已勾選的記事
+        function deleteSelectedNotes() {
+            const checkboxes = document.querySelectorAll(".checkbox");
+            const notes = JSON.parse(localStorage.getItem("notes")) || [];
+
+            // 只保留未勾選的記事
+            const remainingNotes = notes.filter((note, index) => !checkboxes[index].checked);
+
+            // 儲存回 localStorage
+            localStorage.setItem("notes", JSON.stringify(remainingNotes));
+
+            // 更新記事列表顯示
+            displayNotes();
+        }
+
+        // 儲存記事按鈕
+        document.getElementById("saveBtn").addEventListener("click", saveNote);
+
+        // 刪除已勾選的記事按鈕
+        document.getElementById("deleteSelectedBtn").addEventListener("click", deleteSelectedNotes);
+    </script>
+
+
+</body></html>
