@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="/images/webico2.png">
-    
+    <link rel="icon" type="image/x-icon" href="images/webico2.png">
+
     <title>彰化縣彰化市大成國小事務組</title>
     <style>
         * {
@@ -30,6 +30,30 @@
         body {
             background-color: #f5f5f5;
             height: 100vh;
+            background-image: url('images/background.png');
+            /* 替換為你的圖片路徑 */
+            background-size: cover;
+            /* 讓圖片填滿整個背景 */
+            background-repeat: no-repeat;
+            /* 防止圖片重複 */
+            background-position: center;
+            /* 將圖片置中 */
+            background-attachment: fixed;
+            /* 背景隨頁面滾動固定 */
+        }
+
+        /* 透過添加透明度來顯示背景 */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            /* 設定透明度為 50% */
+            z-index: -1;
+            /* 確保它在背景之下 */
         }
 
         .header {
@@ -359,13 +383,14 @@
                 /* 顯示漢堡選單按鈕 */
             }
         }
+
     </style>
 </head>
 
 <body>
     <header class="header">
         <h1>彰化縣彰化市大成國小事務組</h1>
-        <a href="#" class="back-btn">回首頁</a>
+        <a href="https://www.dches.chc.edu.tw/" target="_blank" class="back-btn">回首頁</a>
     </header>
 
     <!-- 漢堡選單 -->
@@ -474,9 +499,9 @@
 
             // 切換漢堡按鈕的三條線變化
             if (navMenu.classList.contains('active')) {
-                bars[0].style.transform = "rotate(45deg) translateY(15px)";
+                bars[0].style.transform = "rotate(-45deg) translateY(15px)";
                 bars[1].style.opacity = "0";
-                bars[2].style.transform = "rotate(-45deg) translateY(-15px)";
+                bars[2].style.transform = "rotate(45deg) translateY(-15px)";
             } else {
                 bars[0].style.transform = "rotate(0) translateY(0)";
                 bars[1].style.opacity = "1";
@@ -656,7 +681,10 @@
 
         // 刪除已勾選的記事按鈕
         document.getElementById("deleteSelectedBtn").addEventListener("click", deleteSelectedNotes);
+
     </script>
 
 
-</body></html>
+</body>
+
+</html>
