@@ -9,9 +9,6 @@
     <title>彰化縣彰化市大成國小事務組</title>
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
             font-family: "Microsoft JhengHei", sans-serif;
         }
 
@@ -28,32 +25,41 @@
         }
 
         body {
-            background-color: #f5f5f5;
-            height: 100vh;
-            background-image: url('images/background.png');
-            /* 替換為你的圖片路徑 */
-            background-size: cover;
-            /* 讓圖片填滿整個背景 */
-            background-repeat: no-repeat;
-            /* 防止圖片重複 */
-            background-position: center;
-            /* 將圖片置中 */
-            background-attachment: fixed;
-            /* 背景隨頁面滾動固定 */
+            margin: 0;
+            height: 100%;
+            position: relative;
+            /* 使 :after 伺服於 body 的位置 */
         }
 
-        /* 透過添加透明度來顯示背景 */
-        body::before {
+        body::after {
             content: "";
             position: absolute;
+            /* 使用 absolute 定位 */
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.5);
-            /* 設定透明度為 50% */
+            height: 110%;
+            background-image: url('images/background.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            /* 可選，根據需要保留這個屬性 */
+            background-attachment: fixed;
+            z-index: -3;
+            /* 背景圖片在最底層 */
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(230, 230, 230, 0.5);
+            /* 透明遮罩 */
             z-index: -1;
-            /* 確保它在背景之下 */
+            /* 透明遮罩在圖片上方 */
         }
 
         .header {
@@ -80,13 +86,13 @@
         /* 原本的 nav 樣式 */
         .nav-menu {
             display: flex;
-            justify-content: space-around;
+            justify-content: flex-start;
             padding: 10px;
             background-color: #f0f8f0;
             border-bottom: 1px solid #ddd;
-
             transition: max-height 0.4s ease-out;
             overflow: hidden;
+            gap: 20px;
         }
 
         /* 隱藏 nav 菜單，顯示漢堡選單按鈕 */
@@ -130,12 +136,13 @@
         .main-content {
             display: flex;
             margin: 20px;
-            min-height: calc(100vh - 150px);
+            min-height: calc(90vh - 150px);
             max-width: 100%;
+            justify-content: center;
         }
 
         .left-sidebar {
-            width: 200px;
+            max-width: 200px;
             background-color: #e0f0e0;
             padding: 15px;
             border-radius: 5px;
@@ -157,6 +164,7 @@
             position: relative;
             flex-basis: 60%;
             /* 中間元素佔 30% */
+            max-width: 50%;
         }
 
         .mid-right-place {
@@ -336,7 +344,7 @@
         }
 
         .right-sidebar {
-            width: 200px;
+            max-width: 200px;
             background-color: #e0f0e0;
             padding: 15px;
             border-radius: 5px;
@@ -355,17 +363,26 @@
 
         /* 在小螢幕下，隱藏 nav 並顯示漢堡選單 */
         @media (max-width: 768px) {
+
+            body::after {
+                background-repeat: repeat;
+                background-image: url('images/background_90.png');
+            }
+
             .nav-menu {
+                align-items: flex-end;
+                    background: linear-gradient(to right, rgba(240, 248, 240, 0.2) 20%, #7bb9ad 100%);
+    /* 漸層顏色由透明到綠色 */
                 flex-direction: column;
-                /* 垂直排列 */
                 padding: 0;
                 max-height: 0;
-                margin: 5px 10px;
-                /* 初始隱藏 */
+                margin: 0;
+                gap: 5px;
             }
 
             .nav-menu.active {
                 max-height: 300px;
+                padding: 10px;
                 /* 展開時的最大高度 */
             }
 
@@ -375,6 +392,8 @@
 
             .nav-menu a {
                 margin: 3px 0;
+                max-width: 50%;
+                width: 100%;
             }
 
             .hamburger {
@@ -382,8 +401,45 @@
                 justify-content: end;
                 /* 顯示漢堡選單按鈕 */
             }
-        }
 
+            .main-content {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                /* 自動調整列數 */
+                grid-auto-rows: auto;
+                gap: 10px;
+                margin: 20px;
+                justify-items: center;
+            }
+
+            .left-sidebar,
+            .center-content,
+            .right-sidebar {
+                max-width: 80%;
+                /* 限制子元素寬度為容器的 80% */
+                width: 100%;
+                /* 保持元素在網格單元內填滿 */
+                box-sizing: border-box;
+                /* 確保邊框和內距不影響總寬度 */
+            }
+
+            .left-sidebar {
+                order: 1;
+                /* 排序為第一 */
+            }
+
+            .right-sidebar {
+                order: 2;
+                /* 排序為第二 */
+            }
+
+            .center-content {
+                grid-column: 1 / -1;
+                /* 橫跨兩列，佔據整個底部 */
+                order: 3;
+                /* 排序為最後 */
+            }
+        }
     </style>
 </head>
 
@@ -681,10 +737,7 @@
 
         // 刪除已勾選的記事按鈕
         document.getElementById("deleteSelectedBtn").addEventListener("click", deleteSelectedNotes);
-
     </script>
 
 
-</body>
-
-</html>
+</body></html>
