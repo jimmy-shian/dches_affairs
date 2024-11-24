@@ -27,60 +27,36 @@
         body {
             margin: 0;
             height: 100%;
-            position: relative;
-            /* 使 :after 伺服於 body 的位置 */
-        }
-
-        body::after {
-            content: "";
-            position: absolute;
-            /* 使用 absolute 定位 */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 110%;
-            background-image: url('images/background.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            /* 可選，根據需要保留這個屬性 */
-            background-attachment: fixed;
-            z-index: -3;
-            /* 背景圖片在最底層 */
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: rgba(230, 230, 230, 0.5);
-            /* 透明遮罩 */
-            z-index: -1;
-            /* 透明遮罩在圖片上方 */
+            background-color: #e0dbdf;
         }
 
         .header {
-            background-color: #90EE90;
+            background-color: #0077B6;
             padding: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: white;
         }
-
-        .header h1 {
+        .header h3{
             font-size: 20px;
-            color: #333;
+            margin: 10px;
         }
-
+        
         .back-btn {
-            background-color: white;
+            background-color: #6dcadb;
             padding: 5px 15px;
             border-radius: 5px;
             text-decoration: none;
-            color: #333;
+            color: #6f6f6f;
+            border: solid 2px #59558a;
+        }
+        .back-btn:hover {
+            background-color: #89dfef;
+            color: #212121 ; /* 確保文字顏色不變 */
+            text-shadow: none; /* 確保沒有全局的陰影 */
+            transition: color 0.3s, background-color 0.3s;
+
         }
 
         /* 原本的 nav 樣式 */
@@ -206,135 +182,6 @@
             cursor: pointer;
         }
 
-        /*============================================*/
-        /* 記事框的樣式 */
-        .note-box {
-            display: flex;
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px auto;
-            /* width: 100%; */
-            /* max-width: 600px; */
-            flex-direction: column;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        /* label 和 input 是一組 */
-        .note-box .form-group {
-            flex-basis: 45%;
-            display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-
-        .note-box label {
-            font-size: 14px;
-            color: #333;
-            margin-right: 10px;
-        }
-
-        .note-box textarea,
-        .note-box input {
-            min-width: 100px;
-            height: 2rem;
-            padding: 8px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            font-size: 14px;
-            box-sizing: border-box;
-            flex: 1 1 auto;
-
-        }
-
-        .note-box button {
-            padding: 10px;
-            background-color: #4CAF50;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .note-box button:hover {
-            background-color: #45a049;
-        }
-
-        /* 記事列表的樣式 */
-        .note-list {
-            padding: 10px;
-            overflow: auto;
-            margin-top: 20px;
-            width: 100%;
-            max-height: 200px;
-            margin: 20px auto;
-            border: 2px double #6ab96a;
-            background-color: #f0f8f0;
-            border-radius: 8px;
-            resize: vertical;
-            min-height: 50px;
-        }
-
-
-        .note-list ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .note-list li {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            justify-content: space-between;
-        }
-
-        .note-list li .checkbox {
-            margin-right: 15px;
-        }
-
-        .note-list li .note-content {
-            flex: 1;
-            color: #333;
-        }
-
-        .note-list li .delete-btn {
-            background-color: #FF5733;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .note-list li .delete-btn:hover {
-            background-color: #e04e2b;
-        }
-
-        /* 刪除選中記事按鈕樣式 */
-        #deleteSelectedBtn {
-            background-color: #FF5733;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            display: none;
-            margin-top: 20px;
-        }
-
-        #deleteSelectedBtn:hover {
-            background-color: #e04e2b;
-        }
-
-        /*============================================*/
         .search-result {
             border: 1px solid #ccc;
             min-height: 50%;
@@ -371,8 +218,8 @@
 
             .nav-menu {
                 align-items: flex-end;
-                    background: linear-gradient(to right, rgba(240, 248, 240, 0.2) 20%, #7bb9ad 100%);
-    /* 漸層顏色由透明到綠色 */
+                background: linear-gradient(to right, rgba(240, 248, 240, 0.2) 20%, #7bb9ad 100%);
+                /* 漸層顏色由透明到綠色 */
                 flex-direction: column;
                 padding: 0;
                 max-height: 0;
@@ -444,10 +291,12 @@
 </head>
 
 <body>
+<!--
     <header class="header">
-        <h1>彰化縣彰化市大成國小事務組</h1>
+        <h3>彰化縣彰化市大成國小事務組</h3>
         <a href="https://www.dches.chc.edu.tw/" target="_blank" class="back-btn">回首頁</a>
     </header>
+-->
 
     <!-- 漢堡選單 -->
     <div class="hamburger" id="hamburger" onclick="toggleNav()">
@@ -502,35 +351,6 @@
                 </div>
             </div>
 
-            <div class="note-box">
-                <div style="    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    gap: 10px;
-    white-space: normal;">
-                    <div class="form-group">
-                        <label for="noteInput">請輸入您的記事：</label>
-                        <input id="noteInput" placeholder="輸入記事內容...">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="timeInput">選擇提醒時間：</label>
-                        <input type="datetime-local" id="timeInput">
-                    </div>
-
-                </div>
-                <button id="saveBtn">儲存記事</button>
-
-                <p id="message"></p>
-            </div>
-
-            <div class="note-list">
-                <ul id="noteList"></ul>
-            </div>
-
-            <button id="deleteSelectedBtn">刪除選中記事</button>
-
-
         </section>
 
         <aside class="right-sidebar">
@@ -564,179 +384,6 @@
                 bars[2].style.transform = "rotate(0) translateY(0)";
             }
         }
-
-
-        // 儲存記事至 localStorage
-        function saveNote() {
-            const noteContent = document.getElementById("noteInput").value;
-            const timeInput = document.getElementById("timeInput").value;
-
-            if (!noteContent || !timeInput) {
-                alert("請輸入記事和設定提醒時間！");
-                return;
-            }
-
-            const noteData = {
-                content: noteContent,
-                time: new Date(timeInput).getTime(), // 轉換為時間戳
-                reminded: false, // 是否已經提醒過
-            };
-
-            // 讀取現有的記事列表
-            let notes = JSON.parse(localStorage.getItem("notes")) || [];
-            notes.push(noteData); // 加入新記事
-
-            // 儲存回 localStorage
-            localStorage.setItem("notes", JSON.stringify(notes));
-
-            // 更新記事列表顯示
-            displayNotes();
-            clearInputs();
-        }
-
-        // 顯示記事列表並排序
-        function displayNotes() {
-            const notes = JSON.parse(localStorage.getItem("notes")) || [];
-            const sortedNotes = notes.sort((a, b) => a.time - b.time); // 根據時間排序
-
-            const noteListPlace = document.getElementsByClassName("note-list")[0];
-            const noteListElement = document.getElementById("noteList");
-
-            noteListElement.innerHTML = ""; // 清空列表
-
-            if (sortedNotes.length === 0) {
-                noteListPlace.style.display = 'none'; // 沒有記事時隱藏列表
-            } else {
-                noteListPlace.style.display = 'block'; // 有記事時顯示列表
-            }
-
-            sortedNotes.forEach((note, index) => {
-                const noteElement = document.createElement("li");
-
-                const checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.classList.add("checkbox");
-                checkbox.addEventListener("change", () => updateDeleteBtnVisibility());
-
-                const noteContent = document.createElement("span");
-                noteContent.classList.add("note-content");
-                noteContent.textContent = `${note.content} - 提醒時間: ${new Date(note.time).toLocaleDateString()} ${new Date(note.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-
-
-
-
-                // 為文字和勾選框增加事件，讓點擊文字部分也觸發勾選框
-                noteContent.addEventListener("click", () => {
-                    checkbox.checked = !checkbox.checked;
-                    updateDeleteBtnVisibility();
-                });
-
-                // 顯示編號
-                const numberSpan = document.createElement("span");
-                numberSpan.classList.add("note-number");
-                numberSpan.textContent = `#${index + 1} `;
-
-                // 設定背景顏色
-                const timeDiff = note.time - Date.now();
-                let backgroundColor = "#c1c1c1"; // 預設深灰色
-
-                if (timeDiff <= 600000 && timeDiff > 0) { // 10分鐘內
-                    backgroundColor = "#fd9d9d"; // 接近時間，紅色
-                } else if (timeDiff > 600000) { // 超過10分鐘
-                    backgroundColor = "#a6e0a6"; // 還有很久，綠色
-                }
-
-                noteElement.style.backgroundColor = backgroundColor;
-
-                noteElement.appendChild(numberSpan);
-                noteElement.appendChild(checkbox);
-                noteElement.appendChild(noteContent);
-
-                noteListElement.appendChild(noteElement);
-            });
-
-            // 顯示刪除按鈕
-            updateDeleteBtnVisibility();
-        }
-
-        // 提醒功能
-        function checkReminders() {
-            const notes = JSON.parse(localStorage.getItem("notes")) || [];
-            const now = Date.now();
-
-            notes.forEach(note => {
-                const timeDiff = note.time - now;
-
-                // 確保提醒未重複觸發，且只在時間到時觸發
-                if (!note.reminded && timeDiff <= 0) { // 時間到，且還沒提醒過
-                    alert(`提醒: ${note.content}`); // 顯示提醒
-                    note.reminded = true; // 記錄為已提醒
-
-                    // 儲存回 localStorage
-                    localStorage.setItem("notes", JSON.stringify(notes));
-                } else if (!note.reminded && timeDiff <= 600000 && timeDiff > 0) { // 提前10分鐘提醒
-                    alert(`提醒: ${note.content}`); // 顯示提醒
-                    note.reminded = true; // 記錄為已提醒
-
-                    // 儲存回 localStorage
-                    localStorage.setItem("notes", JSON.stringify(notes));
-                }
-            });
-
-            // 更新背景顏色
-            displayNotes(); // 重新渲染記事列表並更新背景顏色
-        }
-
-        // 定期檢查提醒
-        setInterval(checkReminders, 30000); // 每分鐘檢查一次
-
-
-        // 顯示或隱藏刪除按鈕
-        function updateDeleteBtnVisibility() {
-            const deleteBtn = document.getElementById("deleteSelectedBtn");
-            const checkboxes = document.querySelectorAll(".checkbox");
-
-            // 檢查是否有任何勾選框被勾選
-            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
-
-            if (anyChecked) {
-                deleteBtn.style.display = 'inline-block'; // 顯示刪除按鈕
-            } else {
-                deleteBtn.style.display = 'none'; // 隱藏刪除按鈕
-            }
-        }
-
-        // 清空輸入框
-        function clearInputs() {
-            document.getElementById("noteInput").value = "";
-            document.getElementById("timeInput").value = "";
-        }
-
-        // 初始時顯示記事列表
-        window.onload = function() {
-            displayNotes();
-        };
-
-        // 刪除所有已勾選的記事
-        function deleteSelectedNotes() {
-            const checkboxes = document.querySelectorAll(".checkbox");
-            const notes = JSON.parse(localStorage.getItem("notes")) || [];
-
-            // 只保留未勾選的記事
-            const remainingNotes = notes.filter((note, index) => !checkboxes[index].checked);
-
-            // 儲存回 localStorage
-            localStorage.setItem("notes", JSON.stringify(remainingNotes));
-
-            // 更新記事列表顯示
-            displayNotes();
-        }
-
-        // 儲存記事按鈕
-        document.getElementById("saveBtn").addEventListener("click", saveNote);
-
-        // 刪除已勾選的記事按鈕
-        document.getElementById("deleteSelectedBtn").addEventListener("click", deleteSelectedNotes);
     </script>
 
 
