@@ -257,6 +257,14 @@
 .custom-dropdown.open .dropdown-options {
     display: block;
 }
+        
+        #curve_chart {
+                padding: 10px 0;
+    width: 100%; /* 預設為容器的寬度 */
+    max-width: 600px; /* 限制預設寬度 */
+            height: auto;
+            overflow-x: auto;
+        }
 
         /* 在小螢幕下，隱藏 nav 並顯示漢堡選單 */
         @media (max-width: 768px) {
@@ -396,7 +404,7 @@
                 <div class="search-container">
                     <!-- 多選下拉式選單 -->
                     <div class="custom-dropdown" id="customDropdown">
-                        <button class="dropdown-toggle" onclick="toggleDropdown()">選擇年度 ▼</button>
+                        <button class="dropdown-toggle" onclick="toggleDropdown()">電費年度選擇 ▼</button>
                         <div class="dropdown-options">
                             <label><input type="checkbox" value="111"> 111年度</label>
                             <label><input type="checkbox" value="112"> 112年度</label>
@@ -410,7 +418,7 @@
                     搜尋顯示區
                 </div>
                 
-                  <div id="curve_chart" style="width: 900px; height: 500px"></div>
+                  <div id="curve_chart" ></div>
     
     <a style="display:none" id="download_link" href="/" download>download</a>
             </div>
@@ -437,47 +445,48 @@
   google.charts.setOnLoadCallback(drawChart);
 
     function drawChart(rawData) {
-      // 這是您的數據範例
-//      var rawData = "113年水電瓦斯統計表,8043565034,電費,,,,5142,9059,50401,86728,26597,,,,,,177927,,,";
-//      var rawData = rawDataArray_a;
-      console.log("rawData=" + rawData + ", T=" +　typeof rawData);
-        if (Array.isArray(rawData)) {
-  rawData = rawData.join(',');  // 將數組轉換為以逗號分隔的字符串
-  var dataArray = rawData.split(',');
-} else {
-  // 如果是字符串，繼續處理
-  var dataArray = rawData.split(',');
-}
-      // 解析數據，將數字提取出來
-//      var dataArray = rawData.split(',');
-      var months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-      var values = dataArray.slice(3, 15).map(function(value) {
-        return value === '' ? 0 : parseInt(value);  // 避免空值
-      });
-      
-      var yearName = dataArray[0].match(/^(\d+)年/); // 正規表達式匹配"XXX年"
-          var chartTitle = yearName ? yearName[0] : "年份資料"; // 如果匹配到，則取出年份，否則預設為"年份資料"
+      // 解析多組資料
+      var dataGroups = rawData.split('&&'); // 用 "&&" 分隔多組資料
+      console.log("dataGroups=", dataGroups);
 
-        // 創建資料表
-      var data = google.visualization.arrayToDataTable([
-        ['月份', chartTitle],
-        [months[0], values[0]],
-        [months[1], values[1]],
-        [months[2], values[2]],
-        [months[3], values[3]],
-        [months[4], values[4]],
-        [months[5], values[5]],
-        [months[6], values[6]],
-        [months[7], values[7]],
-        [months[8], values[8]],
-        [months[9], values[9]],
-        [months[10], values[10]],
-        [months[11], values[11]]
-      ]);
+      var months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+
+      // 初始化圖表資料，第一行是標題列
+      var chartData = [['月份']]; // 第一列為月份，接下來會依據每組資料動態添加列標題
+
+      // 解析每組數據並添加到 chartData 中
+      dataGroups.forEach(function(rawDataEntry) {
+        // 分析單一組資料
+        var dataArray = rawDataEntry.split(',');
+        var values = dataArray.slice(3, 15).map(function(value) {
+          return value === '' ? 0 : parseInt(value); // 處理空值為 0
+        });
+
+        var yearName = dataArray[0].match(/^(\d+)年/); // 提取年份名稱
+        var chartTitle = yearName ? yearName[0] : "年份資料";
+
+        // 動態添加年份作為新列標題
+        chartData[0].push(chartTitle);
+
+        // 將資料與月份對應，加入 chartData
+        months.forEach(function(month, index) {
+          if (chartData[index + 1] === undefined) {
+            chartData[index + 1] = [month]; // 若尚未存在，初始化行
+          }
+          chartData[index + 1].push(values[index]); // 添加對應月份的數據
+        });
+      });
+
+      console.log("chartData=", chartData);
+
+      // 將資料轉換為 Google Charts 所需格式
+      var data = google.visualization.arrayToDataTable(chartData);
 
       // 設定圖表選項
         var options = {
           title: '每月電費支出',
+          width: 800, // 固定寬度
+          height: 500, // 固定高度
           curveType: 'none',  // 标准折线图
           legend: { position: 'bottom' },
           annotations: {
@@ -512,6 +521,8 @@
       });
         
       chart.draw(data, options);
+        
+        
 
     }
 
@@ -579,7 +590,7 @@ document.addEventListener("click", function (event) {
                       if (response.success) {
                         resultContainer.innerHTML = `<p>查詢成功！</p>`;
                         // 分割返回的資料
-                        var rawDataArray_a = response.data.split("&&");
+                        var rawDataArray_a = response.data;
                         drawChart( rawDataArray_a );
                         // 為每筆資料創建一個新的圖表
 //                        rawDataArray.forEach(function(rawData, index) {
