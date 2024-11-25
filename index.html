@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="images/webico2.png">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
     <title>彰化縣彰化市大成國小事務組</title>
     <style>
@@ -207,6 +208,55 @@
             border-bottom: 1px solid #ccc;
         }
 
+/* 自訂樣式的下拉選單 */
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: left;
+    width: 200px;
+}
+
+.dropdown-options {
+    display: none; /* 初始隱藏 */
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto; /* 加入滾動條 */
+    border-radius: 4px;
+}
+
+.dropdown-options label {
+    display: block;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.dropdown-options label:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-options input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* 顯示選單時的樣式 */
+.custom-dropdown.open .dropdown-options {
+    display: block;
+}
 
         /* 在小螢幕下，隱藏 nav 並顯示漢堡選單 */
         @media (max-width: 768px) {
@@ -306,18 +356,21 @@
     </div>
 
     <nav class="nav-menu">
+<!--
         <a href="https://fetems.chc.edu.tw/web/login" target="_blank">冷氣監控系統</a>
         <a href="https://gdms.chcg.gov.tw/" target="_blank">公文整合系統</a>
         <a href="https://www.newboe.chc.edu.tw/" target="_blank">教育處新雲端</a>
         <a href="https://prms2.chcg.gov.tw/index.jsp" target="_blank">財產管理</a>
         <a href="https://sbmis.k12ea.gov.tw/index.aspx" target="_blank">校舍管理</a>
         <a href="https://pts.fnp.gov.tw/APNPA/" target="_blank">國財署</a>
+-->
     </nav>
 
 
 
 
     <main class="main-content">
+<!--
         <aside class="left-sidebar">
             <a href="https://shwoo.gov.taipei/shwoo_admin/home/home00/login" target="_blank">台北惜物網</a>
             <a href="https://greenliving.moenv.gov.tw/GreenLife/Anonymous/LoginById.aspx" target="_blank">綠色採購</a>
@@ -325,6 +378,7 @@
             <a href="https://www.141242.com.tw/pages/contact" target="_blank">象鴿生活</a>
             <a href="#" target="_blank">我的雲端硬碟</a>
         </aside>
+-->
 
         <section class="center-content">
             <div class="search-container">
@@ -340,19 +394,30 @@
 
             <div class="mid-right-place">
                 <div class="search-container">
-                    <select class="dropdown">
-                        <option>水電下拉選單</option>
-                    </select>
-                    <button class="search-btn">搜尋</button>
+                    <!-- 多選下拉式選單 -->
+                    <div class="custom-dropdown" id="customDropdown">
+                        <button class="dropdown-toggle" onclick="toggleDropdown()">選擇年度 ▼</button>
+                        <div class="dropdown-options">
+                            <label><input type="checkbox" value="111"> 111年度</label>
+                            <label><input type="checkbox" value="112"> 112年度</label>
+                            <label><input type="checkbox" value="113"> 113年度</label>
+                        </div>
+                    </div>
+                    <button class="search-btn" onclick="submitMessage(event)">搜尋</button>
                 </div>
-
-                <div class="search-result">
+                
+                <div class="search-result" id="searchResult">
                     搜尋顯示區
                 </div>
+                
+                  <div id="curve_chart" style="width: 900px; height: 500px"></div>
+    
+    <a style="display:none" id="download_link" href="/" download>download</a>
             </div>
 
         </section>
 
+<!--
         <aside class="right-sidebar">
             <a href="#" target="_blank">購物憑證</a>
             <a href="#" target="_blank">轉出憑證</a>
@@ -361,11 +426,98 @@
             <a href="#" target="_blank">報告事項</a>
             <a href="#" target="_blank">財物標準分類</a>
         </aside>
+-->
 
     </main>
 
 
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
 
+    function drawChart(rawData) {
+      // 這是您的數據範例
+//      var rawData = "113年水電瓦斯統計表,8043565034,電費,,,,5142,9059,50401,86728,26597,,,,,,177927,,,";
+//      var rawData = rawDataArray_a;
+      console.log("rawData=" + rawData + ", T=" +　typeof rawData);
+        if (Array.isArray(rawData)) {
+  rawData = rawData.join(',');  // 將數組轉換為以逗號分隔的字符串
+  var dataArray = rawData.split(',');
+} else {
+  // 如果是字符串，繼續處理
+  var dataArray = rawData.split(',');
+}
+      // 解析數據，將數字提取出來
+//      var dataArray = rawData.split(',');
+      var months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+      var values = dataArray.slice(3, 15).map(function(value) {
+        return value === '' ? 0 : parseInt(value);  // 避免空值
+      });
+      
+      var yearName = dataArray[0].match(/^(\d+)年/); // 正規表達式匹配"XXX年"
+          var chartTitle = yearName ? yearName[0] : "年份資料"; // 如果匹配到，則取出年份，否則預設為"年份資料"
+
+        // 創建資料表
+      var data = google.visualization.arrayToDataTable([
+        ['月份', chartTitle],
+        [months[0], values[0]],
+        [months[1], values[1]],
+        [months[2], values[2]],
+        [months[3], values[3]],
+        [months[4], values[4]],
+        [months[5], values[5]],
+        [months[6], values[6]],
+        [months[7], values[7]],
+        [months[8], values[8]],
+        [months[9], values[9]],
+        [months[10], values[10]],
+        [months[11], values[11]]
+      ]);
+
+      // 設定圖表選項
+        var options = {
+          title: '每月電費支出',
+          curveType: 'none',  // 标准折线图
+          legend: { position: 'bottom' },
+          annotations: {
+            alwaysOutside: true,  // 始终显示数据标签
+            textStyle: {
+              fontSize: 12,
+              color: '#000000',  // 设置文本颜色
+              bold: true
+            }
+          },
+          pointSize: 6,  // 设置点的大小
+          vAxis: {
+            title: '電費'
+          },
+          hAxis: {
+            title: '月份'
+          }
+        };
+
+      // 生成並繪製圖表
+      var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        
+      google.visualization.events.addListener(chart, 'ready', function () {
+        // 更新圖片顯示
+        var imageUri = chart.getImageURI();
+
+        // 更新下載鏈接的 href 屬性
+        var downloadLink = document.getElementById("download_link");
+        downloadLink.setAttribute("href", imageUri);
+        downloadLink.setAttribute("download", "chart.png");  // 設置下載的文件名
+        downloadLink.style.display = "block";  // 顯示下載按鈕
+      });
+        
+      chart.draw(data, options);
+
+    }
+
+</script>
+
+    
     <script>
         // 切換 nav 展開或收合
         function toggleNav() {
@@ -384,6 +536,67 @@
                 bars[2].style.transform = "rotate(0) translateY(0)";
             }
         }
+        
+        // 切換下拉選單的顯示狀態
+function toggleDropdown() {
+    const dropdown = document.getElementById("customDropdown");
+    dropdown.classList.toggle("open"); // 切換 open 樣式
+}
+
+// 點擊選單外部時自動關閉
+document.addEventListener("click", function (event) {
+    const dropdown = document.getElementById("customDropdown");
+    if (!dropdown.contains(event.target)) {
+        dropdown.classList.remove("open");
+    }
+});
+        
+    function submitMessage(event) {
+        event.preventDefault();
+
+        // 獲取所有被勾選的值
+        const checkboxes = document.querySelectorAll(".dropdown-options input[type='checkbox']:checked");
+        const selectedYears = Array.from(checkboxes).map(checkbox => checkbox.value).join(",");
+
+
+        if (!selectedYears) {
+            alert("請至少選擇一個年度！");
+            return;
+        }
+
+        console.log("selectedYears= " + selectedYears + ", T= " + typeof selectedYears);
+
+        // API URL
+        const url = 'https://script.google.com/macros/s/AKfycbzsp_8zJExOvo2AGHN2k1JLCQOAFWz4rk8SLubUTTZKpzT6b2tDglB_9T_y21eLxmRX/exec';
+
+        // 發送 POST 請求到 Apps Script
+        $.post(
+            url,
+            { choice: selectedYears, cc: selectedYears }, // 傳遞選擇的年份字串
+                function (response) {
+                    // 如果成功，將結果顯示到搜尋結果區域
+                    const resultContainer = document.getElementById("searchResult");
+                      if (response.success) {
+                        resultContainer.innerHTML = `<p>查詢成功！</p>`;
+                        // 分割返回的資料
+                        var rawDataArray_a = response.data.split("&&");
+                        drawChart( rawDataArray_a );
+                        // 為每筆資料創建一個新的圖表
+//                        rawDataArray.forEach(function(rawData, index) {
+//                          drawChart(rawData, index);  // 傳遞每個資料到 drawChart 函數
+//                        });
+                      } else {
+                        resultContainer.innerHTML = `<p>查詢失敗：${response.message}</p>`;
+                      }
+                }
+            ).fail(function () {
+                // 處理錯誤情況
+                const resultContainer = document.getElementById("searchResult");
+                resultContainer.innerHTML = `<p>連線錯誤，請稍後再試。</p>`;
+            });
+    }
+        
+        
     </script>
 
 
