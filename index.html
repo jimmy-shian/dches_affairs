@@ -288,7 +288,7 @@
             height: auto;
             overflow-x: auto;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
         }
         
         /* 在小螢幕下，隱藏 nav 並顯示漢堡選單 */
@@ -424,15 +424,25 @@
 -->
 
         <section class="center-content">
+            
             <div class="search-container">
-                <select class="dropdown">
-                    <option>下拉選單</option>
+                <select class="dropdown" id="mainDropdown">
+                    <option value="classroom_mapping">國教署教室對照表</option> <!-- 國教署教室對照表 -->
+                    <option value="phone_extension_config">電話分機配置</option> <!-- 電話分機配置 -->
+                    <option value="phone_extension_slot">電話分機槽</option> <!-- 電話分機槽 -->
+                    <option value="phone_model_table">電話機型號表</option> <!-- 電話機型號表 -->
+                    <option value="simple_aircon_classroom">簡易版冷氣教室編號</option> <!-- 簡易版冷氣教室編號 -->
                 </select>
-                <input type="text" class="input-box" placeholder="輸入框">
-                <select class="dropdown">
-                    <option>附加條件下拉選單</option>
+
+                <input type="text" class="input-box" id="inputBox" placeholder="輸入框">
+
+                <select class="dropdown" id="additionalDropdown">
+                    <option value="condition1">附加條件1</option>
+                    <option value="condition2">附加條件2</option>
+                    <option value="condition3">附加條件3</option>
                 </select>
-                <button class="search-btn">搜尋</button>
+
+                <button class="search-btn" onclick="performSearch()">搜尋</button>
             </div>
 
             <div class="mid-right-place">
@@ -617,7 +627,18 @@
             buttonText.textContent = selectedValues.length > 0 ? selectedValues.join(', ') : '電費年度選擇';
         }
 
+    function performSearch() {
+        // 取得選擇的值和輸入框內容
+        const mainValue = document.getElementById('mainDropdown').value;
+        const inputValue = document.getElementById('inputBox').value;
+        const additionalValue = document.getElementById('additionalDropdown').value;
 
+        // 串接顯示結果
+        const result = `#@#${mainValue}#@#${inputValue}#@#${additionalValue}`;
+
+        // 顯示結果在搜尋顯示區
+        document.getElementById('searchResult').innerText = result;
+    }
         
         
     function submitMessage(event) {
