@@ -1,22 +1,19 @@
-$(document).ready(function() {
-    // 搜尋按鈕點擊事件
-    $('#searchButton').click(function() {
-        let inputContent = $('#inputField').val();
-        let selectedOption1 = $('#dropdown1').val();
-        let selectedOption2 = $('#dropdown2').val();
-        let selectedOption3 = $('#dropdown3').val();
-        
-        $('.search-display').html(`<p>搜尋結果: ${inputContent} (${selectedOption1}, ${selectedOption2}, ${selectedOption3})</p>`);
-    });
+document.getElementById('addElement').addEventListener('click', () => {
+    const container = document.getElementById('elementContainer');
+    
+    // 創建新元素
+    const newElement = document.createElement('div');
+    newElement.className = 'element';
+    
+    // 加入容器
+    container.appendChild(newElement);
+});
 
-    // 儲存提醒事件
-    $('#saveReminder').click(function() {
-        let reminderContent = $('#reminderInput').val();
-        if (reminderContent) {
-            localStorage.setItem('userReminder', reminderContent);
-            alert('記事已儲存!');
-        } else {
-            alert('請輸入記事內容');
-        }
-    });
+document.getElementById('removeElement').addEventListener('click', () => {
+    const container = document.getElementById('elementContainer');
+    
+    // 如果有元素，刪除最後一個
+    if (container.children.length > 0) {
+        container.removeChild(container.lastChild);
+    }
 });

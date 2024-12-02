@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="images/webico2.png">
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" defer></script>
 
     <title>彰化縣彰化市大成國小事務組</title>
     <style>
@@ -98,16 +98,8 @@
             height: 4px;
             background-color: #333;
             margin: 6px 0;
-            transition: opacity 0.2s ease-in-out, transform 0.4s ease-in-out;
-            /* 添加過渡動畫 */
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
         }
-
-        /* 當鼠標懸停時改變顏色 */
-        .hamburger:hover .bar {
-            background-color: #baaaa7; /* 鼠標懸停時的顏色 */
-            transition: background-color .3s ease-in-out;
-        }
-        
         
         .nav-menu a {
             text-decoration: none;
@@ -303,7 +295,7 @@
                 align-items: flex-end;
     background: 
         linear-gradient(to bottom, rgba(224, 219, 223, 0.3) 0%, rgba(224, 219, 223) 100%),
-        url('images/background.png');
+/*        url('images/background.png');*/
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center;
@@ -393,7 +385,7 @@
     <!-- 漢堡選單 -->
     <div class="hamburger-place" id="hamburger" >
         <div class="hamburger-title">oooooo</div>
-        <div class="hamburger" onclick="toggleNav()">
+        <div class="hamburger" id="hamburger" onclick="toggleNav()">
             <div class="bar bar1"></div>
             <div class="bar bar2"></div>
             <div class="bar bar3"></div>
@@ -424,29 +416,25 @@
 -->
 
         <section class="center-content">
-            
-            <div class="search-container">
+            <button onclick="toggleSearch()">搜尋切換</button>
+            <div class="search-container"  id="searchContainer1">
                 <select class="dropdown" id="mainDropdown">
-                    <option value="classroom_mapping">國教署教室對照表</option> <!-- 國教署教室對照表 -->
-                    <option value="phone_extension_config">電話分機配置</option> <!-- 電話分機配置 -->
-                    <option value="phone_extension_slot">電話分機槽</option> <!-- 電話分機槽 -->
-                    <option value="phone_model_table">電話機型號表</option> <!-- 電話機型號表 -->
-                    <option value="simple_aircon_classroom">簡易版冷氣教室編號</option> <!-- 簡易版冷氣教室編號 -->
+                    <option value="phone_extension_config">電話</option> <!-- 電話分機配置 -->
+                    <option value="simple_aircon_classroom">冷氣教室編號</option> <!-- 簡易版冷氣教室編號 -->
                 </select>
 
                 <input type="text" class="input-box" id="inputBox" placeholder="輸入框">
 
                 <select class="dropdown" id="additionalDropdown">
-                    <option value="condition1">附加條件1</option>
-                    <option value="condition2">附加條件2</option>
-                    <option value="condition3">附加條件3</option>
+                    <option value="condition2">分機號碼</option>
+                    <option value="condition1">維修</option> <!-- 機櫃號碼、樣式-->
                 </select>
 
                 <button class="search-btn" onclick="performSearch()">搜尋</button>
             </div>
 
             <div class="mid-right-place">
-                <div class="search-container">
+                <div class="search-container" id="searchContainer2">
                     <!-- 多選下拉式選單 -->
                     <div class="custom-dropdown" id="customDropdown">
                        <button class="dropdown-toggle" onclick="toggleDropdown()">
@@ -491,7 +479,7 @@
  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   google.charts.load('current', {'packages':['corechart']});
-  google.charts.setOnLoadCallback(drawChart);
+//  google.charts.setOnLoadCallback(drawChart);
 
     function drawChart(rawData) {
       // 解析多組資料
@@ -579,10 +567,16 @@
 
     
     <script>
+        // 在 window 加載時執行
+window.onload = function () {
+    toggleSearch(); // 頁面加載時執行一次切換
+};
         // 切換 nav 展開或收合
         function toggleNav() {
+            
             const navMenu = document.querySelector('.nav-menu');
             const bars = document.querySelectorAll('.bar');
+            
             navMenu.classList.toggle('active'); // 切換 active 類別來展開或收合菜單
 
             // 切換漢堡按鈕的三條線變化
@@ -590,10 +584,12 @@
                 bars[0].style.transform = "rotate(-45deg) translateY(15px)";
                 bars[1].style.opacity = "0";
                 bars[2].style.transform = "rotate(45deg) translateY(-15px)";
+
             } else {
                 bars[0].style.transform = "rotate(0) translateY(0)";
                 bars[1].style.opacity = "1";
                 bars[2].style.transform = "rotate(0) translateY(0)";
+
             }
         }
         
@@ -611,6 +607,22 @@
             }
         });
 
+        function toggleSearch() {
+    // 獲取兩個搜尋容器
+    const searchContainer1 = document.getElementById("searchContainer1");
+    const searchContainer2 = document.getElementById("searchContainer2");
+
+    // 切換顯示狀態
+    if (searchContainer1.style.display === "none") {
+        searchContainer1.style.display = "block";
+        searchContainer2.style.display = "none";
+    } else {
+        searchContainer1.style.display = "none";
+        searchContainer2.style.display = "block";
+    }
+}
+
+        
         function updateButtonText() {
             const button = document.querySelector('.dropdown-toggle');
             const buttonText = button.querySelector('.button-text'); // 獲取按鈕內的文字部分
@@ -657,7 +669,7 @@
         console.log("selectedYears= " + selectedYears + ", T= " + typeof selectedYears);
 
         // API URL
-        const url = 'https://script.google.com/macros/s/AKfycbzsp_8zJExOvo2AGHN2k1JLCQOAFWz4rk8SLubUTTZKpzT6b2tDglB_9T_y21eLxmRX/exec';
+        const url = 'https://script.google.com/macros/s/AKfycbxfRJNBHfGSO3oxhnGnKXDqhPxo-YOz1wV0dJxOrA3O6Ds6iC_IvmumkXvRW5KPuuFz/exec';
 
         const resultContainer = document.getElementById("searchResult");
         let dotCount = 0;

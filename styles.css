@@ -1,68 +1,41 @@
 body {
-    display: grid;
-    grid-template-areas:
-        "header header header"
-        "sidebar-left main-section sidebar-right";
-    grid-template-columns: 1fr 2fr 1fr;
-    gap: 10px;
     font-family: Arial, sans-serif;
-}
-
-.header {
-    grid-area: header;
-    background-color: #c1e1b9;
-    text-align: center;
-    padding: 10px;
-    font-weight: bold;
-}
-
-.navigation {
-    grid-column: 1 / 4;
-    display: flex;
-    justify-content: space-around;
-    background-color: #e6e6e6;
-    padding: 5px;
-}
-
-.sidebar-left, .sidebar-right {
-    padding: 10px;
-    background-color: #d6f5d6;
-}
-
-.sidebar-left {
-    grid-area: sidebar-left;
-}
-
-.sidebar-right {
-    grid-area: sidebar-right;
-}
-
-.main-section {
-    grid-area: main-section;
-    padding: 10px;
-    background-color: #f5f5f5;
-}
-
-.controls button, .controls input {
-    margin: 5px;
-    padding: 5px;
+    margin: 0;
+    padding: 0;
 }
 
 .controls {
     display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.element-container {
+    display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    flex-direction: column; /* 垂直堆疊 */
+    height: 300px; /* 限制高度 */
+    width: 50%; /* 滿版寬度 */
+    overflow-x: auto; /* 橫向滾動 */
+    overflow-y: hidden; /* 禁止垂直滾動 */
+    background-color: #f4f4f4;
+    padding: 10px;
+    border: 2px solid #ccc;
+    box-sizing: border-box;
 }
 
-.input-area {
-    background-color: #e6ccff;
-    padding: 15px;
-    margin-top: 10px;
-}
-
-.results-display {
-    background-color: #ffffff;
-    border: 1px solid #000;
-    height: 200px;
-    margin-top: 10px;
+.element {
+    width: 200px;
+    height: 10px; /* 高度固定為 10px */
+    background-color: #007bff;
+    margin-bottom: 10px; /* 元素間距 */
+    margin-right: 10px; /* 元素間距 */
+    box-sizing: border-box;
 }
