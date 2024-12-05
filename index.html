@@ -5,372 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="images/webico2.png">
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js" defer></script>
-
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
     <title>彰化縣彰化市大成國小事務組</title>
     <style>
-        * {
-            font-family: "Microsoft JhengHei", sans-serif;
-        }
 
-        a {
-            text-decoration: none;
-            color: #333;
-            transition: color 0.3s, text-shadow 0.3s;
-        }
-
-        a:hover {
-            color: #255525;
-            text-shadow: 0 0 3px #52ac52;
-            /* 模擬字體加粗的效果 */
-        }
-
-        body {
-            margin: 0;
-            height: 100%;
-            background-color: #e0dbdf;
-        }
-
-        .header {
-            background-color: #0077B6;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-        .header h3{
-            font-size: 20px;
-            margin: 10px;
-        }
-        
-        .back-btn {
-            background-color: #6dcadb;
-            padding: 5px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            color: #6f6f6f;
-            border: solid 2px #59558a;
-        }
-        .back-btn:hover {
-            background-color: #89dfef;
-            color: #212121 ; /* 確保文字顏色不變 */
-            text-shadow: none; /* 確保沒有全局的陰影 */
-            transition: color 0.3s, background-color 0.3s;
-
-        }
-
-        /* 原本的 nav 樣式 */
-        .nav-menu {
-            display: flex;
-            justify-content: flex-start;
-            padding: 10px;
-            background-color: #f0f8f0;
-            border-bottom: 1px solid #ddd;
-            transition: max-height 0.4s ease-out;
-            overflow: hidden;
-            gap: 20px;
-        }
-
-        /* 隱藏 nav 菜單，顯示漢堡選單按鈕 */
-        .nav-menu.collapsed {
-            display: none;
-        }
-
-        .hamburger-place {
-            display: flex;
-            justify-content: space-between;
-            background-color: #ded7f4
-        }
-        .hamburger-title{
-            display: none;
-        }
-        /* 漢堡選單按鈕樣式 */
-        .hamburger {
-            display: none;
-            font-size: 30px;
-            cursor: pointer;
-            padding: 10px;
-            background-color: #ded7f4
-        }
-        .bar {
-            width: 35px;
-            height: 4px;
-            background-color: #333;
-            margin: 6px 0;
-            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-        }
-        
-        .nav-menu a {
-            text-decoration: none;
-            color: #333;
-            padding: 5px 15px;
-            border: 1px solid #90EE90;
-            border-radius: 5px;
-            background-color: white;
-            transition: background-color 0.3s ease;
-        }
-
-        .nav-menu a:hover {
-            background-color: #90EE90;
-        }
-
-        .main-content {
-            display: flex;
-            margin: 20px;
-            min-height: calc(90vh - 150px);
-            max-width: 100%;
-            justify-content: center;
-        }
-
-        .left-sidebar {
-            max-width: 200px;
-            background-color: #e0f0e0;
-            padding: 15px;
-            border-radius: 5px;
-            flex-basis: 20%;
-            /* 中間元素佔 30% */
-        }
-
-        .left-sidebar a {
-            display: block;
-            text-decoration: none;
-            color: #333;
-            padding: 8px 0;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .center-content {
-            flex: 1;
-            margin: 0 20px;
-            position: relative;
-            flex-basis: 60%;
-            /* 中間元素佔 30% */
-            max-width: 50%;
-        }
-
-        .mid-right-place {
-            flex-basis: 45%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .search-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-
-        .dropdown,
-        .input-box,
-        .search-btn {
-            flex: 1 1 auto;
-            /* 允許元素收縮和擴展 */
-            min-width: 100px;
-            /* 設置元素的最小寬度以避免過度收縮 */
-            height: 2rem;
-            border-radius: 5px;
-            /* 設置圓角 */
-            padding: 5px 10px;
-            /* 內邊距，讓選單項目有些間距 */
-            border: 1px solid #ccc;
-            /* 邊框顏色 */
-
-        }
-
-        .search-btn {
-            padding: 8px 15px;
-            background-color: #b0d8f0;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .search-result {
-            border: 1px solid #ccc;
-            min-height: 50%;
-            padding: 15px;
-            border-radius: 5px;
-            flex-basis: 55%;
-        }
-
-        .right-sidebar {
-            max-width: 200px;
-            background-color: #e0f0e0;
-            padding: 15px;
-            border-radius: 5px;
-            flex-basis: 20%;
-            /* 中間元素佔 30% */
-        }
-
-        .right-sidebar a {
-            display: block;
-            text-decoration: none;
-            color: #333;
-            padding: 8px 0;
-            border-bottom: 1px solid #ccc;
-        }
-
-/* 自訂樣式的下拉選單 */
-.custom-dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-toggle {
-        display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 14px;
-    text-align: left;
-    width: 200px;
-}
-.button-text {
-    flex-grow: 1; /* 讓文字部分擴展以佔據空間 */
-}
-
-.arrow {
-    margin-left: 10px; /* 可以調整箭頭和文字之間的距離 */
-}
-
-        
-.dropdown-options {
-    display: none; /* 初始隱藏 */
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    z-index: 1000;
-    width: 100%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    max-height: 200px;
-    overflow-y: auto; /* 加入滾動條 */
-    border-radius: 4px;
-}
-
-.dropdown-options label {
-    display: block;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.dropdown-options label:hover {
-    background-color: #f0f0f0;
-}
-
-.dropdown-options input[type="checkbox"] {
-    margin-right: 5px;
-}
-
-/* 顯示選單時的樣式 */
-.custom-dropdown.open .dropdown-options {
-    display: block;
-}
-        
-        #curve_chart {
-            padding: 10px 0;
-            width: 100%; /* 預設為容器的寬度 */
-            height: auto;
-            overflow-x: auto;
-            display: flex;
-            justify-content: flex-start;
-        }
-        
-        /* 在小螢幕下，隱藏 nav 並顯示漢堡選單 */
-        @media (max-width: 768px) {
-
-            body::after {
-                background-repeat: repeat;
-                background-image: url('images/background_90.png');
-            }
-            
-            .nav-menu {
-                align-items: flex-end;
-    background: 
-        linear-gradient(to bottom, rgba(224, 219, 223, 0.3) 0%, rgba(224, 219, 223) 100%),
-/*        url('images/background.png');*/
-                background-size: cover;
-                background-repeat: no-repeat;
-                background-position: center;
-                flex-direction: column;
-                padding: 0;
-                max-height: 0;
-                margin: 0;
-                gap: 5px;
-            }
-
-            .nav-menu.active {
-                max-height: 300px;
-                padding: 10px;
-                /* 展開時的最大高度 */
-            }
-
-            .bar {
-                margin: 3.25px;
-            }
-
-            .nav-menu a {
-                margin: 3px 0;
-                max-width: 50%;
-                width: 100%;
-            }
-
-            .hamburger {
-                display: grid;
-                justify-content: end;
-                /* 顯示漢堡選單按鈕 */
-            }
-            .hamburger-title{
-                margin: 0 10px;
-                display: flex;
-                align-items: center;
-                font-size: x-large;
-            }
-            .main-content {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                /* 自動調整列數 */
-                grid-auto-rows: auto;
-                gap: 10px;
-                margin: 20px;
-                justify-items: center;
-            }
-
-            .left-sidebar,
-            .center-content,
-            .right-sidebar {
-                max-width: 80%;
-                /* 限制子元素寬度為容器的 80% */
-                width: 100%;
-                /* 保持元素在網格單元內填滿 */
-                box-sizing: border-box;
-                /* 確保邊框和內距不影響總寬度 */
-            }
-
-            .left-sidebar {
-                order: 1;
-                /* 排序為第一 */
-            }
-
-            .right-sidebar {
-                order: 2;
-                /* 排序為第二 */
-            }
-
-            .center-content {
-                grid-column: 1 / -1;
-                /* 橫跨兩列，佔據整個底部 */
-                order: 3;
-                /* 排序為最後 */
-            }
-        }
     </style>
 </head>
 
@@ -399,6 +42,8 @@
         <a href="https://prms2.chcg.gov.tw/index.jsp" target="_blank">財產管理</a>
         <a href="https://sbmis.k12ea.gov.tw/index.aspx" target="_blank">校舍管理</a>
         <a href="https://pts.fnp.gov.tw/APNPA/" target="_blank">國財署</a>
+        
+        <a class="nav-menu-a-special" href="https://pts.fnp.gov.tw/APNPA/" target="_blank">更新資料</a>
     </nav>
 
 
@@ -416,7 +61,7 @@
 -->
 
         <section class="center-content">
-            <button onclick="toggleSearch()">搜尋切換</button>
+            <button class="switch-search" onclick="toggleSearch()">搜尋切換</button>
             <div class="search-container"  id="searchContainer1">
                 <select class="dropdown" id="mainDropdown">
                     <option value="phone_extension_config">電話</option> <!-- 電話分機配置 -->
@@ -448,7 +93,7 @@
                             <label><input type="checkbox" value="113" onclick="updateButtonText()"> 113年度</label>
                         </div>
                     </div>
-                    <button class="search-btn" onclick="submitMessage(event)">搜尋</button>
+                    <button class="search-btn" onclick="submitMessage_ebill(event)">搜尋</button>
                 </div>
                 
                 <div class="search-result" id="searchResult">
@@ -475,96 +120,8 @@
 
     </main>
 
-
- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-  google.charts.load('current', {'packages':['corechart']});
-//  google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart(rawData) {
-      // 解析多組資料
-      var dataGroups = rawData.split('&&'); // 用 "&&" 分隔多組資料
-      console.log("dataGroups=", dataGroups);
-
-      var months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-
-      // 初始化圖表資料，第一行是標題列
-      var chartData = [['月份']]; // 第一列為月份，接下來會依據每組資料動態添加列標題
-
-      // 解析每組數據並添加到 chartData 中
-      dataGroups.forEach(function(rawDataEntry) {
-        // 分析單一組資料
-        var dataArray = rawDataEntry.split(',');
-        var values = dataArray.slice(3, 15).map(function(value) {
-          return value === '' ? 0 : parseInt(value); // 處理空值為 0
-        });
-
-        var yearName = dataArray[0].match(/^(\d+)年/); // 提取年份名稱
-        var chartTitle = yearName ? yearName[0] : "年份資料";
-
-        // 動態添加年份作為新列標題
-        chartData[0].push(chartTitle);
-
-        // 將資料與月份對應，加入 chartData
-        months.forEach(function(month, index) {
-          if (chartData[index + 1] === undefined) {
-            chartData[index + 1] = [month]; // 若尚未存在，初始化行
-          }
-          chartData[index + 1].push(values[index]); // 添加對應月份的數據
-        });
-      });
-
-      console.log("chartData=", chartData);
-
-      // 將資料轉換為 Google Charts 所需格式
-      var data = google.visualization.arrayToDataTable(chartData);
-
-      // 設定圖表選項
-        var options = {
-          title: '每月電費支出',
-          width: 800, // 固定寬度
-          height: 500, // 固定高度
-          curveType: 'none',  // 标准折线图
-          legend: { position: 'bottom' },
-          annotations: {
-            alwaysOutside: true,  // 始终显示数据标签
-            textStyle: {
-              fontSize: 12,
-              color: '#000000',  // 设置文本颜色
-              bold: true
-            }
-          },
-          pointSize: 6,  // 设置点的大小
-          vAxis: {
-            title: '電費'
-          },
-          hAxis: {
-            title: '月份'
-          }
-        };
-
-      // 生成並繪製圖表
-      var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-        
-      google.visualization.events.addListener(chart, 'ready', function () {
-        // 更新圖片顯示
-        var imageUri = chart.getImageURI();
-
-        // 更新下載鏈接的 href 屬性
-        var downloadLink = document.getElementById("download_link");
-        downloadLink.setAttribute("href", imageUri);
-        downloadLink.setAttribute("download", "chart.png");  // 設置下載的文件名
-        downloadLink.style.display = "block";  // 顯示下載按鈕
-      });
-        
-      chart.draw(data, options);
-        
-        
-
-    }
-
-</script>
-
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+ <script type="text/javascript" src="script.js"></script>
     
     <script>
         // 在 window 加載時執行
@@ -572,72 +129,28 @@ window.onload = function () {
     toggleSearch(); // 頁面加載時執行一次切換
 };
         // 切換 nav 展開或收合
-        function toggleNav() {
-            
-            const navMenu = document.querySelector('.nav-menu');
-            const bars = document.querySelectorAll('.bar');
-            
-            navMenu.classList.toggle('active'); // 切換 active 類別來展開或收合菜單
+//      
+//
+//        // 點擊選單外部時自動關閉
+document.addEventListener("click", function (event) {
+    const dropdown = document.getElementById("customDropdown");
+    const navDown = document.querySelector(".nav-menu");
+    const buger = document.querySelector(".hamburger-place");
 
-            // 切換漢堡按鈕的三條線變化
-            if (navMenu.classList.contains('active')) {
-                bars[0].style.transform = "rotate(-45deg) translateY(15px)";
-                bars[1].style.opacity = "0";
-                bars[2].style.transform = "rotate(45deg) translateY(-15px)";
 
-            } else {
-                bars[0].style.transform = "rotate(0) translateY(0)";
-                bars[1].style.opacity = "1";
-                bars[2].style.transform = "rotate(0) translateY(0)";
-
-            }
-        }
-        
-        // 切換下拉選單的顯示狀態
-        function toggleDropdown() {
-            const dropdown = document.getElementById("customDropdown");
-            dropdown.classList.toggle("open"); // 切換 open 樣式
-        }
-
-        // 點擊選單外部時自動關閉
-        document.addEventListener("click", function (event) {
-            const dropdown = document.getElementById("customDropdown");
-            if (!dropdown.contains(event.target)) {
-                dropdown.classList.remove("open");
-            }
-        });
-
-        function toggleSearch() {
-    // 獲取兩個搜尋容器
-    const searchContainer1 = document.getElementById("searchContainer1");
-    const searchContainer2 = document.getElementById("searchContainer2");
-
-    // 切換顯示狀態
-    if (searchContainer1.style.display === "none") {
-        searchContainer1.style.display = "block";
-        searchContainer2.style.display = "none";
-    } else {
-        searchContainer1.style.display = "none";
-        searchContainer2.style.display = "block";
+    if (!dropdown.contains(event.target)) {
+        dropdown.classList.remove("open");
     }
-}
+    if (!navDown.contains(event.target) && !buger.contains(event.target)) {
+        navDown.classList.remove("active");
+        const bars = document.querySelectorAll('.bar');
+        bars[0].style.transform = "rotate(0) translateY(0)";
+        bars[1].style.opacity = "1";
+        bars[2].style.transform = "rotate(0) translateY(0)";
+    }
+});
 
-        
-        function updateButtonText() {
-            const button = document.querySelector('.dropdown-toggle');
-            const buttonText = button.querySelector('.button-text'); // 獲取按鈕內的文字部分
-            const checkboxes = document.querySelectorAll('.dropdown-options input[type="checkbox"]');
-            let selectedValues = [];
 
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    selectedValues.push(checkbox.parentElement.textContent.trim());
-                }
-            });
-
-            // 更新按鈕的文字內容，箭頭保持在最右邊
-            buttonText.textContent = selectedValues.length > 0 ? selectedValues.join(', ') : '電費年度選擇';
-        }
 
     function performSearch() {
         // 取得選擇的值和輸入框內容
@@ -653,61 +166,7 @@ window.onload = function () {
     }
         
         
-    function submitMessage(event) {
-        event.preventDefault();
 
-        // 獲取所有被勾選的值
-        const checkboxes = document.querySelectorAll(".dropdown-options input[type='checkbox']:checked");
-        const selectedYears = Array.from(checkboxes).map(checkbox => checkbox.value).join(",");
-
-
-        if (!selectedYears) {
-            alert("請至少選擇一個年度！");
-            return;
-        }
-
-        console.log("selectedYears= " + selectedYears + ", T= " + typeof selectedYears);
-
-        // API URL
-        const url = 'https://script.google.com/macros/s/AKfycbxfRJNBHfGSO3oxhnGnKXDqhPxo-YOz1wV0dJxOrA3O6Ds6iC_IvmumkXvRW5KPuuFz/exec';
-
-        const resultContainer = document.getElementById("searchResult");
-        let dotCount = 0;
-        const loadingText = "<p>查詢中";
-
-        // 每隔 0.5 秒更新一次，讓「.」逐個顯示
-        const interval = setInterval(() => {
-            dotCount = (dotCount + 1) % 4; // 循環 0、1、2、3，控制點的數量
-            resultContainer.innerHTML = `${loadingText}${'.'.repeat(dotCount)}</p>`;
-        }, 500);
-
-        // 發送 POST 請求到 Apps Script
-        $.post(
-            url,
-            { choice: selectedYears, cc: selectedYears }, // 傳遞選擇的年份字串
-                function (response) {
-                    clearInterval(interval);
-                    // 如果成功，將結果顯示到搜尋結果區域
-                      if (response.success) {
-                        resultContainer.innerHTML = `<p>查詢成功！</p>`;
-                        // 分割返回的資料
-                        var rawDataArray_a = response.data;
-                        drawChart( rawDataArray_a );
-                        // 為每筆資料創建一個新的圖表
-//                        rawDataArray.forEach(function(rawData, index) {
-//                          drawChart(rawData, index);  // 傳遞每個資料到 drawChart 函數
-//                        });
-                      } else {
-                        resultContainer.innerHTML = `<p>查詢失敗：${response.message}</p>`;
-                      }
-                }
-            ).fail(function () {
-                // 處理錯誤情況
-                const resultContainer = document.getElementById("searchResult");
-                resultContainer.innerHTML = `<p>連線錯誤，請稍後再試。</p>`;
-            });
-    }
-        
         
     </script>
 

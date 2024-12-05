@@ -1,41 +1,398 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
+    * {
+        font-family: "Microsoft JhengHei", sans-serif;
+    }
 
-.controls {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-}
+    a {
+        text-decoration: none;
+        color: #333;
+        transition: color 0.3s, text-shadow 0.3s;
+    }
 
-button {
-    margin: 0 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-}
+    a:hover {
+        color: #255525;
+        text-shadow: 0 0 3px #52ac52;
+        /* 模擬字體加粗的效果 */
+    }
 
-.element-container {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column; /* 垂直堆疊 */
-    height: 300px; /* 限制高度 */
-    width: 50%; /* 滿版寬度 */
-    overflow-x: auto; /* 橫向滾動 */
-    overflow-y: hidden; /* 禁止垂直滾動 */
-    background-color: #f4f4f4;
-    padding: 10px;
-    border: 2px solid #ccc;
-    box-sizing: border-box;
-}
+    body {
+        margin: 0;
+        height: 100%;
+        background-color: #e0dbdf;
+    }
 
-.element {
-    width: 200px;
-    height: 10px; /* 高度固定為 10px */
-    background-color: #007bff;
-    margin-bottom: 10px; /* 元素間距 */
-    margin-right: 10px; /* 元素間距 */
-    box-sizing: border-box;
-}
+    .header {
+        background-color: #0077B6;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+    }
+
+    .header h3 {
+        font-size: 20px;
+        margin: 10px;
+    }
+
+    .back-btn {
+        background-color: #6dcadb;
+        padding: 5px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #6f6f6f;
+        border: solid 2px #59558a;
+    }
+
+    .back-btn:hover {
+        background-color: #89dfef;
+        color: #212121;
+        /* 確保文字顏色不變 */
+        text-shadow: none;
+        /* 確保沒有全局的陰影 */
+        transition: color 0.3s, background-color 0.3s;
+
+    }
+
+    /* 原本的 nav 樣式 */
+    .nav-menu {
+        display: flex;
+        justify-content: flex-start;
+        padding: 10px;
+        background-color: #f0f8f0;
+        border-bottom: 1px solid #ddd;
+        transition: max-height 0.4s ease-out;
+        overflow: hidden;
+        gap: 20px;
+    }
+
+    /* 隱藏 nav 菜單，顯示漢堡選單按鈕 */
+    .nav-menu.collapsed {
+        display: none;
+    }
+
+    .hamburger-place {
+        display: flex;
+        justify-content: space-between;
+        background-color: #ded7f4
+    }
+
+    .hamburger-title {
+        display: none;
+    }
+
+    /* 漢堡選單按鈕樣式 */
+    .hamburger {
+        display: none;
+        font-size: 30px;
+        cursor: pointer;
+        padding: 10px;
+        background-color: #ded7f4
+    }
+
+    .bar {
+        width: 35px;
+        height: 4px;
+        background-color: #333;
+        margin: 6px 0;
+        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    }
+
+    .nav-menu-a-special{
+        position: absolute; 
+        right: 35px;
+    }
+    .nav-menu a {
+        text-decoration: none;
+        color: #333;
+        padding: 5px 15px;
+        border: 1px solid #90EE90;
+        border-radius: 5px;
+        background-color: white;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-menu a:hover {
+        background-color: #90EE90;
+    }
+
+    .main-content {
+        display: flex;
+        margin: 20px;
+        min-height: calc(90vh - 150px);
+        max-width: 100%;
+        justify-content: center;
+    }
+
+    .left-sidebar {
+        max-width: 200px;
+        background-color: #e0f0e0;
+        padding: 15px;
+        border-radius: 5px;
+        flex-basis: 20%;
+        /* 中間元素佔 30% */
+    }
+
+    .left-sidebar a {
+        display: block;
+        text-decoration: none;
+        color: #333;
+        padding: 8px 0;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .center-content {
+        flex: 1;
+        margin: 0 20px;
+        position: relative;
+        flex-basis: 60%;
+        /* 中間元素佔 30% */
+        max-width: 50%;
+    }
+    .switch-search {
+        margin: 15px 0px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 6px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    .mid-right-place {
+        flex-basis: 45%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .search-container {
+        display: flex;
+        gap: 10px;
+        align-items: stretch;
+        margin-bottom: 20px;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .dropdown,
+    .input-box,
+    .search-btn {
+        flex: 1 1 auto;
+        /* 允許元素收縮和擴展 */
+        min-width: 100px;
+        /* 設置元素的最小寬度以避免過度收縮 */
+        max-height: 3rem;
+        border-radius: 5px;
+        /* 設置圓角 */
+        padding: 5px 10px;
+        /* 內邊距，讓選單項目有些間距 */
+        border: 1px solid #ccc;
+        /* 邊框顏色 */
+
+    }
+
+    .search-btn {
+        padding: 8px 15px;
+        background-color: #b0d8f0;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .search-result {
+        border: 1px solid #ccc;
+        min-height: 50%;
+        padding: 15px;
+        border-radius: 5px;
+        flex-basis: 55%;
+    }
+
+    .right-sidebar {
+        max-width: 200px;
+        background-color: #e0f0e0;
+        padding: 15px;
+        border-radius: 5px;
+        flex-basis: 20%;
+        /* 中間元素佔 30% */
+    }
+
+    .right-sidebar a {
+        display: block;
+        text-decoration: none;
+        color: #333;
+        padding: 8px 0;
+        border-bottom: 1px solid #ccc;
+    }
+
+    /* 自訂樣式的下拉選單 */
+    .custom-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 14px;
+        text-align: left;
+        max-width: 230px;
+        min-width: 180px;
+    }
+
+    .button-text {
+        flex-grow: 1;
+        /* 讓文字部分擴展以佔據空間 */
+    }
+
+    .arrow {
+        margin-left: 10px;
+        /* 可以調整箭頭和文字之間的距離 */
+    }
+
+
+    .dropdown-options {
+        display: none;
+        /* 初始隱藏 */
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        z-index: 1000;
+        width: 100%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        max-height: 200px;
+        overflow-y: auto;
+        /* 加入滾動條 */
+        border-radius: 4px;
+    }
+
+    .dropdown-options label {
+        display: block;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .dropdown-options label:hover {
+        background-color: #f0f0f0;
+    }
+
+    .dropdown-options input[type="checkbox"] {
+        margin-right: 5px;
+    }
+
+    /* 顯示選單時的樣式 */
+    .custom-dropdown.open .dropdown-options {
+        display: block;
+    }
+
+    #curve_chart {
+        padding: 10px 0;
+        width: 100%;
+        /* 預設為容器的寬度 */
+        height: auto;
+        overflow-x: auto;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    /* 在小螢幕下，隱藏 nav 並顯示漢堡選單 */
+    @media (max-width: 950px) {
+
+        body::after {
+            background-repeat: repeat;
+            background-image: url('images/background_90.png');
+        }
+
+        .nav-menu {
+            align-items: flex-end;
+            background:
+                linear-gradient(to bottom, rgba(224, 219, 223, 0.3) 0%, rgba(224, 219, 223) 100%),
+                /*        url('images/background.png');*/
+                background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            flex-direction: column;
+            padding: 0;
+            max-height: 0;
+            margin: 0;
+            gap: 5px;
+        }
+
+        .nav-menu.active {
+            max-height: 300px;
+            padding: 10px;
+            /* 展開時的最大高度 */
+        }
+
+        .bar {
+            margin: 3.25px;
+        }
+        
+        .nav-menu-a-special{
+            position: static; 
+            right: 0;
+        }
+        .nav-menu a {
+            margin: 3px 0;
+            max-width: 50%;
+            width: 100%;
+        }
+
+        .hamburger {
+            display: grid;
+            justify-content: end;
+            /* 顯示漢堡選單按鈕 */
+        }
+
+        .hamburger-title {
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            font-size: x-large;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            /* 自動調整列數 */
+            grid-auto-rows: auto;
+            gap: 10px;
+            margin: 20px;
+            justify-items: center;
+        }
+
+        .left-sidebar,
+        .center-content,
+        .right-sidebar {
+            max-width: 80%;
+            /* 限制子元素寬度為容器的 80% */
+            width: 100%;
+            /* 保持元素在網格單元內填滿 */
+            box-sizing: border-box;
+            /* 確保邊框和內距不影響總寬度 */
+        }
+
+        .left-sidebar {
+            order: 1;
+            /* 排序為第一 */
+        }
+
+        .right-sidebar {
+            order: 2;
+            /* 排序為第二 */
+        }
+
+        .center-content {
+            grid-column: 1 / -1;
+            /* 橫跨兩列，佔據整個底部 */
+            order: 3;
+            /* 排序為最後 */
+        }
+    }
