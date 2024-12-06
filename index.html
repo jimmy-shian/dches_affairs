@@ -64,15 +64,15 @@
             <button class="switch-search" onclick="toggleSearch()">搜尋切換</button>
             <div class="search-container"  id="searchContainer1">
                 <select class="dropdown" id="mainDropdown">
-                    <option value="phone_extension_config">電話</option> <!-- 電話分機配置 -->
-                    <option value="simple_aircon_classroom">冷氣教室編號</option> <!-- 簡易版冷氣教室編號 -->
+                    <option value="2">電話</option> <!-- 電話分機配置 -->
+                    <option value="1">冷氣教室編號</option> <!-- 簡易版冷氣教室編號 -->
                 </select>
 
-                <input type="text" class="input-box" id="inputBox" placeholder="輸入框">
+                <input type="text" class="input-box" id="inputBox" placeholder="輸入框" value="五">
 
                 <select class="dropdown" id="additionalDropdown">
-                    <option value="condition2">分機號碼</option>
-                    <option value="condition1">維修</option> <!-- 機櫃號碼、樣式-->
+                    <option value="phone_num">分機號碼</option>
+                    <option value="phone_place">維修</option> <!-- 機櫃號碼、樣式-->
                 </select>
 
                 <button class="search-btn" onclick="performSearch()">搜尋</button>
@@ -101,6 +101,9 @@
                 </div>
                 
                   <div id="curve_chart" ></div>
+                
+                <div id="text_table" ></div>
+
     
     <a style="display:none" id="download_link" href="/" download>download</a>
             </div>
@@ -119,11 +122,12 @@
 -->
 
     </main>
-
+    
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
  <script type="text/javascript" src="script.js"></script>
     
-    <script>
+<script>
+
         // 在 window 加載時執行
 window.onload = function () {
     toggleSearch(); // 頁面加載時執行一次切換
@@ -149,6 +153,7 @@ document.addEventListener("click", function (event) {
         bars[2].style.transform = "rotate(0) translateY(0)";
     }
 });
+//const url_all = 'https://script.google.com/macros/s/AKfycbwvdTl_POnptf957bdkEKC3Nks-0E7ICz5G4EJzHxfB1Nha8rhPfC4mf2DCQbDbka_V/exec';
 
 
 
@@ -159,10 +164,78 @@ document.addEventListener("click", function (event) {
         const additionalValue = document.getElementById('additionalDropdown').value;
 
         // 串接顯示結果
-        const result = `#@#${mainValue}#@#${inputValue}#@#${additionalValue}`;
+        // API URL
+        const url = url_all;
 
-        // 顯示結果在搜尋顯示區
-        document.getElementById('searchResult').innerText = result;
+        const resultContainer = document.getElementById("searchResult");
+        const text_table = document.getElementById("text_table");
+
+        let dotCount = 0;
+        const loadingText = "<p>查詢中";
+
+        // 每隔 0.5 秒更新一次，讓「.」逐個顯示
+        const interval = setInterval(() => {
+            dotCount = (dotCount + 1) % 4; // 循環 0、1、2、3，控制點的數量
+            resultContainer.innerHTML = `${loadingText}${'.'.repeat(dotCount)}</p>`;
+        }, 500);
+        console.log("1,=" + inputValue + ", 2.=" + mainValue );
+        // 發送 POST 請求到 Apps Script
+        $.post(
+            url,
+            { texts: inputValue, 
+             table: parseInt(mainValue) }, // 傳遞選擇的年份字串
+            function (response) {
+                clearInterval(interval);
+                // 如果成功，將結果顯示到搜尋結果區域
+                  if (response.success) {
+                    resultContainer.innerHTML = `<p>查詢成功！</p>`;
+//                    text_table.innerHTML = JSON.stringify(response.data);
+                      
+                    // 將資料轉換成表格
+                    function createTable(data) {
+                      let table = '<table border="1" style="border-collapse: collapse; width: 100%;">';
+
+                      // 表頭
+                      table += `
+                        <thead>
+                          <tr>
+                            <th style="padding: 8px; text-align: left;">來源 1</th>
+                            <th style="padding: 8px; text-align: left;">來源 2</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                      `;
+
+                      // 表格內容
+                      data.forEach(item => {
+                        table += `
+                          <tr>
+                            <td style="padding: 8px;">${item.source1}</td>
+                            <td style="padding: 8px;">${item.source2}</td>
+                          </tr>
+                        `;
+                      });
+
+                      // 結尾
+                      table += '</tbody></table>';
+
+                      return table;
+                    }
+
+                    // 解析並顯示資料
+                    text_table.innerHTML = createTable( (response.data) );
+                      
+
+                  } else {
+                    resultContainer.innerHTML = `<p>查詢失敗：${response.message}</p>`;
+                  }
+            }
+        ).fail(function () {
+            // 處理錯誤情況
+            const resultContainer = document.getElementById("searchResult");
+            resultContainer.innerHTML = `<p>連線錯誤，請稍後再試。</p>`;
+        });
+
     }
         
         

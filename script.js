@@ -1,5 +1,7 @@
 google.charts.load('current', {'packages':['corechart']});
     
+const url_all = 'https://script.google.com/macros/s/AKfycbw0D4HRmS0YOXjxQijYV6fUeoSC8r9lQ4uz3o8LEXXFEG-mB5Y59zWTkbShB8YRUppy/exec';
+
 function drawChart(rawData) {
       // 解析多組資料
       var dataGroups = rawData.split('&&'); // 用 "&&" 分隔多組資料
@@ -90,11 +92,11 @@ function toggleSearch() {
 
     // 切換顯示狀態
     if (searchContainer1.style.display === "none") {
-        searchContainer1.style.display = "flex";
-        searchContainer2.style.display = "none";
-    } else {
         searchContainer1.style.display = "none";
         searchContainer2.style.display = "flex";
+    } else {
+        searchContainer1.style.display = "flex";
+        searchContainer2.style.display = "none";
     }
 }
 
@@ -158,7 +160,7 @@ function submitMessage_ebill(event) {
     console.log("selectedYears= " + selectedYears + ", T= " + typeof selectedYears);
 
     // API URL
-    const url = 'https://script.google.com/macros/s/AKfycbxfRJNBHfGSO3oxhnGnKXDqhPxo-YOz1wV0dJxOrA3O6Ds6iC_IvmumkXvRW5KPuuFz/exec';
+    const url = url_all;
 
     const resultContainer = document.getElementById("searchResult");
     let dotCount = 0;
