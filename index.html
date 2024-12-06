@@ -13,11 +13,68 @@
     
     <title>彰化縣彰化市大成國小事務組</title>
     <style>
+/* styles.css */
+/*
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+input {
+    padding: 8px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+*/
 
     </style>
 </head>
 
 <body>
+    
+        <!-- 遮罩層 -->
+<!--
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <h2>請輸入密碼</h2>
+            <input type="password" id="passwordInput" placeholder="輸入密碼" />
+            <button id="submitPassword">確認</button>
+        </div>
+    </div>
+-->
+
+    <div id="mainContent" style="display:block;">
+    
 <!--
     <header class="header">
         <h3>彰化縣彰化市大成國小事務組</h3>
@@ -64,16 +121,19 @@
             <button class="switch-search" onclick="toggleSearch()">搜尋切換</button>
             <div class="search-container"  id="searchContainer1">
                 <select class="dropdown" id="mainDropdown">
-                    <option value="2">電話</option> <!-- 電話分機配置 -->
+                    <option value="2">電話機櫃</option> <!-- 電話分機配置 -->
                     <option value="1">冷氣教室編號</option> <!-- 簡易版冷氣教室編號 -->
+                    <option value="3">消耗品查詢</option> <!-- 電話分機配置 -->
                 </select>
 
                 <input type="text" class="input-box" id="inputBox" placeholder="輸入框" value="五">
+<!--
 
                 <select class="dropdown" id="additionalDropdown">
                     <option value="phone_num">分機號碼</option>
-                    <option value="phone_place">維修</option> <!-- 機櫃號碼、樣式-->
+                    <option value="phone_place">維修</option>
                 </select>
+-->
 
                 <button class="search-btn" onclick="performSearch()">搜尋</button>
             </div>
@@ -123,11 +183,38 @@
 
     </main>
     
+    
+        </div>
+
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
  <script type="text/javascript" src="script.js"></script>
     
 <script>
+    
+    // script.js
+document.addEventListener("DOMContentLoaded", function () {
+    const passwordModal = document.getElementById("passwordModal");
+    const mainContent = document.getElementById("mainContent");
+    const passwordInput = document.getElementById("passwordInput");
+    const submitButton = document.getElementById("submitPassword");
 
+    // 設定正確密碼
+    const correctPassword = "12345"; // 設定您想要的密碼
+
+    // 當用戶點擊確認按鈕
+    submitButton.addEventListener("click", function () {
+        const enteredPassword = passwordInput.value;
+        if (enteredPassword === correctPassword) {
+            // 密碼正確，顯示主要內容
+            passwordModal.style.display = "none";
+            mainContent.style.display = "block";
+        } else {
+            alert("密碼錯誤，請再試一次！");
+        }
+    });
+});
+
+    
         // 在 window 加載時執行
 window.onload = function () {
     toggleSearch(); // 頁面加載時執行一次切換
@@ -153,15 +240,12 @@ document.addEventListener("click", function (event) {
         bars[2].style.transform = "rotate(0) translateY(0)";
     }
 });
-//const url_all = 'https://script.google.com/macros/s/AKfycbwvdTl_POnptf957bdkEKC3Nks-0E7ICz5G4EJzHxfB1Nha8rhPfC4mf2DCQbDbka_V/exec';
-
-
 
     function performSearch() {
         // 取得選擇的值和輸入框內容
         const mainValue = document.getElementById('mainDropdown').value;
         const inputValue = document.getElementById('inputBox').value;
-        const additionalValue = document.getElementById('additionalDropdown').value;
+//        const additionalValue = document.getElementById('additionalDropdown').value;
 
         // 串接顯示結果
         // API URL
@@ -178,70 +262,146 @@ document.addEventListener("click", function (event) {
             dotCount = (dotCount + 1) % 4; // 循環 0、1、2、3，控制點的數量
             resultContainer.innerHTML = `${loadingText}${'.'.repeat(dotCount)}</p>`;
         }, 500);
-        console.log("1,=" + inputValue + ", 2.=" + mainValue );
-        // 發送 POST 請求到 Apps Script
-        $.post(
-            url,
-            { texts: inputValue, 
-             table: parseInt(mainValue) }, // 傳遞選擇的年份字串
-            function (response) {
-                clearInterval(interval);
-                // 如果成功，將結果顯示到搜尋結果區域
-                  if (response.success) {
-                    resultContainer.innerHTML = `<p>查詢成功！</p>`;
-//                    text_table.innerHTML = JSON.stringify(response.data);
-                      
-                    // 將資料轉換成表格
-                    function createTable(data) {
-                      let table = '<table border="1" style="border-collapse: collapse; width: 100%;">';
+        if(mainValue != "3"){
+            console.log("1,=" + inputValue + ", 2.=" + mainValue );
+            // 發送 POST 請求到 Apps Script
+            $.post(
+                url,
+                { texts: inputValue, 
+                 table: parseInt(mainValue) }, // 傳遞輸入字串
+                function (response) {
+                    clearInterval(interval);
+                    // 如果成功，將結果顯示到搜尋結果區域
+                      if (response.success) {
+                        resultContainer.innerHTML = `<p>查詢成功！</p>`;
+    //                    text_table.innerHTML = JSON.stringify(response.data);
 
-                      // 表頭
-                      table += `
-                        <thead>
-                          <tr>
-                            <th style="padding: 8px; text-align: left;">來源 1</th>
-                            <th style="padding: 8px; text-align: left;">來源 2</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                      `;
+                        // 將資料轉換成表格
+                        function createTable(data) {
+                          let table = '<table border="1" style="border-collapse: collapse; width: 100%;">';
 
-                      // 表格內容
-                      data.forEach(item => {
-                        table += `
-                          <tr>
-                            <td style="padding: 8px;">${item.source1}</td>
-                            <td style="padding: 8px;">${item.source2}</td>
-                          </tr>
-                        `;
-                      });
+                          // 表頭
+                            table += `
+                              <thead>
+                                <tr>
+                                  <th style="padding: 8px; text-align: left;">教室位置</th>
+                                  <th style="padding: 8px; text-align: left;">分機號碼1</th>
+                                  <th style="padding: 8px; text-align: left;">分機號碼2</th>
+                                  <th style="padding: 8px; text-align: left;">維修</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                            `;
 
-                      // 結尾
-                      table += '</tbody></table>';
+                            // 表格內容
+                            data.forEach(item => {
+                              // 拆解 source1 以獲取教室位置、分機號碼1、分機號碼2
+                              const [classroomLocation, phone1, phone2] = item.source1.split(',');
+                             
+                              // 處理 phone2 如果是 "無"，則替換為 "--"
+                              const phone2Value = phone2 === "無" ? "--" : phone2;
 
-                      return table;
-                    }
+                              table += `
+                                <tr>
+                                  <td style="padding: 8px;">${classroomLocation}</td>
+                                  <td style="padding: 8px;">${phone1}</td>
+                                  <td style="padding: 8px;">${phone2Value}</td>
+                                  <td style="padding: 8px;">${item.source2.trim().replace(/,$/, '')}</td>
+                                </tr>
+                              `;
+                            });
 
-                    // 解析並顯示資料
-                    text_table.innerHTML = createTable( (response.data) );
-                      
+                          // 結尾
+                          table += '</tbody></table>';
 
-                  } else {
-                    resultContainer.innerHTML = `<p>查詢失敗：${response.message}</p>`;
-                  }
-            }
-        ).fail(function () {
-            // 處理錯誤情況
-            const resultContainer = document.getElementById("searchResult");
-            resultContainer.innerHTML = `<p>連線錯誤，請稍後再試。</p>`;
-        });
+                          return table;
+                        }
+
+                        // 解析並顯示資料
+                        text_table.innerHTML = createTable( (response.data) );
+
+
+                      } else {
+                        resultContainer.innerHTML = `<p>查詢失敗：${response.message}</p>`;
+                      }
+                }
+            ).fail(function () {
+                // 處理錯誤情況
+                const resultContainer = document.getElementById("searchResult");
+                resultContainer.innerHTML = `<p>連線錯誤，請稍後再試。</p>`;
+            });
+        }else{
+            $.post(
+                url,
+                { texts_items: inputValue}, // 傳遞輸入字串
+                function (response) {
+                    clearInterval(interval);
+                    // 如果成功，將結果顯示到搜尋結果區域
+                      if (response.success) {
+                        resultContainer.innerHTML = `<p>查詢成功！</p>`;
+//                        text_table.innerHTML = JSON.stringify(response.data);
+
+                                    // 將資料轉換成表格
+                        function createTable(data) {
+                            let table = '<table border="1" style="border-collapse: collapse; width: 100%;">';
+
+                            // 表頭
+                            table += `
+                                <thead>
+                                    <tr>
+                                        <th style="padding: 8px; text-align: left;">物品名稱</th>
+                                        <th style="padding: 8px; text-align: left;">單位</th>
+                                        <th style="padding: 8px; text-align: left;">庫存數量</th>
+                                        <th style="padding: 8px; text-align: left;">已購買</th>
+                                        <th style="padding: 8px; text-align: left;">已使用</th>
+                                        <th style="padding: 8px; text-align: left;">剩餘數量</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            `;
+
+                            // 表格內容
+                            data.forEach(item => {
+                                table += `
+                                    <tr>
+                                        <td style="padding: 8px;">${item.itemName}</td>
+                                        <td style="padding: 8px;">${item.unit}</td>
+                                        <td style="padding: 8px;">${item.prevBalance}</td>
+                                        <td style="padding: 8px;">${item.purchased}</td>
+                                        <td style="padding: 8px;">${item.used}</td>
+                                        <td style="padding: 8px;">${item.remaining}</td>
+                                    </tr>
+                                `;
+                            });
+
+                            // 結尾
+                            table += '</tbody></table>';
+
+                            return table;
+                        }
+
+                          console.log("tyope= " + typeof JSON.parse(response.data))
+                          console.log("response.data= " + JSON.parse(response.data))
+
+                        // 解析並顯示資料，將資料轉換為表格並插入到頁面中
+                        text_table.innerHTML = createTable( JSON.parse(response.data));
+
+                      } else {
+                        resultContainer.innerHTML = `<p>查詢失敗：${response.message}</p>`;
+                      }
+                }
+            ).fail(function () {
+                // 處理錯誤情況
+                const resultContainer = document.getElementById("searchResult");
+                resultContainer.innerHTML = `<p>連線錯誤，請稍後再試。</p>`;
+            });
+        }
 
     }
         
         
-
-        
     </script>
 
 
-</body></html>
+</body>
+        </html>
