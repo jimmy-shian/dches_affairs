@@ -1,6 +1,6 @@
 google.charts.load('current', {'packages':['corechart']});
     
-const url_all = 'https://script.google.com/macros/s/AKfycbw0D4HRmS0YOXjxQijYV6fUeoSC8r9lQ4uz3o8LEXXFEG-mB5Y59zWTkbShB8YRUppy/exec';
+const url_all = 'https://script.google.com/macros/s/AKfycbxSKQqeDxN7UdZ1ry-BtvsluVPCKiD_KUMgC565mJIPQ96SOBiESD4Dz73f__6JV2Kl/exec';
 
 function drawChart(rawData) {
       // 解析多組資料
