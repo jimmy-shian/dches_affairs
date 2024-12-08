@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>動態頁面</title>
+    <link rel="icon" type="image/x-icon" href="https://jimmy-shian.github.io/mom/images/webico2.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20%;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // 檢測是否為重新整理
+            if (performance.navigation.type === 1 && !localStorage.getItem("loggedIn")) {// 1 表示重新整理
+            document.body.innerHTML = "<h1>請重新登入</h1><br><p>重新導向到登入頁...</p>";
+            setTimeout(() => {
+                window.location.href = "/"; // 修改為你的登入頁面 URL
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

@@ -106,12 +106,12 @@
     <div class="login-container">
         <h1>登入</h1>
         <div class="form-group">
-            <label for="email">電子郵件</label>
-            <input type="email" id="email" name="email" value="jimmy910824@gmail.com" required>
+            <label for="email">帳號</label>
+            <input type="email" id="email" name="email" value="" placeholder="輸入email" required>
         </div>
         <div class="form-group">
             <label for="password">密碼</label>
-            <input type="password" id="password" name="password" value="1234" required>
+            <input type="password" id="password" name="password" value="">
         </div>
         <div class="form-group">
             <button id="login-button" onclick="validateForm()">
@@ -123,6 +123,8 @@
     </div>
 
     <script>
+        localStorage.setItem("loggedIn", false);
+
         function validateForm() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -135,7 +137,7 @@
             loadingMessage.style.display = 'block';
             errorMessage.innerText = '';
 
-            const url = "https://script.google.com/macros/s/AKfycbwpvfJG1PwGtugxp_uqUTOX2RYV4RVHcyRwRFB_mnP4fVpS2_Uf32by9QxOXsHNUgg/exec";
+            const url = "https://script.google.com/macros/s/AKfycbzRMi6lhM5S9SdMBJQeSuEEZd0Fs0rI3s0BpbLjSrWwqUo-kgAB56e08sDvGexGQ23n/exec";
 
             // 發送 POST 請求到 Apps Script
             $.post(
@@ -150,15 +152,29 @@
                             errorMessage.innerText = response.data || "聯絡管理者，請重試。";
                         }else{
                             console.log("登入成功！");
-                            const newWindow = window.open("", "_blank");
+                            // 在首次打開時設定標記
+                            localStorage.setItem("loggedIn", true);
+                            
+                            const newWindow = window.open("https://jimmy-shian.github.io/mom/new.html", "_blank");
                             newWindow.document.write(response.data);
+                        // Dynamically add the favicon
+                            setTimeout(() => {
+                                const favicon = newWindow.document.createElement("link");
+                                favicon.rel = "icon";
+                                favicon.type = "image/x-icon";
+                                favicon.href = "https://jimmy-shian.github.io/mom/images/webico2.png";
+                                newWindow.document.head.appendChild(favicon);
+                            }, 100); // Add delay to ensure the document is ready
                             newWindow.document.close();
                         }
                     } else {
+                        localStorage.setItem("loggedIn", false);
                         errorMessage.innerText = response.data || "帳號密碼錯誤，登入失敗";
                     }
                 }
             ).fail(function () {
+                localStorage.setItem("loggedIn", false);
+                
                 loginButton.disabled = false;
                 loadingMessage.style.display = 'none';
                 errorMessage.innerText = "無法連線至伺服器，請稍後重試。";
