@@ -5,7 +5,7 @@ window.onload = function () {
 
 google.charts.load('current', {'packages':['corechart']});
     
-const url_all = 'https://script.google.com/macros/s/AKfycbwxsXC9K55KJVk5fpIxjlAG6vAf3qcYOBtADSWcEJp2ZHFvCCMLpfKpX8Yma3k7-4pn/exec';
+const url_all = 'https://script.google.com/macros/s/AKfycbyurLf-u2DDA2Q6KVRt6L9VUeOoH-SQtl97GOsG6XIaTAz-LX7CmAV4PcqNZ8JdEDvl/exec';
 // 定義字典
 const digitMap = {
     10: "一",

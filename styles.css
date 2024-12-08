@@ -199,6 +199,9 @@
         /* 邊框顏色 */
 
     }
+    .dropdown {
+        cursor: pointer;
+    }
 
     .search-btn {
         padding: 8px 15px;
