@@ -22,7 +22,7 @@
 
         .login-container {
             background-color: #fff;
-            padding: 30px;
+            padding: 0 30px 30px 30px;
             border-radius: 12px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
             width: 100%;
@@ -81,10 +81,6 @@
             cursor: not-allowed;
         }
 
-        .form-group button:disabled span {
-            color: #eee;
-        }
-
         .error-message {
             color: red;
             text-align: center;
@@ -105,83 +101,90 @@
 
     <div class="login-container">
         <h1>登入</h1>
-        <div class="form-group">
-            <label for="email">帳號</label>
-            <input type="email" id="email" name="email" value="" placeholder="輸入email" required>
-        </div>
-        <div class="form-group">
-            <label for="password">密碼</label>
-            <input type="password" id="password" name="password" value="">
-        </div>
-        <div class="form-group">
-            <button id="login-button" onclick="validateForm()">
-                <span>登入</span>
-            </button>
-        </div>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">帳號</label>
+                <input type="email" id="email" name="email" placeholder="輸入email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">密碼</label>
+                <input type="password" id="password" name="password" placeholder="輸入密碼" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" id="login-button">
+                    <span>登入</span>
+                </button>
+            </div>
+        </form>
         <div id="loading-message" class="loading-message" style="display: none;">登入中...</div>
         <div id="error-message" class="error-message"></div>
     </div>
 
     <script>
-        localStorage.setItem("loggedIn", false);
+        // 監聽表單提交
+        document.getElementById('login-form').addEventListener('submit', (event) => {
+            event.preventDefault(); // 阻止預設表單提交
 
-        function validateForm() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
             const loginButton = document.getElementById('login-button');
             const loadingMessage = document.getElementById('loading-message');
             const errorMessage = document.getElementById('error-message');
 
-            // 禁用按鈕並顯示 "登入中"
+            // 檢查是否填寫完整
+            if (!email || !password) {
+                errorMessage.innerText = '請填寫所有欄位';
+                return;
+            }
+
+            // 顯示 Loading 訊息
             loginButton.disabled = true;
             loadingMessage.style.display = 'block';
             errorMessage.innerText = '';
 
             const url = "https://script.google.com/macros/s/AKfycby5pzxVWP3CpAcZs1e1I11KcL_LdkyEzIknwlobxVaX4f9M28jyiSuVerdO4sWUquc/exec";
 
-            // 發送 POST 請求到 Apps Script
+            // 發送 POST 請求
             $.post(
                 url,
-                { email: email, password: password }, // 傳遞輸入字串
+                { email, password },
                 function (response) {
                     loginButton.disabled = false;
                     loadingMessage.style.display = 'none';
 
                     if (response.success) {
-                        if (response.data == "您無權訪問此頁面。"){
+                        if (response.data === "您無權訪問此頁面。") {
                             errorMessage.innerText = response.data || "聯絡管理者，請重試。";
-                        }else{
-                            console.log("登入成功！");
-                            // 在首次打開時設定標記
-                            localStorage.setItem("loggedIn", true);
-                            
-                            const newWindow = window.open("", "_blank");
-                            
-                            const favicon = newWindow.document.createElement("link");
-                            favicon.rel = "icon";
-                            favicon.type = "image/x-icon";
-                            favicon.href = "https://jimmy-shian.github.io/mom/images/webico.png";
-                            newWindow.document.head.appendChild(favicon);
-                            
-                            newWindow.document.write(response.data);
-                            // Dynamically add the favicon
-                            setTimeout(() => {
-                                newWindow.document.close();
-                            }, 500); // Add delay to ensure the document is ready
+                        } else {
+                            var gotogo = confirm("確認前往主畫面");
+                            if (gotogo) {
+                                const newWindow = window.open("", "_blank");
+                                console.log("登入成功！");
+                                
+                                const favicon = newWindow.document.createElement("link");
+                                favicon.rel = "icon";
+                                favicon.type = "image/x-icon";
+                                favicon.href = "https://jimmy-shian.github.io/mom/images/webico.png";
+                                newWindow.document.head.appendChild(favicon);
+                                
+                                newWindow.document.write(response.data);
+                                setTimeout(() => {
+                                    newWindow.document.close();
+                                }, 500);
+                            } else {
+                                alert("請允許彈出視窗。");
+                            }
                         }
                     } else {
-                        localStorage.setItem("loggedIn", false);
                         errorMessage.innerText = response.data || "帳號密碼錯誤，登入失敗";
                     }
                 }
-            ).fail(function () {
-                localStorage.setItem("loggedIn", false);
-                
+            ).fail(() => {
                 loginButton.disabled = false;
                 loadingMessage.style.display = 'none';
                 errorMessage.innerText = "無法連線至伺服器，請稍後重試。";
             });
-        }
+        });
     </script>
 
 </body>
