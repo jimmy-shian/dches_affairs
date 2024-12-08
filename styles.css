@@ -17,7 +17,7 @@
     body {
         margin: 0;
         height: 100%;
-        background-color: #e0dbdf;
+        background-color: #fffaf4;
     }
 
     .header {
@@ -203,9 +203,10 @@
     .search-result {
         border: 1px solid #ccc;
         min-height: 50%;
-        padding: 15px;
+        padding: 5px 0 5px 15px;
         border-radius: 5px;
         flex-basis: 55%;
+        margin-bottom: 15px;
     }
 
     .right-sidebar {
@@ -301,6 +302,9 @@
         display: flex;
         justify-content: flex-start;
     }
+    #download_link{
+        margin: 10px 0;
+    }
 
     /* 在小螢幕下，隱藏 nav 並顯示漢堡選單 */
     @media (max-width: 950px) {
@@ -326,7 +330,7 @@
         }
 
         .nav-menu.active {
-            max-height: 300px;
+            max-height: fit-content;
             padding: 10px;
             /* 展開時的最大高度 */
         }
@@ -380,19 +384,19 @@
         }
 
         .left-sidebar {
-            order: 1;
+            order: 2;
             /* 排序為第一 */
         }
 
         .right-sidebar {
-            order: 2;
+            order: 3;
             /* 排序為第二 */
         }
 
         .center-content {
             grid-column: 1 / -1;
             /* 橫跨兩列，佔據整個底部 */
-            order: 3;
+            order: 1;
             /* 排序為最後 */
         }
     }

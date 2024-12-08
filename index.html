@@ -5,403 +5,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="images/webico2.png">
-    
-    <link rel="stylesheet" href="styles.css">
-    
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    
-    <title>彰化縣彰化市大成國小事務組</title>
+    <title>登入頁面</title>
     <style>
-/* styles.css */
-/*
-.modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 30px;
+            background-color: #e9f5f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
+        .login-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 550px;
+        }
 
-input {
-    padding: 8px;
-    margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+        .login-container h1 {
+            text-align: center;
+            margin: 10px;
+            color: #333;
+        }
 
-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-button:hover {
-    background-color: #45a049;
-}
-*/
+        .form-group label {
+            font-size: 2.3rem;
+            color: #555;
+            display: block;
+            margin-bottom: 8px;
+        }
 
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 2rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            border-color: #1e88e5;
+            outline: none;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 15px;
+            font-size: 2rem;
+            background-color: #1e88e5;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-group button:hover {
+            background-color: #1565c0;
+        }
+
+        .form-group button:disabled {
+            background-color: #9e9e9e;
+            cursor: not-allowed;
+        }
+
+        .form-group button:disabled span {
+            color: #eee;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.5rem;
+        }
+
+        .loading-message {
+            color: #1e88e5;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
     </style>
 </head>
 
 <body>
-    
-        <!-- 遮罩層 -->
-<!--
-    <div id="passwordModal" class="modal">
-        <div class="modal-content">
-            <h2>請輸入密碼</h2>
-            <input type="password" id="passwordInput" placeholder="輸入密碼" />
-            <button id="submitPassword">確認</button>
-        </div>
-    </div>
--->
 
-    <div id="mainContent" style="display:block;">
-    
-<!--
-    <header class="header">
-        <h3>彰化縣彰化市大成國小事務組</h3>
-        <a href="https://www.dches.chc.edu.tw/" target="_blank" class="back-btn">回首頁</a>
-    </header>
--->
-
-    <!-- 漢堡選單 -->
-    <div class="hamburger-place" id="hamburger" >
-        <div class="hamburger-title">oooooo</div>
-        <div class="hamburger" id="hamburger" onclick="toggleNav()">
-            <div class="bar bar1"></div>
-            <div class="bar bar2"></div>
-            <div class="bar bar3"></div>
+    <div class="login-container">
+        <h1>登入</h1>
+        <div class="form-group">
+            <label for="email">電子郵件</label>
+            <input type="email" id="email" name="email" value="jimmy910824@gmail.com" required>
         </div>
+        <div class="form-group">
+            <label for="password">密碼</label>
+            <input type="password" id="password" name="password" value="1234" required>
+        </div>
+        <div class="form-group">
+            <button id="login-button" onclick="validateForm()">
+                <span>登入</span>
+            </button>
+        </div>
+        <div id="loading-message" class="loading-message" style="display: none;">登入中...</div>
+        <div id="error-message" class="error-message"></div>
     </div>
 
-    <nav class="nav-menu">
-        <a href="https://fetems.chc.edu.tw/web/login" target="_blank">冷氣監控系統</a>
-        <a href="https://gdms.chcg.gov.tw/" target="_blank">公文整合系統</a>
-        <a href="https://www.newboe.chc.edu.tw/" target="_blank">教育處新雲端</a>
-        <a href="https://prms2.chcg.gov.tw/index.jsp" target="_blank">財產管理</a>
-        <a href="https://sbmis.k12ea.gov.tw/index.aspx" target="_blank">校舍管理</a>
-        <a href="https://pts.fnp.gov.tw/APNPA/" target="_blank">國財署</a>
-        
-        <a class="nav-menu-a-special" href="https://pts.fnp.gov.tw/APNPA/" target="_blank">更新資料</a>
-    </nav>
+    <script>
+        function validateForm() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginButton = document.getElementById('login-button');
+            const loadingMessage = document.getElementById('loading-message');
+            const errorMessage = document.getElementById('error-message');
 
+            // 禁用按鈕並顯示 "登入中"
+            loginButton.disabled = true;
+            loadingMessage.style.display = 'block';
+            errorMessage.innerText = '';
 
+            const url = "https://script.google.com/macros/s/AKfycbwpvfJG1PwGtugxp_uqUTOX2RYV4RVHcyRwRFB_mnP4fVpS2_Uf32by9QxOXsHNUgg/exec";
 
-
-    <main class="main-content">
-<!--
-        <aside class="left-sidebar">
-            <a href="https://shwoo.gov.taipei/shwoo_admin/home/home00/login" target="_blank">台北惜物網</a>
-            <a href="https://greenliving.moenv.gov.tw/GreenLife/Anonymous/LoginById.aspx" target="_blank">綠色採購</a>
-            <a href="https://ptps.sfaa.gov.tw/portal/" target="_blank">優先採購</a>
-            <a href="https://www.141242.com.tw/pages/contact" target="_blank">象鴿生活</a>
-            <a href="#" target="_blank">我的雲端硬碟</a>
-        </aside>
--->
-
-        <section class="center-content">
-            <button class="switch-search" onclick="toggleSearch()">搜尋切換</button>
-            <div class="search-container"  id="searchContainer1">
-                <select class="dropdown" id="mainDropdown">
-                    <option value="2">電話機櫃</option> <!-- 電話分機配置 -->
-                    <option value="1">冷氣教室編號</option> <!-- 簡易版冷氣教室編號 -->
-                    <option value="3">消耗品查詢</option> <!-- 電話分機配置 -->
-                </select>
-
-                <input type="text" class="input-box" id="inputBox" placeholder="輸入框" value="五">
-<!--
-
-                <select class="dropdown" id="additionalDropdown">
-                    <option value="phone_num">分機號碼</option>
-                    <option value="phone_place">維修</option>
-                </select>
--->
-
-                <button class="search-btn" onclick="performSearch()">搜尋</button>
-            </div>
-
-            <div class="mid-right-place">
-                <div class="search-container" id="searchContainer2">
-                    <!-- 多選下拉式選單 -->
-                    <div class="custom-dropdown" id="customDropdown">
-                       <button class="dropdown-toggle" onclick="toggleDropdown()">
-                            <span class="button-text">電費年度選擇</span>
-                            <span class="arrow">▼</span>
-                        </button>
-
-                        <div class="dropdown-options">
-                            <label><input type="checkbox" value="111" onclick="updateButtonText()"> 111年度</label>
-                            <label><input type="checkbox" value="112" onclick="updateButtonText()"> 112年度</label>
-                            <label><input type="checkbox" value="113" onclick="updateButtonText()"> 113年度</label>
-                        </div>
-                    </div>
-                    <button class="search-btn" onclick="submitMessage_ebill(event)">搜尋</button>
-                </div>
-                
-                <div class="search-result" id="searchResult">
-                    搜尋顯示區
-                </div>
-                
-                  <div id="curve_chart" ></div>
-                
-                <div id="text_table" ></div>
-
-    
-    <a style="display:none" id="download_link" href="/" download>download</a>
-            </div>
-
-        </section>
-
-<!--
-        <aside class="right-sidebar">
-            <a href="#" target="_blank">購物憑證</a>
-            <a href="#" target="_blank">轉出憑證</a>
-            <a href="#" target="_blank">水電瓦斯統計</a>
-            <a href="#" target="_blank">節約能源會議記錄</a>
-            <a href="#" target="_blank">報告事項</a>
-            <a href="#" target="_blank">財物標準分類</a>
-        </aside>
--->
-
-    </main>
-    
-    
-        </div>
-
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
- <script type="text/javascript" src="script.js"></script>
-    
-<script>
-    
-    // script.js
-document.addEventListener("DOMContentLoaded", function () {
-    const passwordModal = document.getElementById("passwordModal");
-    const mainContent = document.getElementById("mainContent");
-    const passwordInput = document.getElementById("passwordInput");
-    const submitButton = document.getElementById("submitPassword");
-
-    // 設定正確密碼
-    const correctPassword = "12345"; // 設定您想要的密碼
-
-    // 當用戶點擊確認按鈕
-    submitButton.addEventListener("click", function () {
-        const enteredPassword = passwordInput.value;
-        if (enteredPassword === correctPassword) {
-            // 密碼正確，顯示主要內容
-            passwordModal.style.display = "none";
-            mainContent.style.display = "block";
-        } else {
-            alert("密碼錯誤，請再試一次！");
-        }
-    });
-});
-
-    
-        // 在 window 加載時執行
-window.onload = function () {
-    toggleSearch(); // 頁面加載時執行一次切換
-};
-        // 切換 nav 展開或收合
-//      
-//
-//        // 點擊選單外部時自動關閉
-document.addEventListener("click", function (event) {
-    const dropdown = document.getElementById("customDropdown");
-    const navDown = document.querySelector(".nav-menu");
-    const buger = document.querySelector(".hamburger-place");
-
-
-    if (!dropdown.contains(event.target)) {
-        dropdown.classList.remove("open");
-    }
-    if (!navDown.contains(event.target) && !buger.contains(event.target)) {
-        navDown.classList.remove("active");
-        const bars = document.querySelectorAll('.bar');
-        bars[0].style.transform = "rotate(0) translateY(0)";
-        bars[1].style.opacity = "1";
-        bars[2].style.transform = "rotate(0) translateY(0)";
-    }
-});
-
-    function performSearch() {
-        // 取得選擇的值和輸入框內容
-        const mainValue = document.getElementById('mainDropdown').value;
-        const inputValue = document.getElementById('inputBox').value;
-//        const additionalValue = document.getElementById('additionalDropdown').value;
-
-        // 串接顯示結果
-        // API URL
-        const url = url_all;
-
-        const resultContainer = document.getElementById("searchResult");
-        const text_table = document.getElementById("text_table");
-
-        let dotCount = 0;
-        const loadingText = "<p>查詢中";
-
-        // 每隔 0.5 秒更新一次，讓「.」逐個顯示
-        const interval = setInterval(() => {
-            dotCount = (dotCount + 1) % 4; // 循環 0、1、2、3，控制點的數量
-            resultContainer.innerHTML = `${loadingText}${'.'.repeat(dotCount)}</p>`;
-        }, 500);
-        if(mainValue != "3"){
-            console.log("1,=" + inputValue + ", 2.=" + mainValue );
             // 發送 POST 請求到 Apps Script
             $.post(
                 url,
-                { texts: inputValue, 
-                 table: parseInt(mainValue) }, // 傳遞輸入字串
+                { email: email, password: password }, // 傳遞輸入字串
                 function (response) {
-                    clearInterval(interval);
-                    // 如果成功，將結果顯示到搜尋結果區域
-                      if (response.success) {
-                        resultContainer.innerHTML = `<p>查詢成功！</p>`;
-    //                    text_table.innerHTML = JSON.stringify(response.data);
+                    loginButton.disabled = false;
+                    loadingMessage.style.display = 'none';
 
-                        // 將資料轉換成表格
-                        function createTable(data) {
-                          let table = '<table border="1" style="border-collapse: collapse; width: 100%;">';
-
-                          // 表頭
-                            table += `
-                              <thead>
-                                <tr>
-                                  <th style="padding: 8px; text-align: left;">教室位置</th>
-                                  <th style="padding: 8px; text-align: left;">分機號碼1</th>
-                                  <th style="padding: 8px; text-align: left;">分機號碼2</th>
-                                  <th style="padding: 8px; text-align: left;">維修</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                            `;
-
-                            // 表格內容
-                            data.forEach(item => {
-                              // 拆解 source1 以獲取教室位置、分機號碼1、分機號碼2
-                              const [classroomLocation, phone1, phone2] = item.source1.split(',');
-                             
-                              // 處理 phone2 如果是 "無"，則替換為 "--"
-                              const phone2Value = phone2 === "無" ? "--" : phone2;
-
-                              table += `
-                                <tr>
-                                  <td style="padding: 8px;">${classroomLocation}</td>
-                                  <td style="padding: 8px;">${phone1}</td>
-                                  <td style="padding: 8px;">${phone2Value}</td>
-                                  <td style="padding: 8px;">${item.source2.trim().replace(/,$/, '')}</td>
-                                </tr>
-                              `;
-                            });
-
-                          // 結尾
-                          table += '</tbody></table>';
-
-                          return table;
+                    if (response.success) {
+                        if (response.data == "您無權訪問此頁面。"){
+                            errorMessage.innerText = response.data || "聯絡管理者，請重試。";
+                        }else{
+                            console.log("登入成功！");
+                            const newWindow = window.open("", "_blank");
+                            newWindow.document.write(response.data);
+                            newWindow.document.close();
                         }
-
-                        // 解析並顯示資料
-                        text_table.innerHTML = createTable( (response.data) );
-
-
-                      } else {
-                        resultContainer.innerHTML = `<p>查詢失敗：${response.message}</p>`;
-                      }
+                    } else {
+                        errorMessage.innerText = response.data || "帳號密碼錯誤，登入失敗";
+                    }
                 }
             ).fail(function () {
-                // 處理錯誤情況
-                const resultContainer = document.getElementById("searchResult");
-                resultContainer.innerHTML = `<p>連線錯誤，請稍後再試。</p>`;
-            });
-        }else{
-            $.post(
-                url,
-                { texts_items: inputValue}, // 傳遞輸入字串
-                function (response) {
-                    clearInterval(interval);
-                    // 如果成功，將結果顯示到搜尋結果區域
-                      if (response.success) {
-                        resultContainer.innerHTML = `<p>查詢成功！</p>`;
-//                        text_table.innerHTML = JSON.stringify(response.data);
-
-                                    // 將資料轉換成表格
-                        function createTable(data) {
-                            let table = '<table border="1" style="border-collapse: collapse; width: 100%;">';
-
-                            // 表頭
-                            table += `
-                                <thead>
-                                    <tr>
-                                        <th style="padding: 8px; text-align: left;">物品名稱</th>
-                                        <th style="padding: 8px; text-align: left;">單位</th>
-                                        <th style="padding: 8px; text-align: left;">庫存數量</th>
-                                        <th style="padding: 8px; text-align: left;">已購買</th>
-                                        <th style="padding: 8px; text-align: left;">已使用</th>
-                                        <th style="padding: 8px; text-align: left;">剩餘數量</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                            `;
-
-                            // 表格內容
-                            data.forEach(item => {
-                                table += `
-                                    <tr>
-                                        <td style="padding: 8px;">${item.itemName}</td>
-                                        <td style="padding: 8px;">${item.unit}</td>
-                                        <td style="padding: 8px;">${item.prevBalance}</td>
-                                        <td style="padding: 8px;">${item.purchased}</td>
-                                        <td style="padding: 8px;">${item.used}</td>
-                                        <td style="padding: 8px;">${item.remaining}</td>
-                                    </tr>
-                                `;
-                            });
-
-                            // 結尾
-                            table += '</tbody></table>';
-
-                            return table;
-                        }
-
-                          console.log("tyope= " + typeof JSON.parse(response.data))
-                          console.log("response.data= " + JSON.parse(response.data))
-
-                        // 解析並顯示資料，將資料轉換為表格並插入到頁面中
-                        text_table.innerHTML = createTable( JSON.parse(response.data));
-
-                      } else {
-                        resultContainer.innerHTML = `<p>查詢失敗：${response.message}</p>`;
-                      }
-                }
-            ).fail(function () {
-                // 處理錯誤情況
-                const resultContainer = document.getElementById("searchResult");
-                resultContainer.innerHTML = `<p>連線錯誤，請稍後再試。</p>`;
+                loginButton.disabled = false;
+                loadingMessage.style.display = 'none';
+                errorMessage.innerText = "無法連線至伺服器，請稍後重試。";
             });
         }
-
-    }
-        
-        
     </script>
 
-
 </body>
-        </html>
+
+</html>

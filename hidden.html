@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="images/webico2.png">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="js/jquery-3.7.0.min.js"></script>
+    <script type="text/javascript" src="js/loader.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+
+    <title>彰化縣彰化市大成國小事務組</title>
+    <style>
+/* styles.css */
+    </style>
+</head>
+
+<body>
+    
+        <!-- 遮罩層 -->
+<!--
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <h2>請輸入密碼</h2>
+            <input type="password" id="passwordInput" placeholder="輸入密碼" />
+            <button id="submitPassword">確認</button>
+        </div>
+    </div>
+-->
+
+    <div id="mainContent" style="display:block;">
+    
+<!--
+    <header class="header">
+        <h3>彰化縣彰化市大成國小事務組</h3>
+        <a href="https://www.dches.chc.edu.tw/" target="_blank" class="back-btn">回首頁</a>
+    </header>
+-->
+
+    <!-- 漢堡選單 -->
+    <div class="hamburger-place" id="hamburger" >
+        <div class="hamburger-title">oooooo</div>
+        <div class="hamburger" id="hamburger" onclick="toggleNav()">
+            <div class="bar bar1"></div>
+            <div class="bar bar2"></div>
+            <div class="bar bar3"></div>
+        </div>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="https://fetems.chc.edu.tw/web/login" target="_blank">冷氣監控系統</a>
+        <a href="https://gdms.chcg.gov.tw/" target="_blank">公文整合系統</a>
+        <a href="https://www.newboe.chc.edu.tw/" target="_blank">教育處新雲端</a>
+        <a href="https://prms2.chcg.gov.tw/index.jsp" target="_blank">財產管理</a>
+        <a href="https://sbmis.k12ea.gov.tw/index.aspx" target="_blank">校舍管理</a>
+        <a href="https://pts.fnp.gov.tw/APNPA/" target="_blank">國財署</a>
+        
+        <a class="nav-menu-a-special" href="https://drive.google.com/drive/folders/1Kfh9Nb5Lyr8hQM9kfI6X1TKaTNW1QVsT?usp=drive_link" target="_blank">更新資料</a>
+    </nav>
+
+
+
+
+    <main class="main-content">
+        
+        <aside class="left-sidebar">
+            <a href="https://shwoo.gov.taipei/shwoo_admin/home/home00/login" target="_blank">台北惜物網</a>
+            <a href="https://greenliving.moenv.gov.tw/GreenLife/Anonymous/LoginById.aspx" target="_blank">綠色採購</a>
+            <a href="https://ptps.sfaa.gov.tw/portal/" target="_blank">優先採購</a>
+            <a href="https://www.141242.com.tw/pages/contact" target="_blank">象鴿生活</a>
+            <a href="#" target="_blank">我的雲端硬碟</a>
+        </aside>
+
+        <section class="center-content">
+            <button class="switch-search" onclick="toggleSearch()">搜尋切換</button>
+            <div class="search-container"  id="searchContainer1">
+                <select class="dropdown" id="mainDropdown" onchange="updatePlaceholderAndFocus()">
+                    <option value="" disabled selected>請選擇項目</option> 
+                    <option value="2">電話機櫃</option> <!-- 電話分機配置 -->
+                    <option value="1">冷氣教室編號</option> <!-- 簡易版冷氣教室編號 -->
+                    <option value="3">消耗品查詢</option> <!-- 電話分機配置 -->
+                </select>
+
+                <input type="text" class="input-box" id="inputBox" placeholder="使用 空白 分隔多個搜尋" value="" onkeydown="handleEnter(event)">
+                <button class="search-btn" id="searchButton" onclick="performSearch()">搜尋</button>
+            </div>
+
+            <div class="mid-right-place">
+                <div class="search-container" id="searchContainer2">
+                    <!-- 多選下拉式選單 -->
+                    <div class="custom-dropdown" id="customDropdown">
+                       <button class="dropdown-toggle" onclick="toggleDropdown()">
+                            <span class="button-text">電費年度選擇</span>
+                            <span class="arrow">▼</span>
+                        </button>
+
+                        <div class="dropdown-options">
+                            <label><input type="checkbox" value="111" onclick="updateButtonText()"> 111年度</label>
+                            <label><input type="checkbox" value="112" onclick="updateButtonText()"> 112年度</label>
+                            <label><input type="checkbox" value="113" onclick="updateButtonText()"> 113年度</label>
+                        </div>
+                    </div>
+                    <button class="search-btn" id="searchyearButton" onclick="submitMessage_ebill(event)">搜尋</button>
+                </div>
+                
+                <div class="search-result" id="searchResult">
+                </div>
+            </div>
+            
+            <div id="curve_chart" ></div>
+            <a style="" id="download_link" href="/images/webico2.png" download></a>
+            
+            <div id="text_table" ></div>
+
+        </section>
+
+        <aside class="right-sidebar">
+            <a href="#" target="_blank">購物憑證</a>
+            <a href="#" target="_blank">轉出憑證</a>
+            <a href="#" target="_blank">水電瓦斯統計</a>
+            <a href="#" target="_blank">節約能源會議記錄</a>
+            <a href="#" target="_blank">報告事項</a>
+            <a href="#" target="_blank">財物標準分類</a>
+        </aside>
+
+    </main>
+    
+    
+        </div>
+
+    
+<script>
+    
+    // script.js
+            
+</script>
+
+
+</body>
+        </html>
