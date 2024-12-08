@@ -3,14 +3,6 @@ window.onload = function () {
     toggleSearch(); // 頁面加載時執行一次切換
 };
 
-            // 檢測是否為重新整理
-            if (!localStorage.getItem("loggedIn")) {// 1 表示重新整理
-                document.body.innerHTML = "<h1>請重新登入</h1><br><p>重新導向到登入頁...</p>";
-                setTimeout(() => {
-                    window.location.href = "/"; // 修改為你的登入頁面 URL
-                }, 2000);
-            }
-
 google.charts.load('current', {'packages':['corechart']});
     
 const url_all = 'https://script.google.com/macros/s/AKfycbwxsXC9K55KJVk5fpIxjlAG6vAf3qcYOBtADSWcEJp2ZHFvCCMLpfKpX8Yma3k7-4pn/exec';

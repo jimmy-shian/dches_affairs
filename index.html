@@ -142,7 +142,7 @@
             loadingMessage.style.display = 'block';
             errorMessage.innerText = '';
 
-            const url = "https://script.google.com/macros/s/AKfycbycwf6vyu3Avzdal9gz4IhLp54alynRi6uIJobotlllIgKs-3HbnqcvAcQRzMZg6rI_/exec";
+            const url = "https://script.google.com/macros/s/AKfycbxzKDSTVDO12pBw7laM-ychH0Y_W7FrBqurWZOAfPTOYhQvScPJqRdkbjHab9eb3To3/exec";
 
             // 發送 POST 請求
             $.post(
@@ -156,24 +156,19 @@
                         if (response.data === "您無權訪問此頁面。") {
                             errorMessage.innerText = response.data || "聯絡管理者，請重試。";
                         } else {
-                            var gotogo = confirm("確認前往主畫面");
-                            if (gotogo) {
-                                const newWindow = window.open("", "_blank");
-                                console.log("登入成功！");
-                                
-                                const favicon = newWindow.document.createElement("link");
-                                favicon.rel = "icon";
-                                favicon.type = "image/x-icon";
-                                favicon.href = "https://jimmy-shian.github.io/dches_affairs/images/webico.png";
-                                newWindow.document.head.appendChild(favicon);
-                                
-                                newWindow.document.write(response.data);
-                                setTimeout(() => {
-                                    newWindow.document.close();
-                                }, 500);
-                            } else {
-                                alert("請允許彈出視窗。");
-                            }
+                            const newWindow = window.open("", "_blank");
+                            console.log("登入成功！");
+
+                            const favicon = newWindow.document.createElement("link");
+                            favicon.rel = "icon";
+                            favicon.type = "image/x-icon";
+                            favicon.href = "https://jimmy-shian.github.io/dches_affairs/images/webico.png";
+                            newWindow.document.head.appendChild(favicon);
+
+                            newWindow.document.write(response.data);
+                            setTimeout(() => {
+                                newWindow.document.close();
+                            }, 500);
                         }
                     } else {
                         errorMessage.innerText = response.data || "帳號密碼錯誤，登入失敗";
