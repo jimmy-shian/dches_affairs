@@ -139,6 +139,13 @@
         padding: 8px 0;
         border-bottom: 1px solid #ccc;
     }
+    .left-sidebar a::before {
+        content: "•"; /* 設定符號為點號 */
+        color: black; /* 點號顏色 */
+        margin-right: 8px; /* 點號與文字間距 */
+        font-size: 1.2rem; /* 點號大小 */
+        line-height: 1; /* 垂直對齊 */
+    }
     .sticky-bottom {
         margin-top: auto; /* 將元素推到容器底部 */
     }
@@ -231,6 +238,13 @@
         color: #333;
         padding: 8px 0;
         border-bottom: 1px solid #ccc;
+    }
+    .right-sidebar a::before {
+        content: "•"; /* 設定符號為點號 */
+        color: black; /* 點號顏色 */
+        margin-right: 8px; /* 點號與文字間距 */
+        font-size: 1.2rem; /* 點號大小 */
+        line-height: 1; /* 垂直對齊 */
     }
 
     /* 自訂樣式的下拉選單 */
