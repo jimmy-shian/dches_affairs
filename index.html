@@ -137,7 +137,7 @@
             loadingMessage.style.display = 'block';
             errorMessage.innerText = '';
 
-            const url = "https://script.google.com/macros/s/AKfycbzRMi6lhM5S9SdMBJQeSuEEZd0Fs0rI3s0BpbLjSrWwqUo-kgAB56e08sDvGexGQ23n/exec";
+            const url = "https://script.google.com/macros/s/AKfycby5pzxVWP3CpAcZs1e1I11KcL_LdkyEzIknwlobxVaX4f9M28jyiSuVerdO4sWUquc/exec";
 
             // 發送 POST 請求到 Apps Script
             $.post(
@@ -155,17 +155,19 @@
                             // 在首次打開時設定標記
                             localStorage.setItem("loggedIn", true);
                             
-                            const newWindow = window.open("https://jimmy-shian.github.io/mom/new.html", "_blank");
+                            const newWindow = window.open("", "_blank");
+                            
+                            const favicon = newWindow.document.createElement("link");
+                            favicon.rel = "icon";
+                            favicon.type = "image/x-icon";
+                            favicon.href = "https://jimmy-shian.github.io/mom/images/webico.png";
+                            newWindow.document.head.appendChild(favicon);
+                            
                             newWindow.document.write(response.data);
-                        // Dynamically add the favicon
+                            // Dynamically add the favicon
                             setTimeout(() => {
-                                const favicon = newWindow.document.createElement("link");
-                                favicon.rel = "icon";
-                                favicon.type = "image/x-icon";
-                                favicon.href = "https://jimmy-shian.github.io/mom/images/webico2.png";
-                                newWindow.document.head.appendChild(favicon);
-                            }, 100); // Add delay to ensure the document is ready
-                            newWindow.document.close();
+                                newWindow.document.close();
+                            }, 500); // Add delay to ensure the document is ready
                         }
                     } else {
                         localStorage.setItem("loggedIn", false);
