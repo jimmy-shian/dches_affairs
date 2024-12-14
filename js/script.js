@@ -123,6 +123,39 @@ function updatePlaceholderAndFocus() {
     inputBox.focus();
 }   
 
+// 導覽列隱藏顯示
+function showhide() {
+    const leftSidebar = document.querySelector('.left-sidebar');
+    const rightSidebar = document.querySelector('.right-sidebar');
+    const switchButton = document.querySelector('#showhide');  // 選擇按鈕
+
+    // 如果左側邊欄是隱藏狀態
+    if (leftSidebar.style.display === 'none') {
+        // 如果已經是隱藏狀態，先顯示，觸發過渡
+        leftSidebar.style.display = '';
+        rightSidebar.style.display = '';
+        setTimeout(function() {
+            // 觸發過渡
+            leftSidebar.classList.toggle('hidden');
+            rightSidebar.classList.toggle('hidden');
+        }, 200);  // 設定為與過渡時間一致（200ms）
+
+        // 更改按鈕文字為 "隱藏"
+        switchButton.textContent = "隱藏導覽列";
+    } else {
+        // 直接切換顯示或隱藏
+        leftSidebar.classList.toggle('hidden');
+        rightSidebar.classList.toggle('hidden');
+        setTimeout(function() {
+            leftSidebar.style.display = 'none';
+            rightSidebar.style.display = 'none';
+        }, 200);  // 設定為與過渡時間一致（200ms）
+
+        // 更改按鈕文字為 "顯示"
+        switchButton.textContent = "顯示導覽列";
+    }
+}
+
 //兩種搜尋切換
 function toggleSearch() {
     // 獲取兩個搜尋容器

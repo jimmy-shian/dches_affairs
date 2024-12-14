@@ -60,9 +60,11 @@
         padding: 10px;
         background-color: #f0f8f0;
         border-bottom: 1px solid #ddd;
-        transition: max-height 0.4s ease-out;
+        transition: max-height 0.5s ease-out, padding 0.2s ease-out;
         overflow: hidden;
         gap: 20px;
+/*        transition: opacity .4s ease-in-out;*/
+
     }
 
     /* 隱藏 nav 菜單，顯示漢堡選單按鈕 */
@@ -129,7 +131,7 @@
         padding: 15px;
         border-radius: 5px;
         flex-basis: 17%;
-        /* 中間元素佔 30% */
+        max-height: 450px;
     }
 
     .left-sidebar a {
@@ -233,6 +235,7 @@
         flex-basis: 17%;
         display: flex;
         flex-direction: column;
+        max-height: 450px;
     }
 
     .right-sidebar a {
@@ -316,7 +319,28 @@
     .custom-dropdown.open .dropdown-options {
         display: block;
     }
+    
 
+    .left-sidebar, .right-sidebar {
+        opacity: 1;
+        visibility: visible;
+        width: auto;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .left-sidebar.hidden, .right-sidebar.hidden {
+        opacity: 0;
+        visibility: hidden;
+        width: 0px;
+        flex-basis: 0%;
+    }
+    #text_table{
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 15px;
+        max-height: 300px;
+        overflow-y: scroll;
+    }
     #curve_chart {
         padding: 10px 0;
         width: 100%;
@@ -351,10 +375,12 @@
             max-height: 0;
             margin: 0;
             gap: 5px;
+/*            opacity: 0;*/
         }
 
         .nav-menu.active {
-            max-height: fit-content;
+/*            opacity: 1;*/
+            max-height: 900px;
             padding: 10px;
             /* 展開時的最大高度 */
         }
