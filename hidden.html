@@ -10,7 +10,7 @@
     
     <script src="js/jquery-3.7.0.min.js"></script>
     <script type="text/javascript" src="js/loader.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@7.1.0/build/index.min.js"></script>
 
 <!--    <title>彰化縣彰化市大成國小事務組</title>-->
     <title>國小事務組</title>
@@ -76,8 +76,12 @@
                     <option value="1">冷氣教室編號</option> <!-- 簡易版冷氣教室編號 -->
                     <option value="3">消耗品查詢</option> <!-- 電話分機配置 -->
                 </select>
+                
+                <div class="suggestions-place">
+                    <input type="text" class="input-box" id="inputBox" placeholder="使用 空白 分隔多個搜尋" value="" onkeydown="handleEnter(event)" oninput="handleInput()" onfocus="showAllSuggestions()">
+                    <div id="suggestions" class="suggestions"></div>                
+                </div>
 
-                <input type="text" class="input-box" id="inputBox" placeholder="使用 空白 分隔多個搜尋" value="" onkeydown="handleEnter(event)">
                 <button class="search-btn" id="searchButton" onclick="performSearch()">搜尋</button>
             </div>
 
@@ -101,7 +105,10 @@
                 
                 <div class="search-result" id="searchResult"></div>
             <div id="curve_chart" ></div>
-            <a style="" id="download_link" href="/images/webico2.png" download></a>
+            
+            <a style="" class="download_link" id="download_link_img" href="/images/webico2.png" download></a>
+            <a style="" class="download_link" id="download_link" href="/images/webico2.png" download></a>
+
             
             <div id="text_table" ></div>
                 
@@ -129,6 +136,7 @@
     // script.js
 
 </script>
+<script type="text/javascript" src="js/script.js"></script>
 
 </body>
 

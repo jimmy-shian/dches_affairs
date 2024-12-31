@@ -5,7 +5,7 @@ window.onload = function () {
 
 google.charts.load('current', {'packages':['corechart']});
     
-const url_all = 'https://script.google.com/macros/s/AKfycbyurLf-u2DDA2Q6KVRt6L9VUeOoH-SQtl97GOsG6XIaTAz-LX7CmAV4PcqNZ8JdEDvl/exec';
+const url_all = 'https://script.google.com/macros/s/AKfycbww59lkcNFcLWiCVKLVDZKs0-SfbbCV24_U7I7gWzDxIAi2X19pQ6zs4foqUC5ebSzr/exec';
 // 定義字典
 const digitMap = {
     10: "一",
@@ -15,23 +15,84 @@ const digitMap = {
     50: "五",
     60: "六"
 };
+
+var groupedData;
+// 發送 get 請求到 Apps Script
+$.get(
+    url_all,
+    function (response) {
+        // 如果成功，將結果顯示到搜尋結果區域
+          if (response) {
+            console.log(response);
+              groupedData = response;
+    }
+    }).fail(function () {
+        // 處理錯誤情況
+        console.log( "fail~");
+    })
+
+// 下載word
+function generateWordDocument(imageUri) {
+    const { Document, Packer, Paragraph, ImageRun } = docx;
+
+    // 創建 Word 文檔
+    const doc = new Document({
+        creator: "你的名字", // 作者名稱
+        title: "電費折線圖報告", // 文件標題
+        description: "包含電費折線圖的報告文件", // 文件描述
+        sections: [
+            {
+                children: [
+                    // 創建標題
+                    new Paragraph({
+                        text: "電費折線圖報告",
+                        heading: "Heading1",
+                    }),
+                    // 添加描述段落
+                    new Paragraph("以下為電費折線圖：\n\n"),
+                    // 插入圖片
+                    new Paragraph({
+                        children: [
+                            new ImageRun({
+                                data: imageUri, // Base64 或 Uint8Array 格式的圖片
+                                transformation: {
+                                    width: 560, // 圖片寬度
+                                    height: 350, // 圖片高度
+                                },
+                            }),
+                        ],
+                    }),
+                ],
+            },
+        ],
+    });
+
+    // 使用 Packer 打包文檔並觸發下載
+    Packer.toBlob(doc).then((blob) => {
+        const downloadLink = document.getElementById("download_link");
+        downloadLink.setAttribute("href", URL.createObjectURL(blob));
+        downloadLink.setAttribute("download", "電費折線圖.docx"); // 設置下載文件名
+    });
+}
+
+
+var imgURL = '';
 //畫電費
 function drawChart(rawData) {
-      // 解析多組資料
-      var dataGroups = rawData.split('&&'); // 用 "&&" 分隔多組資料
-//      console.log("dataGroups=", dataGroups);
+    // 解析多組資料
+    var dataGroups = rawData.split('&&');
 
-      var months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+    var months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
 
-      // 初始化圖表資料，第一行是標題列
-      var chartData = [['月份']]; // 第一列為月份，接下來會依據每組資料動態添加列標題
+    // 初始化圖表資料，第一行是標題列
+    var chartData = [['月份']]; // 第一列為月份，接下來會依據每組資料動態添加列標題
 
-      // 解析每組數據並添加到 chartData 中
-      dataGroups.forEach(function(rawDataEntry) {
+    // 解析每組數據並添加到 chartData 中
+    dataGroups.forEach(function(rawDataEntry) {
         // 分析單一組資料
         var dataArray = rawDataEntry.split(',');
         var values = dataArray.slice(3, 15).map(function(value) {
-          return value === '' ? 0 : parseInt(value); // 處理空值為 0
+            return value === '' ? 0 : parseInt(value); // 處理空值為 0
         });
 
         var yearName = dataArray[0].match(/^(\d+)年/); // 提取年份名稱
@@ -42,64 +103,158 @@ function drawChart(rawData) {
 
         // 將資料與月份對應，加入 chartData
         months.forEach(function(month, index) {
-          if (chartData[index + 1] === undefined) {
-            chartData[index + 1] = [month]; // 若尚未存在，初始化行
-          }
-          chartData[index + 1].push(values[index]); // 添加對應月份的數據
-        });
-      });
-
-//      console.log("chartData=", chartData);
-
-      // 將資料轉換為 Google Charts 所需格式
-      var data = google.visualization.arrayToDataTable(chartData);
-
-      // 設定圖表選項
-        var options = {
-          title: '班班有冷氣 每月電費支出',
-          titleTextStyle: {
-            fontSize: 24,  // 設定標題字體大小
-            bold: true,    // 設定標題字體為粗體
-          },
-          width: 800, // 固定寬度
-          height: 500, // 固定高度
-          curveType: 'none',  // 标准折线图
-          legend: { position: 'bottom' },
-          annotations: {
-            alwaysOutside: true,  // 始终显示数据标签
-            textStyle: {
-              fontSize: 12,
-              color: '#000000',  // 设置文本颜色
-              bold: true
+            if (chartData[index + 1] === undefined) {
+                chartData[index + 1] = [month]; // 若尚未存在，初始化行
             }
-          },
-          pointSize: 6,  // 设置点的大小
-          vAxis: {
-            title: '電費'
-          },
-          hAxis: {
+            chartData[index + 1].push(values[index]); // 添加對應月份的數據
+        });
+    });
+
+    // 將資料轉換為 Google Charts 所需格式
+    var data = google.visualization.arrayToDataTable(chartData);
+
+    // 設定圖表選項
+    var options = {
+        title: '全校冷氣 每月電費支出圖',
+        titleTextStyle: {
+            fontSize: 24, // 設定標題字體大小
+            bold: true, // 設定標題字體為粗體
+        },
+        width: 800, // 固定寬度
+        height: 500, // 固定高度
+        curveType: 'none', // 標準折線圖
+        legend: { position: 'bottom' },
+        annotations: {
+            alwaysOutside: true, // 始終顯示數據標籤
+            textStyle: {
+                fontSize: 12,
+                color: '#000000', // 設定文本顏色
+                bold: true
+            }
+        },
+        pointSize: 6, // 設定點的大小
+        vAxis: {
+            title: '電費 (NT$)',
+            format: 'NT$',
+//            format: 'decimal' // 將 Y 軸格式化為貨幣
+        },
+        hAxis: {
             title: '月份'
-          }
-        };
+        },
+        tooltip: {
+            isHtml: true, // 啟用 HTML 格式的 tooltip
+//            trigger: 'selection' // 設定 tooltip 觸發為選擇的點
+        }
+    };
 
-      // 生成並繪製圖表
-      var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-        
-      google.visualization.events.addListener(chart, 'ready', function () {
-        // 更新圖片顯示
-        var imageUri = chart.getImageURI();
+    // 生成並繪製圖表
+    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
 
-        // 更新下載鏈接的 href 屬性
-        var downloadLink = document.getElementById("download_link");
-        downloadLink.setAttribute("href", imageUri);
-        // 更新下載鏈接顯示的文字
-        downloadLink.textContent = "下載 電費折線圖"; // 設定顯示的文本
-        downloadLink.setAttribute("download", "chart.png");  // 設置下載的文件名
-        downloadLink.style.display = "block";  // 顯示下載按鈕
-      });
-        
-      chart.draw(data, options);
+    // 格式化 Tooltip（無小數點）
+    var formatter = new google.visualization.NumberFormat({
+        fractionDigits: 0, // 設定小數位為 0
+        suffix: ' 元' // 添加「元」
+    });
+    for (var colIndex = 1; colIndex < chartData[0].length; colIndex++) {
+        formatter.format(data, colIndex); // 格式化每列數據
     }
+
+    // 生成並繪製圖表
+    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+//    google.visualization.events.addListener(chart, 'ready', function () {
+//      // 更新圖片顯示
+//      var imageUri = chart.getImageURI();
+//
+//      // 更新下載鏈接的 href 屬性
+//      var downloadLink = document.getElementById("download_link");
+//      downloadLink.setAttribute("href", imageUri);
+//      // 更新下載鏈接顯示的文字
+//      downloadLink.textContent = "下載 電費折線圖"; // 設定顯示的文本
+//      downloadLink.setAttribute("download", "chart.png"); // 設置下載的文件名
+//      downloadLink.style.display = "block"; // 顯示下載按鈕
+//    });
+    google.visualization.events.addListener(chart, 'ready', function () {
+        // 獲取圖片的 URI
+        var imageUri = chart.getImageURI();
+        imgURL = imageUri;
+        
+        // 添加下載 Word 按鈕
+      var downloadLink = document.getElementById("download_link_img");
+      downloadLink.setAttribute("href", imageUri);
+      // 更新下載鏈接顯示的文字
+      downloadLink.textContent = "下載 電費折線圖"; // 設定顯示的文本
+      downloadLink.setAttribute("download", "chart.png"); // 設置下載的文件名
+      downloadLink.style.display = "block"; // 顯示下載按鈕
+        
+        var downloadLink = document.getElementById("download_link");
+        downloadLink.textContent = "下載電費折線圖（Word）";
+        downloadLink.style.display = "block";
+
+        generateWordDocument(imgURL);
+        // 設定下載按鈕的點擊事件
+//        downloadLink.addEventListener("click", function () {
+//            console.log("imgURL= " +imgURL);
+//        });
+    });
+
+
+    
+    // 初始化 Tooltip 元素
+    var tooltipElement = document.createElement('div');
+    tooltipElement.style.position = 'absolute';
+    tooltipElement.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    tooltipElement.style.color = 'white';
+    tooltipElement.style.padding = '5px';
+    tooltipElement.style.borderRadius = '5px';
+    tooltipElement.style.transition = 'opacity 0.3s'; // 添加淡入淡出效果
+    tooltipElement.style.opacity = '0'; // 初始為隱藏
+    tooltipElement.style.pointerEvents = 'none'; // 防止干擾滑鼠事件
+    tooltipElement.style.zIndex = '9999'; // 確保顯示在最前面
+    document.body.appendChild(tooltipElement);
+
+    // 添加選擇事件
+    google.visualization.events.addListener(chart, 'select', function (event) {
+        var selection = chart.getSelection();
+        if (selection.length > 0) {
+            var selectedRow = selection[0].row; // 獲取選中的行 (月份)
+            if (selectedRow !== null) {
+                // 顯示選中的月份
+                var tooltipContent = `月份: ${months[selectedRow]}\n`;
+
+                // 遍歷所有的列（年份），顯示每條線對應的數值
+                for (var colIndex = 1; colIndex < chartData[0].length; colIndex++) {
+                    var value = data.getValue(selectedRow, colIndex); // 獲取該月份對應的 Y 軸數值
+                    var formattedValue = formatter.formatValue(value); // 格式化數值
+                    tooltipContent += `${chartData[0][colIndex]}: ${formattedValue}\n`; // 加入年份數值
+                }
+
+                // 更新 Tooltip 內容
+                tooltipElement.innerText = tooltipContent;
+
+                // 設定 Tooltip 的位置
+                document.addEventListener('mousemove', function moveTooltip(event) {
+                    tooltipElement.style.left = `${event.pageX + 10}px`; // 滑鼠右邊 10px
+                    tooltipElement.style.top = `${event.pageY + 10}px`; // 滑鼠下方 10px
+                });
+
+                // 顯示 Tooltip，淡入效果
+                tooltipElement.style.opacity = '1';
+
+                // 自動移除 Tooltip，淡出效果
+                setTimeout(() => {
+                    tooltipElement.style.opacity = '0'; // 開始淡出
+                    setTimeout(() => {
+                        tooltipElement.innerText = ''; // 清空內容
+                    }, 300); // 等待淡出完成後移除內容
+                }, 2000); // 停留 3 秒後淡出
+            }
+        }
+    });
+
+    
+    chart.draw(data, options);
+}
 
 //按 enter 搜尋
 function handleEnter(event) {
@@ -107,21 +262,113 @@ function handleEnter(event) {
         performSearch();
     }
 }
-//input 提示字
+
+const searchInput = document.getElementById("inputBox");
+const suggestionsContainer = document.getElementById("suggestions");
+
+// 切換輸入框提示字
 function updatePlaceholderAndFocus() {
-    const dropdown = document.getElementById('mainDropdown');
-    const inputBox = document.getElementById('inputBox');
+//  const suggestionsContainer = document.getElementById("suggestions");
+//  const searchInput = document.getElementById("inputBox");
+  const dropdown = document.getElementById("mainDropdown");
 
-    // 根據 dropdown 的值更新 placeholder
-    if (dropdown.value === "3") {
-        inputBox.placeholder = "輸入物品名稱 ex: 筆 釘書機";
-    } else {
-        inputBox.placeholder = "輸入班級 ex: 501 四4";
+  if (dropdown.value === "3") {
+    searchInput.placeholder = "輸入物品名稱 ex: 筆 釘書機";
+  } else {
+    searchInput.placeholder = "輸入班級 ex: 501 四4";
+  }
+
+//  searchInput.focus();
+  showAllSuggestions();
+}
+
+// 顯示所有建議
+function showAllSuggestions() {
+  suggestionsContainer.innerHTML = ""; // 清空建議
+  const dropdown = document.getElementById("mainDropdown");
+  if (dropdown.value === "3") { return; }
+
+  for (const group in groupedData) {
+    const groupElement = document.createElement("div");
+    groupElement.className = "group";
+
+    const titleElement = document.createElement("div");
+    titleElement.className = "group-title";
+    titleElement.textContent = group;
+    groupElement.appendChild(titleElement);
+
+    groupedData[group].forEach((item) => {
+      const itemElement = document.createElement("div");
+      itemElement.className = "item";
+      itemElement.textContent = item.name;
+      groupElement.appendChild(itemElement);
+
+      // 點擊選項
+      itemElement.addEventListener("click", () => {
+        searchInput.value = item.name;
+        suggestionsContainer.innerHTML = ""; // 隱藏建議
+      });
+    });
+
+    suggestionsContainer.appendChild(groupElement);
+    searchInput.focus();
+  }
+}
+// 搜尋功能
+// 處理輸入事件
+function handleInput() {
+//  const suggestionsContainer = document.getElementById("suggestions");
+//  const searchInput = document.getElementById("inputBox");
+  const query = searchInput.value.toLowerCase().trim();
+  suggestionsContainer.innerHTML = ""; // 清空建議
+
+  if (!query) {
+    showAllSuggestions();
+    return;
+  }
+
+  for (const group in groupedData) {
+    const matches = groupedData[group].filter((item) =>
+      item.name.toLowerCase().includes(query)
+    );
+
+    if (matches.length > 0) {
+      const groupElement = document.createElement("div");
+      groupElement.className = "group";
+
+      const titleElement = document.createElement("div");
+      titleElement.className = "group-title";
+      titleElement.textContent = group;
+      groupElement.appendChild(titleElement);
+
+      matches.forEach((item) => {
+        const itemElement = document.createElement("div");
+        itemElement.className = "item";
+        itemElement.textContent = item.name;
+        groupElement.appendChild(itemElement);
+
+        // 點擊建議時填充輸入框
+        itemElement.onclick = () => {
+          searchInput.value = item.name;
+          suggestionsContainer.innerHTML = "";
+        };
+      });
+
+      suggestionsContainer.appendChild(groupElement);
     }
+  }
+}
 
-    // 將焦點移到 inputBox
-    inputBox.focus();
-}   
+// 點擊其他地方隱藏建議
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".suggestions-place")) {
+    suggestionsContainer.innerHTML = "";
+  }
+});
+
+
+
+
 
 // 導覽列隱藏顯示
 function showhide() {
@@ -163,9 +410,7 @@ function toggleSearch() {
     const searchContainer2 = document.getElementById("searchContainer2");
     const text_table = document.getElementById("text_table");
     const curve_chart = document.getElementById("curve_chart"); 
-    const download_link = document.getElementById("download_link");
-
-
+    const download_links = document.querySelectorAll(".download_link");
 
     // 切換顯示狀態
     if (searchContainer2.style.display === "none") {
@@ -174,13 +419,13 @@ function toggleSearch() {
         searchContainer2.style.display = "flex";
         
         curve_chart.style.display = "";
-        download_link.style.display = "";
+        download_links.forEach(link => link.style.display = "");
     } else {
         searchContainer1.style.display = "flex";
         searchContainer2.style.display = "none";
         curve_chart.style.display = "none";
-        download_link.style.display = "none";
-
+        download_links.forEach(link => link.style.display = "none");
+        
         text_table.style.display = "";
     }
 }
@@ -500,3 +745,5 @@ function performSearch() {
         });
     }
 }
+
+
