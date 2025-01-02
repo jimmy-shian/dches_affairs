@@ -5,7 +5,7 @@ window.onload = function () {
 
 google.charts.load('current', {'packages':['corechart']});
     
-const url_all = 'https://script.google.com/macros/s/AKfycbww59lkcNFcLWiCVKLVDZKs0-SfbbCV24_U7I7gWzDxIAi2X19pQ6zs4foqUC5ebSzr/exec';
+const url_all = 'https://script.google.com/macros/s/AKfycbyGd5GhFNQyMRD4jqeOwA1hCUFynNK7197_QvN9LhqXSuKIkMzC_CE1Bi1qiQqWb24Y/exec';
 // 定義字典
 const digitMap = {
     10: "一",
@@ -17,19 +17,36 @@ const digitMap = {
 };
 
 var groupedData;
+var groupedData_table12;
+var groupedData_table3;
+
 // 發送 get 請求到 Apps Script
-$.get(
-    url_all,
-    function (response) {
-        // 如果成功，將結果顯示到搜尋結果區域
-          if (response) {
-            console.log(response);
-              groupedData = response;
-    }
-    }).fail(function () {
+// 要請求的 tables 列表
+var tables = [3, 1];
+// 迴圈處理所有的 GET 請求
+tables.forEach(function(table) {
+    $.get(
+        url_all,
+        { table: table }, // 傳遞選擇的年份字串
+        function (response) {
+            // 如果成功，將結果顯示到搜尋結果區域
+            if (response) {
+                console.log(response);
+                // 根據不同的 table 值賦予不同的變數
+                if (table === 3) {
+                    groupedData_table3 = response;
+                } else if (table === 1) {
+                    groupedData_table12 = response;
+                }
+//                showAllSuggestions();
+            }
+        }
+    ).fail(function () {
         // 處理錯誤情況
-        console.log( "fail~");
-    })
+        console.log("fail~" + table);
+    });
+});
+
 
 // 下載word
 function generateWordDocument(imageUri) {
@@ -277,16 +294,14 @@ function updatePlaceholderAndFocus() {
   } else {
     searchInput.placeholder = "輸入班級 ex: 501 四4";
   }
-
 //  searchInput.focus();
-  showAllSuggestions();
 }
 
 // 顯示所有建議
 function showAllSuggestions() {
   suggestionsContainer.innerHTML = ""; // 清空建議
   const dropdown = document.getElementById("mainDropdown");
-  if (dropdown.value === "3") { return; }
+  groupedData = (dropdown.value === "3") ? groupedData_table3 : groupedData_table12;
 
   for (const group in groupedData) {
     const groupElement = document.createElement("div");
@@ -295,6 +310,14 @@ function showAllSuggestions() {
     const titleElement = document.createElement("div");
     titleElement.className = "group-title";
     titleElement.textContent = group;
+    
+    // 點擊 group-title 顯示所有該組的項目
+    titleElement.addEventListener("click", () => {
+      const allItems = groupedData[group].map(item => item.name).join(" "); // 使用空格分隔所有項目名稱
+      searchInput.value = allItems; // 將結果放入搜尋欄
+      suggestionsContainer.innerHTML = ""; // 隱藏建議
+    });
+
     groupElement.appendChild(titleElement);
 
     groupedData[group].forEach((item) => {
@@ -303,7 +326,7 @@ function showAllSuggestions() {
       itemElement.textContent = item.name;
       groupElement.appendChild(itemElement);
 
-      // 點擊選項
+      // 點擊選項填充輸入框
       itemElement.addEventListener("click", () => {
         searchInput.value = item.name;
         suggestionsContainer.innerHTML = ""; // 隱藏建議
@@ -311,14 +334,11 @@ function showAllSuggestions() {
     });
 
     suggestionsContainer.appendChild(groupElement);
-    searchInput.focus();
   }
 }
+
 // 搜尋功能
-// 處理輸入事件
 function handleInput() {
-//  const suggestionsContainer = document.getElementById("suggestions");
-//  const searchInput = document.getElementById("inputBox");
   const query = searchInput.value.toLowerCase().trim();
   suggestionsContainer.innerHTML = ""; // 清空建議
 
@@ -375,6 +395,8 @@ function showhide() {
     const leftSidebar = document.querySelector('.left-sidebar');
     const rightSidebar = document.querySelector('.right-sidebar');
     const switchButton = document.querySelector('#showhide');  // 選擇按鈕
+    const center_content = document.querySelector('.center-content ');  // 主要內容
+    const toggleIcon = document.getElementById('toggleIcon');  // 圖片元素
 
     // 如果左側邊欄是隱藏狀態
     if (leftSidebar.style.display === 'none') {
@@ -383,24 +405,37 @@ function showhide() {
         rightSidebar.style.display = '';
         setTimeout(function() {
             // 觸發過渡
+            center_content.style.maxWidth = '';
             leftSidebar.classList.toggle('hidden');
             rightSidebar.classList.toggle('hidden');
         }, 200);  // 設定為與過渡時間一致（200ms）
 
-        // 更改按鈕文字為 "隱藏"
-        switchButton.textContent = "隱藏導覽列";
+        // 更改圖片為 "隱藏" 導覽列的圖示
+        toggleIcon.src = './images/hide_password.png';
+        toggleIcon.alt = '隱藏導覽列';
     } else {
+        center_content.style.maxWidth = '80%';
+
         // 直接切換顯示或隱藏
         leftSidebar.classList.toggle('hidden');
         rightSidebar.classList.toggle('hidden');
         setTimeout(function() {
             leftSidebar.style.display = 'none';
             rightSidebar.style.display = 'none';
-        }, 200);  // 設定為與過渡時間一致（200ms）
+        }, 100);  // 設定為與過渡時間一致（100ms）
 
-        // 更改按鈕文字為 "顯示"
-        switchButton.textContent = "顯示導覽列";
+        // 更改圖片為 "顯示" 導覽列的圖示
+        toggleIcon.src = './images/show_password.png';
+        toggleIcon.alt = '顯示導覽列';
     }
+}
+// 清除搜尋框
+function clearSearch() {
+    const resultContainer = document.getElementById("searchResult");
+    const text_table = document.getElementById("text_table");
+
+    resultContainer.innerHTML = ``;
+    text_table.innerHTML = ``;
 }
 
 //兩種搜尋切換

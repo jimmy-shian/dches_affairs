@@ -19,6 +19,10 @@
         height: 100%;
         background-color: #fffaf4;
     }
+    
+button:disabled {
+    cursor: not-allowed;
+}
 
     .header {
         background-color: #0077B6;
@@ -27,6 +31,7 @@
         justify-content: space-between;
         align-items: center;
         color: white;
+        height: 25px;
     }
 
     .header h3 {
@@ -171,6 +176,9 @@
         border-radius: 4px;
         font-size: 14px;
     }
+        .switch-search img{
+            width: 20px;
+        }
     .mid-right-place {
         flex-basis: 45%;
         display: flex;
@@ -231,6 +239,9 @@
         flex-basis: 55%;
         margin-bottom: 15px;
     }
+        .search-result p{
+            margin: 3px;
+        }
 
     .right-sidebar {
         max-width: 200px;
@@ -341,11 +352,14 @@
         flex-basis: 0%;
     }
     #text_table{
+        margin: 10px 0px;
+        border: 1px solid #ccc;
+
         border-collapse: collapse;
         width: 100%;
         margin-bottom: 15px;
         max-height: 300px;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
     #curve_chart {
         padding: 10px 0;
@@ -371,7 +385,7 @@
       top: 100%;
       left: 0;
       width: 100%;
-      max-height: 200px;
+      max-height: 280px;
       overflow-y: auto;
       background: #fff;
       border: 1px solid #ccc;
@@ -395,16 +409,18 @@
           color: #333;
           margin-bottom: 5px;
         }
+            .group-title:hover {
+                background-color: #feffe8;
+            }
 
         .item {
           padding: 5px 10px;
           cursor: pointer;
           color: #555;
         }
-
-        .item:hover {
-          background-color: #f0f0f0;
-        }
+            .item:hover {
+              background-color: #f0f0f0;
+            }
 
 
     /* 在小螢幕下，隱藏 nav 並顯示漢堡選單 */
