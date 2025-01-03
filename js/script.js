@@ -5,7 +5,7 @@ window.onload = function () {
 
 google.charts.load('current', {'packages':['corechart']});
     
-const url_all = 'https://script.google.com/macros/s/AKfycbyGd5GhFNQyMRD4jqeOwA1hCUFynNK7197_QvN9LhqXSuKIkMzC_CE1Bi1qiQqWb24Y/exec';
+const url_all = 'https://script.google.com/macros/s/AKfycbxt-HA00x7tnM5VFj4f3dN-J9bePviF2THD-_HOqm-b1SGhwu3oiL2S97a1mu9V-Ng5/exec';
 // 定義字典
 const digitMap = {
     10: "一",
@@ -301,6 +301,7 @@ function updatePlaceholderAndFocus() {
 function showAllSuggestions() {
   suggestionsContainer.innerHTML = ""; // 清空建議
   const dropdown = document.getElementById("mainDropdown");
+  if ( !dropdown.value ){ return; };
   groupedData = (dropdown.value === "3") ? groupedData_table3 : groupedData_table12;
 
   for (const group in groupedData) {
@@ -380,11 +381,39 @@ function handleInput() {
 }
 
 // 點擊其他地方隱藏建議
+//document.addEventListener("click", (event) => {
+//  if (!event.target.closest(".suggestions-place")) {
+//    suggestionsContainer.innerHTML = "";
+//  }
+//});
+// 獲取 DOM 元素
+//const overlay = document.getElementById('overlay');
+//const closeOverlayBtn = document.getElementById('closeOverlayBtn');
+
+// 點擊"X"按鈕關閉懸浮視窗
+//closeOverlayBtn.addEventListener('click', () => {
+//  overlay.classList.add('hidden');
+//});
+
+// 點擊空白區域關閉懸浮視窗
 document.addEventListener("click", (event) => {
+  // 點擊空白區域關閉建議或懸浮視窗
   if (!event.target.closest(".suggestions-place")) {
-    suggestionsContainer.innerHTML = "";
+    suggestionsContainer.innerHTML = ""; // 清空建議
+  }
+
+  // 點擊空白區域關閉懸浮視窗
+//  const overlay = document.getElementById('overlay');
+  if (event.target === overlay) { // 確保點擊的是空白區域
+    overlay.classList.add('hidden');
+  }
+
+  // 點擊"X"按鈕關閉懸浮視窗
+  if (event.target.id === 'closeOverlayBtn') {
+    overlay.classList.add('hidden');
   }
 });
+
 
 
 
@@ -782,3 +811,47 @@ function performSearch() {
 }
 
 
+// 更新資料
+const updateDataBtn = document.getElementById("updateDataBtn");
+const overlay = document.getElementById("overlay");
+const gotoDriveBtn = document.getElementById("gotoDriveBtn");
+const postRequestBtn = document.getElementById("postRequestBtn");
+const closeOverlayBtn = document.getElementById("closeOverlayBtn");
+
+const driveUrl = "https://drive.google.com/drive/folders/1Kfh9Nb5Lyr8hQM9kfI6X1TKaTNW1QVsT?usp=drive_link";
+
+// 點擊「更新資料」按鈕時，顯示懸浮畫面
+updateDataBtn.addEventListener("click", () => {
+  overlay.classList.remove("hidden");
+});
+
+// 點擊「前往雲端硬碟」按鈕
+gotoDriveBtn.addEventListener("click", () => {
+  window.open(driveUrl, "_blank"); // 新視窗打開雲端硬碟
+  overlay.classList.add("hidden"); // 關閉懸浮畫面
+});
+
+// 點擊「發送 POST 請求」按鈕
+postRequestBtn.addEventListener("click", () => {
+  const resultContainer = document.getElementById("searchResult");
+  $.post(
+    url_all,
+    { change_phone_degree: "your_data_here" }, // 傳遞必要的參數
+    function (response) {
+      if (response.success) {
+        resultContainer.innerHTML = `<p>操作成功，返回的數據：${JSON.stringify(response.data)}</p>`;
+      } else {
+        resultContainer.innerHTML = `<p>操作失敗，請稍後再試。</p>`;
+      }
+    }
+  ).fail(() => {
+    resultContainer.innerHTML = `<p>連線錯誤，請稍後再試。</p>`;
+  });
+
+  overlay.classList.add("hidden"); // 關閉懸浮畫面
+});
+
+// 點擊「取消」按鈕時，關閉懸浮畫面
+closeOverlayBtn.addEventListener("click", () => {
+  overlay.classList.add("hidden");
+});

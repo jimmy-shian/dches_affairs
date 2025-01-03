@@ -43,9 +43,21 @@
         <a href="https://sbmis.k12ea.gov.tw/index.aspx" target="_blank">校舍管理</a>
         <a href="https://pts.fnp.gov.tw/APNPA/" target="_blank">國財署</a>
         
-        <a class="nav-menu-a-special" href="https://drive.google.com/drive/folders/1Kfh9Nb5Lyr8hQM9kfI6X1TKaTNW1QVsT?usp=drive_link" target="_blank">更新資料</a>
+        <a class="nav-menu-a-special" id="updateDataBtn">更新資料</a>
+
     </nav>
 
+    <!-- 懸浮畫面 -->
+    <div id="overlay" class="overlay hidden">
+      <div class="overlay-content">
+        <button id="closeOverlayBtn">X</button> <!-- X 按鈕 -->
+        <p>請選擇操作：</p>
+        <button id="gotoDriveBtn">前往雲端硬碟</button>
+        <button id="postRequestBtn">發送 POST 請求</button>
+      </div>
+    </div>
+
+    
     <main class="main-content">
         
         <aside class="left-sidebar">
