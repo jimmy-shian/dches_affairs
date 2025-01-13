@@ -5,7 +5,7 @@ window.onload = function () {
 
 google.charts.load('current', {'packages':['corechart']});
     
-const url_all = 'https://script.google.com/macros/s/AKfycbxt-HA00x7tnM5VFj4f3dN-J9bePviF2THD-_HOqm-b1SGhwu3oiL2S97a1mu9V-Ng5/exec';
+const url_all = 'https://script.google.com/macros/s/AKfycbxeJExc2hFQNopz_Hzxj6wz-lodiqKu5b45NVp8Veep6Q4tUOScGKipgOEb95ZhuQBV/exec';
 // 定義字典
 const digitMap = {
     10: "一",
@@ -440,7 +440,7 @@ function showhide() {
         }, 200);  // 設定為與過渡時間一致（200ms）
 
         // 更改圖片為 "隱藏" 導覽列的圖示
-        toggleIcon.src = './images/hide_password.png';
+        toggleIcon.src = 'https://jimmy-shian.github.io/dches_affairs/images/hide_password.png';
         toggleIcon.alt = '隱藏導覽列';
     } else {
         center_content.style.maxWidth = '80%';
@@ -454,7 +454,7 @@ function showhide() {
         }, 100);  // 設定為與過渡時間一致（100ms）
 
         // 更改圖片為 "顯示" 導覽列的圖示
-        toggleIcon.src = './images/show_password.png';
+        toggleIcon.src = 'https://jimmy-shian.github.io/dches_affairs/images/show_password.png';
         toggleIcon.alt = '顯示導覽列';
     }
 }
