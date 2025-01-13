@@ -834,15 +834,31 @@ gotoDriveBtn.addEventListener("click", () => {
 // 點擊「發送 POST 請求」按鈕
 postRequestBtn.addEventListener("click", () => {
   const resultContainer = document.getElementById("searchResult");
+  resultContainer.innerHTML = `<p>請稍後，更改電話年級名稱 中...</p>`;
   $.post(
     url_all,
-    { change_phone_degree: "your_data_here" }, // 傳遞必要的參數
+    { change_phone: "your_data_here" }, // 傳遞必要的參數
     function (response) {
       if (response.success) {
-        resultContainer.innerHTML = `<p>操作成功，返回的數據：${JSON.stringify(response.data)}</p>`;
+        resultContainer.innerHTML = `<p>更改成功，${JSON.stringify(response.data)}</p>`;
       } else {
         resultContainer.innerHTML = `<p>操作失敗，請稍後再試。</p>`;
       }
+        $.get(
+        url_all,
+            { table: 1 }, // 傳遞選擇的年份字串
+            function (response) {
+                // 如果成功，將結果顯示到搜尋結果區域
+                if (response) {
+                    console.log(response);
+                    groupedData_table12 = response;
+                    showAllSuggestions();
+                }
+            }
+        ).fail(function () {
+            // 處理錯誤情況
+            console.log("fail~" + table);
+        });
     }
   ).fail(() => {
     resultContainer.innerHTML = `<p>連線錯誤，請稍後再試。</p>`;
