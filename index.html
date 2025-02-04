@@ -144,7 +144,7 @@
             errorMessage.innerText = '';
 
 //            const url = "https://script.google.com/macros/s/AKfycbzN3m0IigekqhMg4RxHcZu1YKKelZgucOW4u0t5J3El9zHHVnEVWOnSqHhTpZu0vv3e/exec";
-            const url = "https://script.google.com/macros/s/AKfycbxGpD5fOtv5HaRcS8PNsFCBTt-rSC7pece2fw_aqbVLMmrJPKo0WwtkEo6FiUwsA5Ro/exec";
+            const url = "https://script.google.com/macros/s/AKfycbyz7ArIE7lXSgv1-i5ReYk8Ie7jUCqijw2jSGNpJ3sIMthNnZfO8Usj9LgqLPzGYm6T/exec";
 
             // 發送 POST 請求
             $.post(
@@ -160,7 +160,8 @@
                         } else {
                             const newWindow = window.open("", "_blank");
                             console.log("登入成功！");
-
+                            errorMessage.innerText = "登入成功！";
+                            
                             const favicon = newWindow.document.createElement("link");
                             favicon.rel = "icon";
                             favicon.type = "image/x-icon";
