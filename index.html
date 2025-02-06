@@ -122,6 +122,12 @@
 
     <script>
         document.getElementById('email').focus();
+        
+        var clientIp = '0.0.0.0';
+        $.get("https://api64.ipify.org?format=json", function(data) {
+          clientIp = data.ip;
+        });
+        
         // 監聽表單提交
         document.getElementById('login-form').addEventListener('submit', (event) => {
             event.preventDefault(); // 阻止預設表單提交
@@ -144,12 +150,12 @@
             errorMessage.innerText = '';
 
 //            const url = "https://script.google.com/macros/s/AKfycbzN3m0IigekqhMg4RxHcZu1YKKelZgucOW4u0t5J3El9zHHVnEVWOnSqHhTpZu0vv3e/exec";
-            const url = "https://script.google.com/macros/s/AKfycbyz7ArIE7lXSgv1-i5ReYk8Ie7jUCqijw2jSGNpJ3sIMthNnZfO8Usj9LgqLPzGYm6T/exec";
+            const url = "https://script.google.com/macros/s/AKfycbxQwN5PvO9qbHzuNafrBiuXG833QSWojae2elViNPWEyWU3YpcUjgccAYn-I3van9Rp/exec";
 
             // 發送 POST 請求
             $.post(
                 url,
-                { email, password },
+                { email, password, clientIp },
                 function (response) {
                     loginButton.disabled = false;
                     loadingMessage.style.display = 'none';
