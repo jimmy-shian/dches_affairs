@@ -488,7 +488,7 @@ button:disabled {
 
         body::after {
             background-repeat: repeat;
-            background-image: url('images/background_90.png');
+            background-image: url('images/background_90.webp');
         }
 
         .nav-menu {
