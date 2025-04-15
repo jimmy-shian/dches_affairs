@@ -6,7 +6,7 @@ window.onload = function () {
 google.charts.load('current', {'packages':['corechart']});
     
 const url_all = 'https://script.google.com/macros/s/AKfycbwb8zlr3EtkncsWWzOALpAaoxM2dKaK98gntWfRnfrChmvyTTTNrZ3EA3lqv_Dyuigv/exec';
-const gasurlforkey = "https://script.google.com/macros/s/AKfycbwtM2l2khPL7omkRDJw9UA5ezQ4kA-0FGwgQayLJRpkGkkqdFdGvyiy30YIvfxXi6P_/exec";
+const gasurlforkey = "https://script.google.com/macros/s/AKfycbytSAQbR6zQgu2ceOXmWQpulOG5rIlrCIFFXdwQnabS1Xap7E6tJ62dM4P1eNeKJ_q_/exec";
 
 // 定義字典
 const digitMap = {
