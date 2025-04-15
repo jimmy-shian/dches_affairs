@@ -1011,10 +1011,6 @@ function bindNavigationControls() {
         saveNavChanges();
     });
 
-    document.getElementById('gotoDriveBtn')?.addEventListener('click', () => {
-        window.open('https://drive.google.com/drive/home', '_blank');
-    });
-
     document.getElementById('postRequestBtn')?.addEventListener('click', () => {
         document.getElementById('overlay').classList.add('hidden');
     });
