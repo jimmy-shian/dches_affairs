@@ -1,23 +1,69 @@
+:root {
+        /* 淺色主題變數 */
+        --bg-color: #fffaf4;
+        --text-color: #333;
+        --header-bg: #0077B6;
+        --header-text: white;
+        --nav-bg: #f0f8f0;
+        --sidebar-bg: #e0f0e0;
+        --link-hover: #255525;
+        --link-shadow: #52ac52;
+        --nav-border: #90EE90;
+        --nav-hover: #90EE90;
+        --search-btn-bg: #b2dbf4;
+        --search-btn-hover: #ceecff;
+        --hamburger-bg: #ded7f4;
+        --dropdown-bg: #f0f0f0;
+        --dropdown-border: #ccc;
+        --dropdown-hover: #f0f0f0;
+        --overlay-bg: rgba(0, 0, 0, 0.5);
+        --overlay-content-bg: #fff;
+    }
+
+    [data-theme="dark"] {
+        /* 深灰調主題 - 紅黃紫配色（較淺版本） */
+        --bg-color: #8B857E;           /* 溫暖灰基底，較原本 #747163 淺 */
+        --text-color: #F0E9E4;         /* 淺米灰文字，較原本 #e0d6d1 淺 */
+        --header-bg: #6B6578;          /* 灰紫標頭，較原本 #5a5366 淺 */
+        --header-text: #FCF4EE;        /* 暖米白文字，較原本 #f5e9e0 淺 */
+        --nav-bg: #5D504D;             /* 陶土灰導航，較原本 #4a3f3c 淺 */
+        --sidebar-bg: #8A705A;         /* 黃褐側邊欄，較原本 #745d4a 淺 */
+        --link-hover: #B18385;         /* 灰粉懸停，較原本 #9a6a6d 淺 */
+        --link-shadow: #C79A8F;        /* 磚紅陰影，較原本 #b37d7f 淺 */
+        --nav-border: #A2877A;         /* 陶土紅邊框，較原本 #8c6a5e 淺 */
+        --nav-hover: #B5997C;          /* 黃褐懸停，較原本 #a17a65 淺 */
+        --search-btn-bg: #7F7E6B;      /* 灰綠按鈕，較原本 #6b6a54 淺 */
+        --search-btn-hover: #918F7E;   /* 灰綠懸停，較原本 #7d7c68 淺 */
+        --hamburger-bg: #82516F;       /* 紫紅漢堡菜單，較原本 #6d435a 淺 */
+        --dropdown-bg: #6F5E53;        /* 黃褐下拉，較原本 #5a4a3e 淺 */
+        --dropdown-border: #8F7373;    /* 灰粉邊框，較原本 #7a5d5d 淺 */
+        --dropdown-hover: #A0887A;     /* 陶土懸停，較原本 #8c6a5e 淺 */
+        --overlay-bg: rgba(60, 56, 56, 0.8); /* 灰遮罩，較原本 rgba(40,36,36,0.8) 淺 */
+        --overlay-content-bg: #524B45; /* 內容區背景，較原本 #3d3630 淺 */
+    }
+    
+
     * {
         font-family: "Microsoft JhengHei", sans-serif;
     }
 
     a {
         text-decoration: none;
-        color: #333;
+        color: var(--text-color);
         transition: color 0.3s, text-shadow 0.3s;
     }
 
     a:hover {
-        color: #255525;
-        text-shadow: 0 0 3px #52ac52;
+        color: var(--link-hover);
+        text-shadow: 0 0 3px var(--link-shadow);
         /* 模擬字體加粗的效果 */
     }
 
     body {
         margin: 0;
         height: 100%;
-        background-color: #fffaf4;
+        background-color: var(--bg-color);
+        color: var(--text-color);
     }
     
 button:disabled {
@@ -25,12 +71,12 @@ button:disabled {
 }
 
     .header {
-        background-color: #0077B6;
+        background-color: var(--header-bg);
         padding: 15px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: white;
+        color: var(--header-text);
         height: 25px;
     }
 
@@ -40,12 +86,124 @@ button:disabled {
     }
 
     .back-btn {
-        background-color: #6dcadb;
+        background-color: var(--search-btn-bg);
         padding: 5px 15px;
         border-radius: 5px;
         text-decoration: none;
-        color: #6f6f6f;
-        border: solid 2px #59558a;
+        color: var(--text-color);
+        border: solid 2px var(--nav-border);
+    }
+    
+    /* 主題切換按鈕 */
+    .theme-toggle-btn {
+        background-color: var(--search-btn-bg);
+        padding: 5px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: var(--text-color);
+        border: solid 2px var(--nav-border);
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    
+    .theme-toggle-btn:hover {
+        background-color: var(--search-btn-hover);
+        color: var(--text-color);
+    }
+    /* 主題切換開關容器 */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+    
+    /* 隱藏原生 checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    /* 滑動條 */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--search-btn-bg); /* 使用主題變數 */
+        transition: 0.4s;
+        border-radius: 34px;
+        border: 2px solid var(--nav-border); /* 像你原本的按鈕 */
+    }
+    
+    /* 圓球 */
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 2px;
+        bottom: 2px;
+        background-color: var(--text-color); /* 根據主題變色 */
+        transition: 0.4s;
+        border-radius: 50%;
+    }
+    
+    /* 開啟狀態：往右滑 */
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+    
+    /* hover 效果 */
+    .slider:hover {
+        background-color: var(--search-btn-hover);
+    }
+  
+  
+    
+    /* 導覽列編輯樣式 */
+    .nav-edit-content {
+        width: 80%;
+        max-width: 800px;
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: 20px;
+        background-color: var(--overlay-content-bg);
+        color: var(--text-color);
+    }
+    
+    .nav-item-input {
+        display: flex;
+        margin-bottom: 10px;
+        gap: 10px;
+    }
+    
+    .nav-name-input, .nav-url-input {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        border: 3px solid var(--dropdown-border);
+        padding: 10px;
+        border-radius: 5px;
+        height: 1rem;
+    }
+    
+    .nav-edit-section {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid var(--dropdown-border);
+        border-radius: 5px;
+    }
+    
+    .nav-edit-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
     }
 
     .back-btn:hover {
@@ -57,57 +215,136 @@ button:disabled {
         transition: color 0.3s, background-color 0.3s;
 
     }
+/*懸浮視窗*/
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
 
+.overlay.hidden {
+    display: none;
+}
 
-    /*懸浮視窗*/
-      .overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0, 0, 0, 0.5);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 1000;
-      }
+.overlay-content {
+    background: var(--overlay-content-bg);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    position: relative;
+    max-width: 90%;
+    width: 600px;
+}
 
-      .overlay.hidden {
-          display: none;
-      }
+.overlay-content button + button {
+    margin-left: 50px;
+  }
 
-      .overlay-content {
-          background: #fff;
-          padding: 20px;
-          border-radius: 8px;
-          text-align: center;
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-          z-index: 1001;
-          position: relative;
-      }
+/* 關閉按鈕固定在右上角 */
+#closeNavEditBtn {
+    position: -webkit-sticky; 
+    position: sticky; 
+    top: 10px;
+    right: 10px;
+    margin: 0;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color .3s ease-in-out;
+    font-weight: bold;
+}
 
-      .overlay-content button {
-          margin: 10px;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 4px;
-          background-color: #f0f0f0;
-          cursor: pointer;
-          transition: background-color .3s ease-in-out;
-      }
+.overlay-content button:not(#closeNavEditBtn) {
+    padding: 0px 10px;
+    border: 2px solid #adadad;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color .3s ease-in-out;
+}
 
-      .overlay-content button:hover {
-          background-color: #d9d9d9;
-      }
+.overlay-content button:not(#closeNavEditBtn):not(.remove-item-btn) {
+    padding: 8px 15px;
+    border: 2px solid #adadad;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color .3s ease-in-out;
+}
+
+.overlay-content button:hover {
+    background-color: #d9d9d9;
+}
+
+/* 表格輸入框佈局 */
+.nav-item-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.nav-item-row input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.nav-name-input {
+    width: 18%;
+}
+
+.nav-url-input {
+    width: 60%;
+}
+
+.nav-item-actions {
+    width: 10%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* 處理中狀態 */
+.processing .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-radius: 50%;
+    border-top-color: #000;
+    animation: spin 1s ease-in-out infinite;
+    margin-left: 5px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+.disabled-btn {
+    cursor: not-allowed !important;
+    opacity: 0.6;
+  }
+
+.processing button {
+    pointer-events: none;
+}
+
 
       /* X 按鈕樣式 */
         #closeOverlayBtn {
             position: absolute;
-            top: -10px;
-            right: -10px;
+            top: -5px;
+            right: -5px;
             background-color: transparent;
-            border: none;
+            border: none !important;
             font-size: 20px;
             /* color: #888; */
             cursor: pointer;
@@ -123,7 +360,7 @@ button:disabled {
         display: flex;
         justify-content: flex-start;
         padding: 10px;
-        background-color: #f0f8f0;
+        background-color: var(--nav-bg);
         border-bottom: 1px solid #ddd;
         transition: max-height 0.5s ease-out, padding 0.2s ease-out;
         overflow: hidden;
@@ -140,7 +377,7 @@ button:disabled {
     .hamburger-place {
         display: flex;
         justify-content: space-between;
-        background-color: #ded7f4
+        background-color: var(--hamburger-bg);
     }
 
     .hamburger-title {
@@ -153,13 +390,13 @@ button:disabled {
         font-size: 30px;
         cursor: pointer;
         padding: 10px;
-        background-color: #ded7f4
+        background-color: var(--hamburger-bg);
     }
 
     .bar {
         width: 35px;
         height: 4px;
-        background-color: #333;
+        background-color: var(--text-color);
         margin: 6px 0;
         transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
     }
@@ -170,16 +407,16 @@ button:disabled {
     }
     .nav-menu a {
         text-decoration: none;
-        color: #333;
+        color: var(--text-color);
         padding: 5px 15px;
-        border: 1px solid #90EE90;
+        border: 1px solid var(--nav-border);
         border-radius: 5px;
-        background-color: white;
+        background-color: var(--bg-color);
         transition: background-color 0.3s ease;
     }
 
     .nav-menu a:hover {
-        background-color: #90EE90;
+        background-color: var(--nav-hover);
     }
 
     .main-content {
@@ -192,7 +429,7 @@ button:disabled {
 
     .left-sidebar {
         max-width: 200px;
-        background-color: #e0f0e0;
+        background-color: var(--sidebar-bg);
         padding: 15px;
         border-radius: 5px;
         flex-basis: 17%;
@@ -202,13 +439,13 @@ button:disabled {
     .left-sidebar a {
         display: block;
         text-decoration: none;
-        color: #333;
+        color: var(--text-color);
         padding: 8px 0;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid var(--dropdown-border);
     }
     .left-sidebar a::before {
         content: "•"; /* 設定符號為點號 */
-        color: black; /* 點號顏色 */
+        color: var(--text-color); /* 點號顏色 */
         margin-right: 8px; /* 點號與文字間距 */
         font-size: 1.2rem; /* 點號大小 */
         line-height: 1; /* 垂直對齊 */
@@ -229,8 +466,9 @@ button:disabled {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
+        color: var(--text-color);
+        background-color: var(--dropdown-bg);
+        border: 1px solid var(--dropdown-border);
         padding: 6px;
         cursor: pointer;
         border-radius: 4px;
@@ -280,15 +518,16 @@ button:disabled {
 
     .search-btn {
         padding: 8px 15px;
-        background-color: #b2dbf4;
+        color: var(--text-color);
+        background-color: var(--search-btn-bg);
         border: none;
         border-radius: 5px;
         cursor: pointer;
         transition: all .3s ease-in-out;
     }  
     .search-btn:hover {
-        background-color: #ceecff;
-        color: black;
+        background-color: var(--search-btn-hover);
+        color: var(--text-color);
     }
 
     .search-result {
@@ -305,7 +544,7 @@ button:disabled {
 
     .right-sidebar {
         max-width: 200px;
-        background-color: #e0f0e0;
+        background-color: var(--sidebar-bg);
         padding: 15px;
         border-radius: 5px;
         flex-basis: 17%;
@@ -317,13 +556,13 @@ button:disabled {
     .right-sidebar a {
         display: block;
         text-decoration: none;
-        color: #333;
+        color: var(--text-color);
         padding: 8px 0;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid var(--dropdown-border);
     }
     .right-sidebar a::before {
         content: "•"; /* 設定符號為點號 */
-        color: black; /* 點號顏色 */
+        color: var(--text-color); /* 點號顏色 */
         margin-right: 8px; /* 點號與文字間距 */
         font-size: 1.2rem; /* 點號大小 */
         line-height: 1; /* 垂直對齊 */
@@ -339,8 +578,8 @@ button:disabled {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
+        background-color: var(--dropdown-bg);
+        border: 1px solid var(--dropdown-border);
         padding: 10px;
         cursor: pointer;
         border-radius: 4px;
@@ -365,8 +604,8 @@ button:disabled {
         display: none;
         /* 初始隱藏 */
         position: absolute;
-        background-color: #fff;
-        border: 1px solid #ccc;
+        background-color: var(--overlay-content-bg);
+        border: 1px solid var(--dropdown-border);
         z-index: 1000;
         width: 100%;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -384,7 +623,7 @@ button:disabled {
     }
 
     .dropdown-options label:hover {
-        background-color: #f0f0f0;
+        background-color: var(--dropdown-hover);
     }
 
     .dropdown-options input[type="checkbox"] {

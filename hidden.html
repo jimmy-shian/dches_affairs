@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="images/webico2.png">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <script src="js/jquery-3.7.0.min.js"></script>
+    <script type="text/javascript" src="js/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@7.1.0/build/index.min.js"></script>
+    <script src="js/script.js"></script>
+
+    <title>彰化縣彰化市大成國小事務組</title>
+    <!-- <title>國小事務組</title> -->
+    <style>
+/* styles.css */
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <h3>彰化縣彰化市大成國小事務組</h3>
+        <div class="header-controls">
+            <label class="switch">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider"></span>
+            </label>              
+            <a href="https://www.dches.chc.edu.tw/" target="_blank" class="back-btn">回首頁</a>
+        </div>
+    </header>
+
+    <!-- 漢堡選單 -->
+    <div class="hamburger-place" id="hamburger" >
+        <div class="hamburger-title">靜❂慎❂忍</div>
+        <div class="hamburger" id="hamburger" onclick="toggleNav()">
+            <div class="bar bar1"></div>
+            <div class="bar bar2"></div>
+            <div class="bar bar3"></div>
+        </div>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="https://fetems.chc.edu.tw/web/login" target="_blank">冷氣監控系統</a>
+        <a href="https://gdms.chcg.gov.tw/" target="_blank">公文整合系統</a>
+        <a href="https://newboe.chc.edu.tw/" target="_blank">教育處新雲端</a>
+        <a href="https://prms2.chcg.gov.tw/index.jsp" target="_blank">財產管理</a>
+        <a href="https://sbmis.k12ea.gov.tw/index.aspx" target="_blank">校舍管理</a>
+        <a href="https://pts.fnp.gov.tw/APNPA/" target="_blank">國財署</a>
+        <a href="https://egov.ftis.org.tw/home" target="_blank">節能填報</a>
+        
+        <a class="nav-menu-a-special" id="updateDataBtn">更新資料</a>
+
+    </nav>
+
+    <!-- 懸浮畫面 -->
+    <div id="overlay" class="overlay hidden">
+      <div class="overlay-content">
+        <button id="closeOverlayBtn">X</button> <!-- X 按鈕 -->
+        <p>請選擇操作：</p>
+        <button id="gotoDriveBtn">前往雲端硬碟</button>
+        <button id="postRequestBtn">更改 電話年級名稱</button>
+        <button id="editNavBtn">編輯導覽列</button>
+      </div>
+    </div>
+    
+    <!-- 導覽列編輯懸浮畫面 -->
+    <div id="navEditOverlay" class="overlay hidden">
+      <div class="overlay-content nav-edit-content">
+        <button id="closeNavEditBtn">X</button>
+        <h3>編輯導覽列</h3>
+        
+        <div class="nav-edit-section">
+          <h4>頂部導覽列</h4>
+          <div id="navItemsContainer" class="nav-items-container"></div>
+          <button id="addNavItemBtn" class="add-item-btn">新增項目</button>
+        </div>
+        
+        <div class="nav-edit-section">
+          <h4>左側導覽列</h4>
+          <div id="leftItemsContainer" class="nav-items-container"></div>
+          <button id="addLeftItemBtn" class="add-item-btn">新增項目</button>
+        </div>
+        
+        <div class="nav-edit-section">
+          <h4>右側導覽列</h4>
+          <div id="rightItemsContainer" class="nav-items-container"></div>
+          <button id="addRightItemBtn" class="add-item-btn">新增項目</button>
+        </div>
+        
+        <div class="nav-edit-buttons">
+          <button id="saveNavChangesBtn">
+            <span class="button-spinner hidden" id="saveSpinner"></span>
+            儲存變更
+          </button>              
+          <button id="cancelNavChangesBtn">取消</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <main class="main-content">
+        
+        <aside class="left-sidebar">
+            <a href="https://shwoo.gov.taipei/shwoo_admin/home/home00/login" target="_blank">台北惜物網</a>
+            <a href="https://greenliving.moenv.gov.tw/GreenLife/Anonymous/LoginById.aspx" target="_blank">綠色採購</a>
+            <a href="https://ptps.sfaa.gov.tw/portal/" target="_blank">優先採購</a>
+            <a href="https://www.141242.com.tw/" target="_blank">象鴿生活</a>
+            
+        </aside>
+
+        <section class="center-content">
+            <div class="search-container" style="margin-bottom: 3px;">
+                <button class="switch-search" id="showhide" onclick="showhide()">
+                    <img id="toggleIcon" src="https://jimmy-shian.github.io/dches_affairs/images/hide_password.png" alt="顯示導覽列">
+                </button>
+                <button class="switch-search" onclick="clearSearch()">  
+                    <img style="width: 20px; height: 20px" id="toggleIcon" src="https://jimmy-shian.github.io/dches_affairs/images/claer.png" alt="清除搜尋">
+                </button>
+                
+                <button class="switch-search" onclick="toggleSearch()">搜尋切換</button>
+                
+            </div>
+            
+            <div class="search-container"  id="searchContainer1">
+                <select class="dropdown" id="mainDropdown" onchange="updatePlaceholderAndFocus()">
+                    <option value="" disabled selected>請選擇項目</option> 
+                    <option value="2">電話機櫃</option> <!-- 電話分機配置 -->
+                    <option value="1">冷氣教室編號</option> <!-- 簡易版冷氣教室編號 -->
+                    <option value="3">消耗品查詢</option> <!-- 電話分機配置 -->
+                </select>
+                
+                <div class="suggestions-place">
+                    <input type="text" class="input-box" id="inputBox" placeholder="使用 空白 分隔多個搜尋" value="" onkeydown="handleEnter(event)" oninput="handleInput()" onfocus="showAllSuggestions()">
+                    <div id="suggestions" class="suggestions"></div>                
+                </div>
+
+                <button class="search-btn" id="searchButton" onclick="performSearch()">搜尋</button>
+            </div>
+
+            <div class="mid-right-place">
+                <div class="search-container" id="searchContainer2">
+                    <!-- 多選下拉式選單 -->
+                    <div class="custom-dropdown" id="customDropdown">
+                       <button class="dropdown-toggle" onclick="toggleDropdown()">
+                            <span class="button-text">電費年度選擇</span>
+                            <span class="arrow">▼</span>
+                        </button>
+
+                        <div class="dropdown-options">
+                            <label><input type="checkbox" value="111" onclick="updateButtonText()"> 111年度</label>
+                            <label><input type="checkbox" value="112" onclick="updateButtonText()"> 112年度</label>
+                            <label><input type="checkbox" value="113" onclick="updateButtonText()"> 113年度</label>
+                        </div>
+                    </div>
+                    <button class="search-btn" id="searchyearButton" onclick="submitMessage_ebill(event)">搜尋</button>
+                </div>
+                
+                <div class="search-result" id="searchResult"></div>
+            <div id="curve_chart" ></div>
+            
+            <a style="" class="download_link" id="download_link_img" href="https://jimmy-shian.github.io/dches_affairs/images/webico2.png" download></a>
+            <a style="" class="download_link" id="download_link" href="https://jimmy-shian.github.io/dches_affairs/images/webico2.png" download></a>
+
+            
+            <div id="text_table" ></div>
+                
+            </div>
+            
+            <div style="">
+                <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FTaipei&showPrint=0&src=YWZmYWlyczI2OUBkY2hlcy5jaGMuZWR1LnR3&src=emgtdHcudGFpd2FuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZGNoZXMuY2hjLmVkdS50d182aGxrbzcydDIwcGY0Y2JibTZqcHJsN21ub0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23F4511E&color=%23A79B8E&color=%23009688" tyle="border:solid 1px #777" width="100%" height="700" frameborder="0" scrolling="no"></iframe>
+            </div>
+
+        </section>
+
+        <aside class="right-sidebar">
+            <a href="https://drive.google.com/drive/folders/14jsJi_Y1atAZ5odem5SbJLfHYadQtbIi?usp=drive_link" target="_blank">憑證</a>
+            <a href="https://drive.google.com/drive/folders/1xtriif4WC_Nws_2odsD6iO6magd14d9q?usp=drive_link" target="_blank">節約能源會議記錄</a>
+            <a href="https://docs.google.com/document/d/1tOq3nNdsOi4GhYkc44VMJuDB277jXbEp/edit?usp=drive_link&ouid=112176425530960948167&rtpof=true&sd=true" target="_blank">報告事項</a>
+            <a href="https://www.water.gov.tw/ch/EQuery/WaterFeeQuery?nodeId=753" target="_blank">台灣水力</a>
+            <a href="https://service.taipower.com.tw/ebpps2/simplebill/simple-query-bill" target="_blank">台灣電力</a>
+            <a href="https://member.cht.com.tw/HiReg/checkcookieservlet?version=1.0&curl=https://ebpp.cht.com.tw/ebpp/SSOMember&siteid=103&sessionid=&channelurl=https://ebpp.cht.com.tw/ebpp/SSOMember&others=&checksum=ab1d4a15245a560362464e95c4d5e7d0&formtype=" target="_blank">中華電信</a>
+            <a href="https://www.dgbas.gov.tw/News_Content.aspx?n=1567&s=227152" target="_blank">財物標準分類</a>
+            
+            <a  class="sticky-bottom" href="https://drive.google.com/drive/home" target="_blank" >我的雲端硬碟</a>
+        </aside>
+
+    </main>
+    
+    <script>
+    </script>        
+
+</body>
+
+</html>

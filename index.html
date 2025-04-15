@@ -104,11 +104,11 @@
         <form id="login-form">
             <div class="form-group">
                 <label for="email">帳號</label>
-                <input type="email" id="email" name="email" placeholder="輸入email" focus required>
+                <input type="email" id="email" name="email" placeholder="輸入email" value="jimmy910824@gmail.com" focus required>
             </div>
             <div class="form-group">
                 <label for="password">密碼</label>
-                <input type="password" id="password" name="password" placeholder="輸入密碼" required>
+                <input type="password" id="password" name="password" placeholder="輸入密碼" value="269" required>
             </div>
             <div class="form-group">
                 <button type="submit" id="login-button">
@@ -121,7 +121,44 @@
     </div>
 
     <script>
-        document.getElementById('email').focus();
+        const gasurl = "https://script.google.com/macros/s/AKfycbxBIR5h-T_ol0Ep7231CcIfe55CA44xMD_BDGa7sEfrCuiZDdlO3p-ZygK3J0Oy7S6T/exec";
+        // 檢查是否有特殊密鑰
+        function checkSpecialKey() {
+            const specialKey = localStorage.getItem('specialKey');
+            if (specialKey) {
+                // 顯示檢查中訊息
+                document.querySelector('.login-container').innerHTML = '<h2>檢查登入狀態中...</h2>';
+                
+                // 驗證特殊密鑰
+                const url = gasurl;
+                $.get(url + "?key=" + specialKey, function(response) {
+                    if (response.success) {
+                        // 密鑰有效，直接跳轉到hidden.html
+                        window.location.href = "hidden.html";
+                    } else {
+                        // 密鑰無效，清除localStorage並顯示登入表單
+                        localStorage.removeItem('specialKey');
+                        document.querySelector('.login-container').innerHTML = originalLoginForm;
+                        document.getElementById('email').focus();
+                    }
+                }).fail(function() {
+                    // 請求失敗，顯示登入表單
+                    localStorage.removeItem('specialKey');
+                    document.querySelector('.login-container').innerHTML = originalLoginForm;
+                    document.getElementById('email').focus();
+                });
+                return true;
+            }
+            return false;
+        }
+        
+        // 保存原始登入表單HTML
+        const originalLoginForm = document.querySelector('.login-container').innerHTML;
+        
+        // 檢查特殊密鑰
+        if (!checkSpecialKey()) {
+            document.getElementById('email').focus();
+        }
         
         var clientIp = '0.0.0.0';
         $.get("https://api64.ipify.org?format=json", function(data) {
@@ -129,65 +166,64 @@
         });
         
         // 監聽表單提交
-        document.getElementById('login-form').addEventListener('submit', (event) => {
-            event.preventDefault(); // 阻止預設表單提交
+        document.addEventListener('submit', function(event) {
+            if (event.target.id === 'login-form') {
+                event.preventDefault(); // 阻止預設表單提交
 
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const loginButton = document.getElementById('login-button');
-            const loadingMessage = document.getElementById('loading-message');
-            const errorMessage = document.getElementById('error-message');
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const loginButton = document.getElementById('login-button');
+                const loadingMessage = document.getElementById('loading-message');
+                const errorMessage = document.getElementById('error-message');
 
-            // 檢查是否填寫完整
-            if (!email || !password) {
-                errorMessage.innerText = '請填寫所有欄位';
-                return;
-            }
+                // 檢查是否填寫完整
+                if (!email || !password) {
+                    errorMessage.innerText = '請填寫所有欄位';
+                    return;
+                }
 
-            // 顯示 Loading 訊息
-            loginButton.disabled = true;
-            loadingMessage.style.display = 'block';
-            errorMessage.innerText = '';
+                // 顯示 Loading 訊息
+                loginButton.disabled = true;
+                loadingMessage.style.display = 'block';
+                errorMessage.innerText = '';
 
-//            const url = "https://script.google.com/macros/s/AKfycbzN3m0IigekqhMg4RxHcZu1YKKelZgucOW4u0t5J3El9zHHVnEVWOnSqHhTpZu0vv3e/exec";
-            const url = "https://script.google.com/macros/s/AKfycbxVXp4LVOUSUF-2iJF9et2s8Jtrk1pO1TrCQ34k729q59NC1WonbOiMi4GWAmJLgrnq/exec";
+                const url = gasurl;
 
-            // 發送 POST 請求
-            $.post(
-                url,
-                { email, password, clientIp },
-                function (response) {
+                // 發送 POST 請求
+                $.post(
+                    url,
+                    { email, password, clientIp },
+                    function (response) {
+                        loginButton.disabled = false;
+                        loadingMessage.style.display = 'none';
+
+                        if (response.success) {
+                            if (response.data === "您無權訪問此頁面。") {
+                                errorMessage.innerText = response.data || "聯絡管理者，請重試。";
+                            } else {
+                                // 儲存特殊密鑰到localStorage
+                                if (response.specialKey) {
+                                    localStorage.setItem('specialKey', response.specialKey);
+                                    console.log("specialKey: ", response.specialKey);
+                                    // 設置密鑰過期時間（48小時後）
+                                    const expiryTime = new Date();
+                                    expiryTime.setHours(expiryTime.getHours() + 48);
+                                    localStorage.setItem('keyExpiry', expiryTime.toString());
+                                }
+                                
+                                // 直接跳轉到hidden.html
+                                window.location.href = "hidden.html";
+                            }
+                        } else {
+                            errorMessage.innerText = response.data || "帳號密碼錯誤，登入失敗";
+                        }
+                    }
+                ).fail(() => {
                     loginButton.disabled = false;
                     loadingMessage.style.display = 'none';
-
-                    if (response.success) {
-                        if (response.data === "您無權訪問此頁面。") {
-                            errorMessage.innerText = response.data || "聯絡管理者，請重試。";
-                        } else {
-                            const newWindow = window.open("", "_blank");
-                            console.log("登入成功！");
-                            errorMessage.innerText = "登入成功！";
-                            
-                            const favicon = newWindow.document.createElement("link");
-                            favicon.rel = "icon";
-                            favicon.type = "image/x-icon";
-                            favicon.href = "https://jimmy-shian.github.io/dches_affairs/images/webico.png";
-                            newWindow.document.head.appendChild(favicon);
-
-                            newWindow.document.write(response.data);
-                            setTimeout(() => {
-                                newWindow.document.close();
-                            }, 500);
-                        }
-                    } else {
-                        errorMessage.innerText = response.data || "帳號密碼錯誤，登入失敗";
-                    }
-                }
-            ).fail(() => {
-                loginButton.disabled = false;
-                loadingMessage.style.display = 'none';
-                errorMessage.innerText = "無法連線至伺服器，請稍後重試。";
-            });
+                    errorMessage.innerText = "無法連線至伺服器，請稍後重試。";
+                });
+            }
         });
     </script>
 

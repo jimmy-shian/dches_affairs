@@ -5,7 +5,9 @@ window.onload = function () {
 
 google.charts.load('current', {'packages':['corechart']});
     
-const url_all = 'https://script.google.com/macros/s/AKfycbxeJExc2hFQNopz_Hzxj6wz-lodiqKu5b45NVp8Veep6Q4tUOScGKipgOEb95ZhuQBV/exec';
+const url_all = 'https://script.google.com/macros/s/AKfycbwb8zlr3EtkncsWWzOALpAaoxM2dKaK98gntWfRnfrChmvyTTTNrZ3EA3lqv_Dyuigv/exec';
+const gasurlforkey = "https://script.google.com/macros/s/AKfycbwtM2l2khPL7omkRDJw9UA5ezQ4kA-0FGwgQayLJRpkGkkqdFdGvyiy30YIvfxXi6P_/exec";
+
 // 定義字典
 const digitMap = {
     10: "一",
@@ -871,3 +873,265 @@ postRequestBtn.addEventListener("click", () => {
 closeOverlayBtn.addEventListener("click", () => {
   overlay.classList.add("hidden");
 });
+
+
+// 切換主題 & 更新導覽列內容
+
+document.addEventListener('DOMContentLoaded', function () {
+    const specialKey = localStorage.getItem('specialKey');
+    const keyExpiry = localStorage.getItem('keyExpiry');
+
+    // 驗證密鑰
+    if (!specialKey || (keyExpiry && new Date() > new Date(new Date(keyExpiry).getTime() + 2 * 86400000))) {
+        localStorage.removeItem('specialKey');
+        localStorage.removeItem('keyExpiry');
+        window.location.href = 'index.html';
+        return;
+    }
+
+    // 驗證密鑰有效性並載入導覽列
+    $.get(gasurlforkey + "?key=" + specialKey, function (response) {
+        if (response.success && response.navItems) {
+            updateNavigation(response.navItems);
+        } else {
+            localStorage.removeItem('specialKey');
+            window.location.href = 'index.html';
+        }
+    }).fail(function () {
+        localStorage.removeItem('specialKey');
+        window.location.href = 'index.html';
+    });
+
+    // 載入主題
+    loadThemePreference();
+
+    // 初始化導覽列編輯與控制按鈕
+    bindNavigationControls();
+});
+
+// ------------------ 導覽列 ------------------
+
+function updateNavigation(navItems) {
+    const navMenu = document.querySelector('.nav-menu');
+    const leftSidebar = document.querySelector('.left-sidebar');
+    const rightSidebar = document.querySelector('.right-sidebar');
+
+    navMenu.innerHTML = '';
+    leftSidebar.innerHTML = '';
+    rightSidebar.innerHTML = '';
+
+    const specialBtn = document.createElement('a');
+    specialBtn.href = '#';
+    specialBtn.id = 'updateDataBtn';
+    specialBtn.className = 'nav-menu-a-special';
+    specialBtn.textContent = '更新資料';
+    navMenu.appendChild(specialBtn);
+
+    const bottomBtn = document.createElement('a');
+    bottomBtn.href = 'https://drive.google.com/drive/home';
+    bottomBtn.target = '_blank';
+    bottomBtn.className = 'sticky-bottom';
+    bottomBtn.textContent = '我的雲端硬碟';
+    rightSidebar.appendChild(bottomBtn);
+
+    navItems.forEach(function (item) {
+        const link = document.createElement('a');
+        link.href = item.url;
+        link.target = '_blank';
+        link.textContent = item.name;
+
+        if (item.position === 'nav') navMenu.insertBefore(link, specialBtn);
+        else if (item.position === 'left') leftSidebar.appendChild(link);
+        else if (item.position === 'right') rightSidebar.insertBefore(link, bottomBtn);
+    });
+
+    document.getElementById('updateDataBtn').addEventListener('click', function () {
+        document.getElementById('overlay').classList.remove('hidden');
+    });
+}
+
+// ------------------ 主題切換 ------------------
+
+function loadThemePreference() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+
+    // 切換主題事件
+    document.getElementById('theme-toggle')?.addEventListener('change', function () {
+    const newTheme = this.checked ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    });
+
+    // 預設載入主題
+    window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.getElementById('theme-toggle').checked = savedTheme === 'dark';
+    });
+
+}
+
+// ------------------ 導覽列編輯功能 ------------------
+
+function bindNavigationControls() {
+    document.getElementById('closeOverlayBtn')?.addEventListener('click', () => {
+        document.getElementById('overlay').classList.add('hidden');
+    });
+
+    document.getElementById('editNavBtn')?.addEventListener('click', () => {
+        document.getElementById('overlay').classList.add('hidden');
+        document.getElementById('navEditOverlay').classList.remove('hidden');
+        loadNavItems();
+    });
+
+    document.getElementById('closeNavEditBtn')?.addEventListener('click', () => {
+        document.getElementById('navEditOverlay').classList.add('hidden');
+    });
+
+    document.getElementById('cancelNavChangesBtn')?.addEventListener('click', () => {
+        document.getElementById('navEditOverlay').classList.add('hidden');
+    });
+
+    document.getElementById('addNavItemBtn')?.addEventListener('click', () => {
+        addNavItem('navItemsContainer');
+    });
+
+    document.getElementById('addLeftItemBtn')?.addEventListener('click', () => {
+        addNavItem('leftItemsContainer');
+    });
+
+    document.getElementById('addRightItemBtn')?.addEventListener('click', () => {
+        addNavItem('rightItemsContainer');
+    });
+
+    document.getElementById('saveNavChangesBtn')?.addEventListener('click', () => {
+        saveNavChanges();
+    });
+
+    document.getElementById('gotoDriveBtn')?.addEventListener('click', () => {
+        window.open('https://drive.google.com/drive/home', '_blank');
+    });
+
+    document.getElementById('postRequestBtn')?.addEventListener('click', () => {
+        document.getElementById('overlay').classList.add('hidden');
+    });
+}
+
+// ------------------ 編輯導覽列 ------------------
+
+function loadNavItems() {
+    document.getElementById('navItemsContainer').innerHTML = '';
+    document.getElementById('leftItemsContainer').innerHTML = '';
+    document.getElementById('rightItemsContainer').innerHTML = '';
+
+    document.querySelectorAll('.nav-menu a:not(.nav-menu-a-special)').forEach(link => {
+        addNavItem('navItemsContainer', link.textContent, link.href);
+    });
+
+    document.querySelectorAll('.left-sidebar a:not(.sticky-bottom)').forEach(link => {
+        addNavItem('leftItemsContainer', link.textContent, link.href);
+    });
+
+    document.querySelectorAll('.right-sidebar a:not(.sticky-bottom)').forEach(link => {
+        addNavItem('rightItemsContainer', link.textContent, link.href);
+    });
+}
+
+function addNavItem(containerId, name = '', url = '') {
+    const container = document.getElementById(containerId);
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'nav-item-input';
+
+    let position = 'nav';
+    if (containerId === 'leftItemsContainer') position = 'left';
+    else if (containerId === 'rightItemsContainer') position = 'right';
+
+    itemDiv.dataset.position = position;
+    itemDiv.innerHTML = `
+        <input type="text" class="nav-name-input" placeholder="名稱" value="${name}">
+        <input type="text" class="nav-url-input" placeholder="URL" value="${url}">
+        <button class="remove-item-btn">刪除</button>
+    `;
+    container.appendChild(itemDiv);
+
+    itemDiv.querySelector('.remove-item-btn').addEventListener('click', () => {
+        container.removeChild(itemDiv);
+    });
+}
+
+function collectNavItems(containerId) {
+    const items = [];
+    document.querySelectorAll(`#${containerId} .nav-item-input`).forEach(div => {
+        const name = div.querySelector('.nav-name-input').value.trim();
+        const url = div.querySelector('.nav-url-input').value.trim();
+        if (name && url) {
+            items.push({ name, url });
+        }
+    });
+    return items;
+}
+
+function saveNavChanges() {
+    // 禁用按鈕並顯示處理中狀態
+    const saveBtn = document.getElementById('saveNavChangesBtn');
+    const cancelBtn = document.getElementById('cancelNavChangesBtn');
+    saveBtn.innerHTML = '儲存變更 <span class="spinner"></span>';
+    cancelBtn.innerHTML = '取消';
+    document.querySelector('.nav-edit-buttons').classList.add('processing');
+    
+    // 禁用所有輸入框
+    const inputs = document.querySelectorAll('.nav-items-container input');
+    inputs.forEach(input => input.disabled = true);
+    // 禁用 navEditOverlay 內的按鈕
+    const overlayButtons = document.querySelectorAll('#navEditOverlay button');
+    overlayButtons.forEach(btn => {
+    btn.disabled = true;
+    btn.classList.add('disabled-btn'); // 套用 CSS 樣式
+    });
+
+    const navItems = collectNavItems('navItemsContainer');
+    const leftItems = collectNavItems('leftItemsContainer');
+    const rightItems = collectNavItems('rightItemsContainer');
+    const specialKey = localStorage.getItem('specialKey');
+    
+    $.post(
+        gasurlforkey,
+        {
+            key: specialKey,
+            action: 'updateNavItems',
+            navItems: JSON.stringify(navItems),
+            leftItems: JSON.stringify(leftItems),
+            rightItems: JSON.stringify(rightItems)
+        },
+        function (response) {
+            console.log(response);
+            // 恢復按鈕狀態
+            saveBtn.innerHTML = '儲存變更';
+            cancelBtn.innerHTML = '取消';
+            document.querySelector('.nav-edit-buttons').classList.remove('processing');
+            inputs.forEach(input => input.disabled = false);
+            overlayButtons.forEach(btn => {
+            btn.disabled = false;
+            btn.classList.remove('disabled-btn');
+            });
+            
+            if (response.success) {
+                alert('導覽列更新成功！');
+                location.reload();
+            } else {
+                alert('導覽列更新失敗：' + (response.message || '未知錯誤'));
+            }
+            document.getElementById('navEditOverlay').classList.add('hidden');
+        }
+    ).fail(function () {
+        alert('無法連接到伺服器，請稍後再試。');
+        // 恢復按鈕狀態
+        saveBtn.innerHTML = '儲存變更';
+        cancelBtn.innerHTML = '取消';
+        document.querySelector('.nav-edit-buttons').classList.remove('processing');
+        inputs.forEach(input => input.disabled = false);
+    });
+}
