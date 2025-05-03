@@ -880,27 +880,27 @@ closeOverlayBtn.addEventListener("click", () => {
 document.addEventListener('DOMContentLoaded', function () {
     const specialKey = localStorage.getItem('specialKey');
     const keyExpiry = localStorage.getItem('keyExpiry');
-
-    // 驗證密鑰
-    if (!specialKey || (keyExpiry && new Date() > new Date(new Date(keyExpiry).getTime() + 2 * 86400000))) {
-        localStorage.removeItem('specialKey');
-        localStorage.removeItem('keyExpiry');
-        window.location.href = 'index.html';
-        return;
-    }
-
-    // 驗證密鑰有效性並載入導覽列
-    $.get(gasurlforkey + "?key=" + specialKey, function (response) {
-        if (response.success && response.navItems) {
-            updateNavigation(response.navItems);
-        } else {
-            localStorage.removeItem('specialKey');
-            window.location.href = 'index.html';
-        }
-    }).fail(function () {
-        localStorage.removeItem('specialKey');
-        window.location.href = 'index.html';
-    });
+//
+//    // 驗證密鑰
+//    if (!specialKey || (keyExpiry && new Date() > new Date(new Date(keyExpiry).getTime() + 2 * 86400000))) {
+//        localStorage.removeItem('specialKey');
+//        localStorage.removeItem('keyExpiry');
+//        window.location.href = 'index.html';
+//        return;
+//    }
+//
+//    // 驗證密鑰有效性並載入導覽列
+//    $.get(gasurlforkey + "?key=" + specialKey, function (response) {
+//        if (response.success && response.navItems) {
+//            updateNavigation(response.navItems);
+//        } else {
+//            localStorage.removeItem('specialKey');
+//            window.location.href = 'index.html';
+//        }
+//    }).fail(function () {
+//        localStorage.removeItem('specialKey');
+//        window.location.href = 'index.html';
+//    });
 
     // 載入主題
     loadThemePreference();

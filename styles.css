@@ -22,12 +22,12 @@
 
     [data-theme="dark"] {
         /* 深灰調主題 - 紅黃紫配色（較淺版本） */
-        --bg-color: #8B857E;           /* 溫暖灰基底，較原本 #747163 淺 */
-        --text-color: #F0E9E4;         /* 淺米灰文字，較原本 #e0d6d1 淺 */
-        --header-bg: #6B6578;          /* 灰紫標頭，較原本 #5a5366 淺 */
-        --header-text: #FCF4EE;        /* 暖米白文字，較原本 #f5e9e0 淺 */
+        --bg-color: rgba(62, 131, 22, 0.67);           /* 溫暖灰基底，較原本 #747163 淺 */
+        --text-color: #ffffff;         /* 淺米灰文字，較原本 #e0d6d1 淺 */
+        --header-bg: #9a8bba;          /* 灰紫標頭，較原本 #5a5366 淺 */
+        --header-text: #ffffff;        /* 暖米白文字，較原本 #f5e9e0 淺 */
         --nav-bg: #5D504D;             /* 陶土灰導航，較原本 #4a3f3c 淺 */
-        --sidebar-bg: #8A705A;         /* 黃褐側邊欄，較原本 #745d4a 淺 */
+        --sidebar-bg: #8b6341;         /* 黃褐側邊欄，較原本 #745d4a 淺 */
         --link-hover: #B18385;         /* 灰粉懸停，較原本 #9a6a6d 淺 */
         --link-shadow: #C79A8F;        /* 磚紅陰影，較原本 #b37d7f 淺 */
         --nav-border: #A2877A;         /* 陶土紅邊框，較原本 #8c6a5e 淺 */
