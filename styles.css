@@ -21,25 +21,25 @@
     }
 
     [data-theme="dark"] {
-        /* 深灰調主題 - 紅黃紫配色（較淺版本） */
-        --bg-color: rgba(62, 131, 22, 0.67);           /* 溫暖灰基底，較原本 #747163 淺 */
-        --text-color: #ffffff;         /* 淺米灰文字，較原本 #e0d6d1 淺 */
-        --header-bg: #9a8bba;          /* 灰紫標頭，較原本 #5a5366 淺 */
-        --header-text: #ffffff;        /* 暖米白文字，較原本 #f5e9e0 淺 */
-        --nav-bg: #5D504D;             /* 陶土灰導航，較原本 #4a3f3c 淺 */
-        --sidebar-bg: #8b6341;         /* 黃褐側邊欄，較原本 #745d4a 淺 */
-        --link-hover: #B18385;         /* 灰粉懸停，較原本 #9a6a6d 淺 */
-        --link-shadow: #C79A8F;        /* 磚紅陰影，較原本 #b37d7f 淺 */
-        --nav-border: #A2877A;         /* 陶土紅邊框，較原本 #8c6a5e 淺 */
-        --nav-hover: #B5997C;          /* 黃褐懸停，較原本 #a17a65 淺 */
-        --search-btn-bg: #7F7E6B;      /* 灰綠按鈕，較原本 #6b6a54 淺 */
-        --search-btn-hover: #918F7E;   /* 灰綠懸停，較原本 #7d7c68 淺 */
-        --hamburger-bg: #82516F;       /* 紫紅漢堡菜單，較原本 #6d435a 淺 */
-        --dropdown-bg: #6F5E53;        /* 黃褐下拉，較原本 #5a4a3e 淺 */
-        --dropdown-border: #8F7373;    /* 灰粉邊框，較原本 #7a5d5d 淺 */
-        --dropdown-hover: #A0887A;     /* 陶土懸停，較原本 #8c6a5e 淺 */
-        --overlay-bg: rgba(60, 56, 56, 0.8); /* 灰遮罩，較原本 rgba(40,36,36,0.8) 淺 */
-        --overlay-content-bg: #524B45; /* 內容區背景，較原本 #3d3630 淺 */
+        /* 現代深色主題 - 深藍灰配色 */
+        --bg-color: #1e1e2e;           /* 深藍灰背景 */
+        --text-color: #e0e0e0;         /* 淺灰文字，易讀 */
+        --header-bg: #2d3a5f;          /* 深藍紫標頭 */
+        --header-text: #ffffff;        /* 純白文字 */
+        --nav-bg: #252535;             /* 深紫灰導航 */
+        --sidebar-bg: #2a2a3e;         /* 深紫灰側邊欄 */
+        --link-hover: #89b4fa;         /* 明亮藍色懸停 */
+        --link-shadow: #74c7ec;        /* 青藍色陰影 */
+        --nav-border: #45475a;         /* 中灰邊框 */
+        --nav-hover: #313244;          /* 深灰懸停背景 */
+        --search-btn-bg: #313244;      /* 深灰按鈕 */
+        --search-btn-hover: #45475a;   /* 中灰懸停 */
+        --hamburger-bg: #313244;       /* 深灰漢堡菜單 */
+        --dropdown-bg: #313244;        /* 深灰下拉 */
+        --dropdown-border: #45475a;    /* 中灰邊框 */
+        --dropdown-hover: #45475a;     /* 中灰懸停 */
+        --overlay-bg: rgba(0, 0, 0, 0.75); /* 深黑遮罩 */
+        --overlay-content-bg: #2a2a3e; /* 深紫灰內容區 */
     }
     
 
